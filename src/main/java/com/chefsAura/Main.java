@@ -6,17 +6,16 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.chefsAura.models.UserCollection;
-import com.chefsAura.models.User;
 import com.chefsAura.models.Inventory;
 import com.chefsAura.models.Product;
+import com.chefsAura.models.User;
+import com.chefsAura.models.UserCollection;
+import com.chefsAura.models.Payment;
 
 import com.chefsAura.utils.ReadJson;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
-
         // initialize user collection
         UserCollection userCollection = new UserCollection();
         loadUserCollection(userCollection);
@@ -28,9 +27,22 @@ public class Main {
 
     public static void loadUserCollection(UserCollection userCollection) {
         // read user data from file
+        int largestPaymentID = 0;
         JSONArray userJSONData = new ReadJson().readJson("user");
         for (int i = 0; i < userJSONData.length(); i++) {
             JSONObject userObject = userJSONData.getJSONObject(i);
+
+            JSONArray paymentDetails = userObject.getJSONArray("paymentDetails");
+            for (int j = 0; j < paymentDetails.length(); j++) {
+                JSONObject payment = paymentDetails.getJSONObject(j);
+                int paymentID = payment.getInt("paymentID");
+
+                // Update the largest paymentID if the current one is larger
+                if (paymentID > largestPaymentID) {
+                    largestPaymentID = paymentID;
+                }
+            }
+
             User newUser = new User(
                     userObject.getString("username"),
                     userObject.getString("email"),
@@ -44,6 +56,9 @@ public class Main {
                     userObject.getBoolean("agreeToTerms"));
             userCollection.addUser(newUser);
         }
+
+        // Set the paymentSize to the largest paymentID
+        Payment.setPaymentSize(largestPaymentID + 1);
     }
 
     public static void loadInventory(Inventory inventory) {

@@ -16,6 +16,10 @@ public class User {
     List<String> shippingAddress;
     List<String> billingAddress;
 
+    List<Payment> paymentDetails;
+    List<Cart> cart;
+    List<Order> orders;
+
     // empty constructor
     public User() {
         username = "";
@@ -111,6 +115,25 @@ public class User {
     public void removeBillingAddress(String oldBillingAddress) {
         this.billingAddress.remove(oldBillingAddress);
         System.out.println("Billing address removed successfully");
+    }
+
+    // add payment details
+    public void addPaymentDetails(Payment newPaymentDetails) {
+        this.paymentDetails.add(newPaymentDetails);
+        System.out.println("Payment details added successfully");
+    }
+
+    // remove payment details
+    public void removePaymentDetails(int paymentID) {
+        for (Payment payment : this.paymentDetails) {
+            if (payment.getPaymentID() == paymentID) {
+                this.paymentDetails.remove(payment);
+                System.out.println("Payment details removed successfully");
+                return;
+            }
+        }
+        // return error
+        System.err.println("Payment details not found");
     }
 
     // get username
