@@ -7,19 +7,6 @@ import java.nio.file.Paths;
 public class ReadJson {
     String filePath;
 
-    // testing
-    public static void main(String[] args) {
-        ReadJson reader = new ReadJson();
-        System.out.println("=====================================");
-        JSONArray userData = reader.readJson("user");
-        System.out.println("test loading: " + userData.getJSONObject(0).getString("username"));
-        System.out.println("=====================================");
-
-        JSONArray productData = reader.readJson("product");
-        System.out.println("test loading: " + productData.getJSONObject(0).getString("productName"));
-        System.out.println("=====================================");
-    }
-
     public JSONArray readJson(String option) {
         switch (option) {
             case "user":
@@ -42,7 +29,7 @@ public class ReadJson {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("File loaded successfully");
+        System.out.println(filePath + " loaded successfully");
         return jsonArray;
     }
 }

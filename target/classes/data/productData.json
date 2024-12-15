@@ -6,9 +6,12 @@
         "price": 29.99,
         "category": "Knives",
         "brand": "BrandA",
-        "size": ["8 inch", "10 inch"],
-        "color": ["Silver", "Black"],
-        "quantity": 50
+        "sizes": ["8 inch", "10 inch"],
+        "colors": ["Silver", "Black"],
+        "quantities": [
+            [20, 10],
+            [10, 10]
+        ]
     },
     {
         "productID": "B001",
@@ -17,9 +20,12 @@
         "price": 19.99,
         "category": "Boards",
         "brand": "BrandB",
-        "size": ["15x10 inch", "18x12 inch"],
-        "color": ["Natural"],
-        "quantity": 100
+        "sizes": ["15x10 inch", "18x12 inch"],
+        "colors": ["Natural"],
+        "quantities": [
+            [60],
+            [40]
+        ]
     },
     {
         "productID": "U001",
@@ -28,9 +34,11 @@
         "price": 9.99,
         "category": "Utensils",
         "brand": "BrandC",
-        "size": ["12 inch"],
-        "color": ["Red", "Blue"],
-        "quantity": 200
+        "sizes": ["12 inch"],
+        "colors": ["Red", "Blue"],
+        "quantities": [
+            [100, 100]
+        ]
     },
     {
         "productID": "U002",
@@ -39,9 +47,12 @@
         "price": 7.99,
         "category": "Utensils",
         "brand": "BrandD",
-        "size": ["10 inch", "12 inch"],
-        "color": ["Silver"],
-        "quantity": 150
+        "sizes": ["10 inch", "12 inch"],
+        "colors": ["Silver"],
+        "quantities": [
+            [70],
+            [80]
+        ]
     },
     {
         "productID": "M001",
@@ -50,9 +61,11 @@
         "price": 14.99,
         "category": "Measuring Tools",
         "brand": "BrandE",
-        "size": ["Various"],
-        "color": ["Silver"],
-        "quantity": 75
+        "sizes": ["Various"],
+        "colors": ["Silver"],
+        "quantities": [
+            [75]
+        ]
     },
     {
         "productID": "U003",
@@ -61,9 +74,11 @@
         "price": 5.99,
         "category": "Utensils",
         "brand": "BrandF",
-        "size": ["6 inch"],
-        "color": ["Black", "Green"],
-        "quantity": 120
+        "sizes": ["6 inch"],
+        "colors": ["Black", "Green"],
+        "quantities": [
+            [60, 60]
+        ]
     },
     {
         "productID": "U004",
@@ -72,9 +87,12 @@
         "price": 12.99,
         "category": "Utensils",
         "brand": "BrandG",
-        "size": ["9 inch", "12 inch"],
-        "color": ["Silver"],
-        "quantity": 80
+        "sizes": ["9 inch", "12 inch"],
+        "colors": ["Silver"],
+        "quantities": [
+            [40],
+            [40]
+        ]
     },
     {
         "productID": "U005",
@@ -83,9 +101,11 @@
         "price": 11.99,
         "category": "Utensils",
         "brand": "BrandH",
-        "size": ["9 inch"],
-        "color": ["Silver"],
-        "quantity": 90
+        "sizes": ["9 inch"],
+        "colors": ["Silver"],
+        "quantities": [
+            [90]
+        ]
     },
     {
         "productID": "B002",
@@ -94,9 +114,11 @@
         "price": 13.99,
         "category": "Baking Tools",
         "brand": "BrandI",
-        "size": ["17 inch"],
-        "color": ["Wood"],
-        "quantity": 60
+        "sizes": ["17 inch"],
+        "colors": ["Wood"],
+        "quantities": [
+            [60]
+        ]
     },
     {
         "productID": "U006",
@@ -105,8 +127,10 @@
         "price": 8.99,
         "category": "Utensils",
         "brand": "BrandJ",
-        "size": ["12 inch"],
-        "color": ["Black", "Red"],
-        "quantity": 110
+        "sizes": ["12 inch"],
+        "colors": ["Black", "Red"],
+        "quantities": [
+            [55, 55]
+        ]
     }
 ]

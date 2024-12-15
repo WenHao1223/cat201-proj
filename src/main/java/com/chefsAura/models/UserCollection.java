@@ -19,7 +19,7 @@ public class UserCollection {
     }
 
     // get all users
-    public ArrayList<User> getUsers() {
+    public ArrayList<User> getAllUsers() {
         return this.users;
     }
 }

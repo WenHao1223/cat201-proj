@@ -6,49 +6,99 @@ public class Product {
     String productID;
     String name;
     String description;
-    String price;
+    double price;
     String category;
     String brand;
-    List<String> size;
-    List<String> color;
-    int quantity;
+    List<String> sizes;
+    List<String> colors;
+    List<List<Integer>> quantities;
 
     // empty constructor
     public Product() {
         productID = "";
         name = "";
         description = "";
-        price = "";
+        price = 0.0;
         category = "";
         brand = "";
-        size = null;
-        color = null;
-        quantity = 0;
+        sizes = null;
+        colors = null;
+        quantities = null;
     }
 
     // used during first-time loading of products
     public Product(String productID, String name, String description,
-            String price, String category, String brand,
-            List<String> size, List<String> color, int quantity) {
+            double price, String category, String brand,
+            List<String> sizes, List<String> colors, List<List<Integer>> quantities) {
         this.productID = productID;
         this.name = name;
         this.description = description;
         this.price = price;
         this.category = category;
         this.brand = brand;
-        this.size = size;
-        this.color = color;
-        this.quantity = quantity;
+        this.sizes = sizes;
+        this.colors = colors;
+        this.quantities = quantities;
     }
 
-    // update quantity
-    public void addQuantity(int quantity) {
-        this.quantity += quantity;
+    // add quantities
+    public void addQuantity(int sizeIndex, int colorIndex, int quantities) {
+        this.quantities.get(sizeIndex).set(colorIndex, this.quantities.get(sizeIndex).get(colorIndex) + quantities);
         System.out.println("Quantity updated successfully");
     }
 
-    public void removeQuantity(int quantity) {
-        this.quantity -= quantity;
+    // remove quantities
+    public void removeQuantity(int sizeIndex, int colorIndex, int quantities) {
+        if (this.quantities.get(sizeIndex).get(colorIndex) - quantities < 0) {
+            System.err.println("Quantity not available");
+            return;
+        }
+        this.quantities.get(sizeIndex).set(colorIndex, this.quantities.get(sizeIndex).get(colorIndex) - quantities);
         System.out.println("Quantity updated successfully");
+    }
+
+    // get product ID
+    public String getProductID() {
+        return this.productID;
+    }
+
+    // get product name
+    public String getName() {
+        return this.name;
+    }
+
+    // get product description
+    public String getDescription() {
+        return this.description;
+    }
+
+    // get product price
+    public double getPrice() {
+        return this.price;
+    }
+
+    // get product category
+    public String getCategory() {
+        return this.category;
+    }
+
+    // get product brand
+    public String getBrand() {
+        return this.brand;
+    }
+
+    // get product sizes
+    public List<String> getSize() {
+        return this.sizes;
+    }
+
+    // get product colors
+    public List<String> getColor() {
+        return this.colors;
+    }
+
+    // get product quantities
+    public List<List<Integer>> getQuantities() {
+        return this.quantities;
     }
 }
