@@ -1,13 +1,13 @@
-package com.chefsAura.models;
+package com.chefsAura.enums;
 
-public enum PaymentMethod {
+public enum PaymentMethodEnum {
     DEBIT_CARD("debit_card"),
     CREDIT_CARD("credit_card"),
     PAYPAL("paypal");
 
     private final String method;
 
-    PaymentMethod(String method) {
+    PaymentMethodEnum(String method) {
         this.method = method;
     }
 
@@ -15,8 +15,8 @@ public enum PaymentMethod {
         return method;
     }
 
-    public static PaymentMethod fromString(String method) {
-        for (PaymentMethod pm : PaymentMethod.values()) {
+    public static PaymentMethodEnum fromString(String method) {
+        for (PaymentMethodEnum pm : PaymentMethodEnum.values()) {
             if (pm.method.equalsIgnoreCase(method)) {
                 return pm;
             }

@@ -1,8 +1,10 @@
 package com.chefsAura.models;
 
+import com.chefsAura.enums.PaymentMethodEnum;
+
 public class Payment {
     int paymentID;
-    PaymentMethod paymentMethod;
+    PaymentMethodEnum paymentMethod;
     String cardNumber;
     String expiryDate;
     String cvv;
@@ -19,7 +21,7 @@ public class Payment {
 
     public Payment(String paymentMethod, String cardNumber, String expiryDate, String cvv) {
         this.paymentID = paymentSize;
-        this.paymentMethod = PaymentMethod.fromString(paymentMethod);
+        this.paymentMethod = PaymentMethodEnum.fromString(paymentMethod);
         this.cardNumber = cardNumber;
         this.expiryDate = expiryDate;
         this.cvv = cvv;
