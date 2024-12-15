@@ -17,9 +17,22 @@ public class User {
     List<String> billingAddress;
 
     // empty constructor
-    public User() {}
+    public User() {
+        username = "";
+        email = "";
+        password = "";
+        nationality = "";
+        firstName = "";
+        lastName = "";
+        phoneNo = "";
+        gender = 0;
+        dob = "";
+        agreeToTerms = false;
+        shippingAddress = null;
+        billingAddress = null;
+    }
 
-    // used during first-time registration
+    // used during first-time loading of users / registration
     public User(String username, String email, String password,
             String nationality, String firstName, String lastName,
             String phoneNo, short gender, String dob, Boolean agreeToTerms) {

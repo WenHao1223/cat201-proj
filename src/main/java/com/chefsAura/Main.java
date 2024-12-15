@@ -13,8 +13,9 @@ public class Main {
 
         // initialize user collection
         UserCollection userCollection = new UserCollection();
-
         loadUserCollection(userCollection);
+
+        
     }
 
     public static void loadUserCollection(UserCollection userCollection) {
