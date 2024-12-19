@@ -41,7 +41,29 @@ public class User {
         orders = null;
     }
 
-    // used during first-time loading of users / registrati on
+    // used during registration
+    public User(String username, String email, String password,
+        String nationality, String firstName, String lastName,
+        String phoneNo, short gender, String dob, Boolean agreeToTerms
+    ) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.nationality = nationality;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNo = phoneNo;
+        this.gender = gender;
+        this.dob = dob;
+        this.agreeToTerms = agreeToTerms;
+        shippingAddresses = null;
+        billingAddresses = null;
+        paymentDetails = null;
+        carts = null;
+        orders = null;
+    }
+
+    // used during first-time loading of users
     public User(String username, String email, String password,
             String nationality, String firstName, String lastName,
             String phoneNo, short gender, String dob, Boolean agreeToTerms,

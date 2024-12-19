@@ -31,10 +31,17 @@ public class Main {
 
         System.out.println("\n*********************** TEST START ***********************");
 
+        // test register user
+        System.out.println("\nRegistering user...");
+        userCollection.registerUser("alice123", "alice@example.com", "password",
+                "Malaysia", "Alice", "Doe", "0123456789",
+                (short) 1, "2000-01-01", true);
+        
         // test login user
         System.out.println("\nLogging in user...");
         userCollection.loginUser("jdoe@example.com", "password");
         userCollection.loginUser("jdoe@example.com", "password123");
+        userCollection.loginUser("alice@example.com", "password");
 
         System.out.println("----------------");
 
