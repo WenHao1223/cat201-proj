@@ -25,9 +25,37 @@ public class Main {
         Inventory inventory = new Inventory();
         loadInventory(inventory);
 
+        // test adding shipping address
+        System.out.println("\nAdding shipping address...");
+        // add shipping address to user
+        userCollection.getAllUsers().get(0).addShippingAddress("123, ABC Street, XYZ City, 12345");
+        for (String address : userCollection.getAllUsers().get(0).getShippingAddresses()) {
+            System.out.println("Shipping address: " + address);
+        }
+
+        // test removing shipping address
+        System.out.println("\nRemoving shipping address...");
+        userCollection.getAllUsers().get(0).removeShippingAddress("123, ABC Street, XYZ City, 12345");
+        for (String address : userCollection.getAllUsers().get(0).getShippingAddresses()) {
+            System.out.println("Shipping address: " + address);
+        }
+
+        // test adding billing address
+        System.out.println("\nAdding billing address...");
+        userCollection.getAllUsers().get(0).addBillingAddress("123, ABC Street, XYZ City, 12345");
+        for (String address : userCollection.getAllUsers().get(0).getBillingAddresses()) {
+            System.out.println("Billing address: " + address);
+        }
+
+        // test removing billing address
+        System.out.println("\nRemoving billing address...");
+        userCollection.getAllUsers().get(0).removeBillingAddress("123, ABC Street, XYZ City, 12345");
+        for (String address : userCollection.getAllUsers().get(0).getBillingAddresses()) {
+            System.out.println("Billing address: " + address);
+        }
+
         // test adding payment details
         System.out.println("\nAdding payment details...");
-        // add payment details to user
         userCollection.getAllUsers().get(0).addPaymentDetails(
                 new Payment(
                         PaymentMethodEnum.DEBIT_CARD,
@@ -49,7 +77,6 @@ public class Main {
 
         // test remove payment details
         System.out.println("\nRemoving payment details...");
-        // remove payment details from user
         userCollection.getAllUsers().get(0).removePaymentDetails(13);
         // show the payment details of the user
         userCollection.getAllUsers().get(0).getPaymentDetails().forEach(
