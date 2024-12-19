@@ -1,0 +1,49 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}",
+            "modulePaths": [
+                "${workspaceFolder}/backend/target/classes",
+                "${workspaceFolder}/backend/target/dependency/*"
+            ],
+            "classPaths": [
+                "${workspaceFolder}/backend/target/classes",
+                "${workspaceFolder}/backend/target/dependency/*"
+            ]
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "com.chefsAura.Main",
+            "projectName": "cat201-proj",
+            "modulePaths": [
+                "${workspaceFolder}/backend/target/classes",
+                "${workspaceFolder}/backend/target/dependency/*"
+            ],
+            "classPaths": [
+                "${workspaceFolder}/backend/target/classes",
+                "${workspaceFolder}/backend/target/dependency/*"
+            ]
+        },
+        {
+            "type": "java",
+            "name": "ReadJson",
+            "request": "launch",
+            "mainClass": "com.chefsAura.utils.ReadJson",
+            "projectName": "cat201-proj",
+            "modulePaths": [
+                "${workspaceFolder}/backend/target/classes",
+                "${workspaceFolder}/backend/target/dependency/*"
+            ],
+            "classPaths": [
+                "${workspaceFolder}/backend/target/classes",
+                "${workspaceFolder}/backend/target/dependency/*"
+            ]
+        }
+    ]
+}

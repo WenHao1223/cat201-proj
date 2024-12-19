@@ -10,10 +10,10 @@ public class ReadJson {
     public JSONArray readJson(String option) {
         switch (option) {
             case "user":
-                filePath = "src/main/resources/data/userData.json";
+                filePath = "backend/src/main/resources/data/userData.json";
                 return loadFile();
             case "product":
-                filePath =  "src/main/resources/data/productData.json";
+                filePath =  "backend/src/main/resources/data/productData.json";
                 return loadFile();
             default:
                 System.err.println("Invalid option");
