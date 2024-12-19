@@ -37,6 +37,11 @@ public class Cart {
     }
 
     public void setQuantity(int quantity) {
+        // check if quantity is available
+        if (Inventory.getProduct(productID).getQuantities().get(sizeIndex).get(colorIndex) - quantity < 0) {
+            System.err.println("Quantity not available");
+            return;
+        }
         this.quantity = quantity;
     }
 

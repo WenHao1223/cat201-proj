@@ -118,6 +118,22 @@ public class Main {
                     + product.getPrice() + " x" + cart.getQuantity());
         }
 
+        // test updating product quantity in cart
+        System.out.println("\nUpdating product quantity in cart...");
+        // add product to cart
+        userCollection.getAllUsers().get(0).addProductToCart(
+                new Cart("B001", 1, 0, 0));
+        // update product quantity in cart
+        userCollection.getAllUsers().get(0).updateProductQuantityInCart("B001", 0, 0, 2);
+        // show the cart of the user
+        for (Cart cart : userCollection.getAllUsers().get(0).getCarts()) {
+            Product product = Inventory.getProduct(cart.getProductID());
+            String color = product.getColors().get(cart.getColorIndex());
+            String size = product.getSizes().get(cart.getSizeIndex());
+
+            System.out.println(product.getBrand() + ", " + color + ", " + size + ", " + product.getName() + " - RM"
+                    + product.getPrice() + " x" + cart.getQuantity());
+        }
     }
 
     public static void loadInventory(Inventory inventory) {

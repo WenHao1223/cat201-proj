@@ -178,6 +178,25 @@ public class User {
         System.err.println("Product not found in cart");
     }
 
+    // update product quantity in cart
+    public void updateProductQuantityInCart(String productID, int sizeIndex, int colorIndex, int newQuantity) {
+        for (Cart cart : this.carts) {
+            if (cart.getProductID().equals(productID) && cart.getSizeIndex() == sizeIndex && cart.getColorIndex() == colorIndex) {
+                cart.setQuantity(newQuantity);
+                System.out.println("Product quantity updated successfully");
+                return;
+            }
+        }
+        // return error
+        System.err.println("Product not found in cart");
+    }
+
+    // place order
+    public void placeOrder(Order newOrder) {
+        this.orders.add(newOrder);
+        System.out.println("Order placed successfully");
+    }
+
     // get username
     public String getUsername() {
         return this.username;
@@ -237,5 +256,10 @@ public class User {
     // get carts
     public List<Cart> getCarts() {
         return this.carts;
+    }
+
+    // get orders
+    public List<Order> getOrders() {
+        return this.orders;
     }
 }
