@@ -2,7 +2,6 @@ package com.chefsAura.enums;
 
 public enum OrderStatusEnum {
     ORDERED("Ordered"),
-    SHIPPED("Shipped"),
     DELIVERED("Delivered"),
     CANCELLED("Cancelled");
 

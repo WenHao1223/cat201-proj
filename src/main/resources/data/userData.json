@@ -48,7 +48,7 @@
                 "billingAddress": "123 Main St, Kuala Lumpur",
                 "paymentID": 1,
                 "orderDate": "2023-10-01",
-                "orderStatus": "Shipped",
+                "orderStatus": "Delivered",
                 "products": [
                     {
                         "productID": "K001",
@@ -214,7 +214,7 @@
                 "billingAddress": "101 Maple St, Kuala Lumpur",
                 "paymentID": 6,
                 "orderDate": "2023-10-04",
-                "orderStatus": "Shipped",
+                "orderStatus": "Delivered",
                 "products": [
                     {
                         "productID": "U002",
@@ -320,7 +320,7 @@
                 "billingAddress": "303 Birch St, Kuala Lumpur",
                 "paymentID": 8,
                 "orderDate": "2023-10-06",
-                "orderStatus": "Shipped",
+                "orderStatus": "Delivered",
                 "products": [
                     {
                         "productID": "U003",
@@ -503,7 +503,7 @@
                 "billingAddress": "707 Willow St, Kuala Lumpur",
                 "paymentID": 11,
                 "orderDate": "2023-10-09",
-                "orderStatus": "Shipped",
+                "orderStatus": "Delivered",
                 "products": [
                     {
                         "productID": "B002",

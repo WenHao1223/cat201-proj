@@ -58,6 +58,8 @@ public class Main {
             System.out.println("Billing address: " + address);
         }
 
+        System.out.println("----------------");
+
         // test adding payment details
         System.out.println("\nAdding payment details...");
         userCollection.getAllUsers().get(0).addPaymentDetails(
@@ -95,11 +97,12 @@ public class Main {
                     }
                 });
 
+        System.out.println("----------------");
+
         // test adding product to cart
         System.out.println("\nAdding product to cart...");
         userCollection.getAllUsers().get(0).addProductToCart(
                 new Cart("K001", 1, 0, 1));
-
         // show the cart of the user
         for (Cart cart : userCollection.getAllUsers().get(0).getCarts()) {
             Product product = Inventory.getProduct(cart.getProductID());
@@ -109,6 +112,7 @@ public class Main {
             System.out.println(product.getBrand() + ", " + color + ", " + size + ", " + product.getName() + " - RM"
                     + product.getPrice() + " x" + cart.getQuantity());
         }
+
         // test removing product from cart
         System.out.println("\nRemoving product from cart...");
         userCollection.getAllUsers().get(0).removeProductFromCart("K001", 0, 0);
@@ -138,6 +142,8 @@ public class Main {
             System.out.println(product.getBrand() + ", " + color + ", " + size + ", " + product.getName() + " - RM"
                     + product.getPrice() + " x" + cart.getQuantity());
         }
+
+        System.out.println("----------------");
 
         // test adding order
         System.out.println("\nAdding order...");
@@ -169,6 +175,29 @@ public class Main {
                 System.out.println(product.getBrand() + ", " + color + ", " + size + ", " + product.getName() + " - RM"
                         + product.getPrice() + " x" + cartProduct.getQuantity());
             }
+        }
+
+        // test cancelling order
+        System.out.println("\nCancelling order...");
+        userCollection.getAllUsers().get(0).cancelOrder(10);
+        // show the orders of the user
+        for (Order order : userCollection.getAllUsers().get(0).getOrders()) {
+            System.out.println("Order ID: " + order.getOrderID());
+            System.out.println("Shipping Address: " + order.getShippingAddress());
+            System.out.println("Billing Address: " + order.getBillingAddress());
+            System.out.println("Payment ID: " + order.getPaymentID());
+            System.out.println("Order Date: " + order.getOrderDate());
+            System.out.println("Order Status: " + order.getOrderStatus());
+            System.out.println("Products:");
+            for (Cart cartProduct : order.getCartProducts()) {
+                Product product = Inventory.getProduct(cartProduct.getProductID());
+                String color = product.getColors().get(cartProduct.getColorIndex());
+                String size = product.getSizes().get(cartProduct.getSizeIndex());
+
+                System.out.println(product.getBrand() + ", " + color + ", " + size + ", " + product.getName() + " - RM"
+                        + product.getPrice() + " x" + cartProduct.getQuantity());
+            }
+            System.out.println();
         }
     }
 
@@ -299,7 +328,6 @@ public class Main {
                 orders.add(newOrder);
             }
 
-
             // user
             User newUser = new User(
                     userObject.getString("username"),
@@ -366,14 +394,15 @@ public class Main {
                 System.out.println("Order Date: " + order.getOrderDate());
                 System.out.println("Order Status: " + order.getOrderStatus());
                 System.out.println("Products:");
-                
+
                 for (Cart cartProduct : order.getCartProducts()) {
                     Product product = Inventory.getProduct(cartProduct.getProductID());
                     String size = product.getSizes().get(cartProduct.getSizeIndex());
                     String color = product.getColors().get(cartProduct.getColorIndex());
 
-                    System.out.println(product.getBrand() + ", " + color + ", " + size + ", " + product.getName() + " - RM"
-                            + product.getPrice() + " x" + cartProduct.getQuantity());
+                    System.out.println(
+                            product.getBrand() + ", " + color + ", " + size + ", " + product.getName() + " - RM"
+                                    + product.getPrice() + " x" + cartProduct.getQuantity());
                 }
             }
 
@@ -381,8 +410,12 @@ public class Main {
         }
 
         // set the largest payment ID
-        System.out.println("Largest Payment ID: " + Payment.getlargestPaymentID());
+        // System.out.println("Largest Payment ID: " + Payment.getlargestPaymentID());
         Payment.setlargestPaymentID(Payment.getlargestPaymentID() + 1);
+
+        // set the largest order ID
+        // System.out.println("Largest Order ID: " + Order.getlargestOrderID());
+        Order.setlargestOrderID(Order.getlargestOrderID() + 1);
 
         // System.out.println("User collection loaded successfully");
     }

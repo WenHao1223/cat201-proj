@@ -202,6 +202,10 @@ public class User {
     public void cancelOrder(int orderID) {
         for (Order order : this.orders) {
             if (order.getOrderID() == orderID) {
+                if (order.getOrderStatus() == OrderStatusEnum.DELIVERED) {
+                    System.err.println("Order already delivered");
+                    return;
+                }
                 order.setOrderStatus(OrderStatusEnum.CANCELLED);
                 System.out.println("Order cancelled successfully");
                 return;
