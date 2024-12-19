@@ -1,6 +1,7 @@
 package com.chefsAura.models;
 
 import java.util.List;
+import com.chefsAura.enums.OrderStatusEnum; // Add this import statement
 
 public class User {
     String username;
@@ -189,6 +190,25 @@ public class User {
         }
         // return error
         System.err.println("Product not found in cart");
+    }
+
+    // add order
+    public void addOrder(Order newOrder) {
+        this.orders.add(newOrder);
+        System.out.println("Order added successfully");
+    }
+
+    // cancel order
+    public void cancelOrder(int orderID) {
+        for (Order order : this.orders) {
+            if (order.getOrderID() == orderID) {
+                order.setOrderStatus(OrderStatusEnum.CANCELLED);
+                System.out.println("Order cancelled successfully");
+                return;
+            }
+        }
+        // return error
+        System.err.println("Order not found");
     }
 
     // get username

@@ -138,6 +138,38 @@ public class Main {
             System.out.println(product.getBrand() + ", " + color + ", " + size + ", " + product.getName() + " - RM"
                     + product.getPrice() + " x" + cart.getQuantity());
         }
+
+        // test adding order
+        System.out.println("\nAdding order...");
+        List<Cart> cartProducts = new ArrayList<>();
+        // add products to order
+        cartProducts.add(new Cart("B001", 2, 0, 0));
+        // add order
+        userCollection.getAllUsers().get(0).addOrder(
+                new Order(
+                        "123, ABC Street, XYZ City, 12345",
+                        "123, ABC Street, XYZ City, 12345",
+                        12,
+                        OrderStatusEnum.ORDERED,
+                        cartProducts));
+        // show the orders of the user
+        for (Order order : userCollection.getAllUsers().get(0).getOrders()) {
+            System.out.println("Order ID: " + order.getOrderID());
+            System.out.println("Shipping Address: " + order.getShippingAddress());
+            System.out.println("Billing Address: " + order.getBillingAddress());
+            System.out.println("Payment ID: " + order.getPaymentID());
+            System.out.println("Order Date: " + order.getOrderDate());
+            System.out.println("Order Status: " + order.getOrderStatus());
+            System.out.println("Products:");
+            for (Cart cartProduct : order.getCartProducts()) {
+                Product product = Inventory.getProduct(cartProduct.getProductID());
+                String color = product.getColors().get(cartProduct.getColorIndex());
+                String size = product.getSizes().get(cartProduct.getSizeIndex());
+
+                System.out.println(product.getBrand() + ", " + color + ", " + size + ", " + product.getName() + " - RM"
+                        + product.getPrice() + " x" + cartProduct.getQuantity());
+            }
+        }
     }
 
     public static void loadInventory(Inventory inventory) {

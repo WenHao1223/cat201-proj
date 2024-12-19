@@ -40,14 +40,14 @@ public class Order {
         }
     }
 
-    public Order(String shippingAddress, String billingAddress, int paymentID, String orderDate,
+    public Order(String shippingAddress, String billingAddress, int paymentID,
             OrderStatusEnum orderStatus,
             List<Cart> cartProducts) {
         this.orderID = largestOrderID;
         this.shippingAddress = shippingAddress;
         this.billingAddress = billingAddress;
         this.paymentID = paymentID;
-        this.orderDate = orderDate;
+        this.orderDate = java.time.LocalDate.now().toString();
         this.orderStatus = orderStatus;
         this.cartProducts = cartProducts;
 
@@ -58,6 +58,11 @@ public class Order {
 
     public static void setlargestOrderID(int size) {
         largestOrderID = size;
+    }
+
+    // set order status
+    public void setOrderStatus(OrderStatusEnum orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     // get largest order ID
