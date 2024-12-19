@@ -29,6 +29,15 @@ public class Main {
         UserCollection userCollection = new UserCollection();
         loadUserCollection(userCollection);
 
+        System.out.println("\n*********************** TEST START ***********************");
+
+        // test login user
+        System.out.println("\nLogging in user...");
+        userCollection.loginUser("jdoe@example.com", "password");
+        userCollection.loginUser("jdoe@example.com", "password123");
+
+        System.out.println("----------------");
+
         // test adding shipping address
         System.out.println("\nAdding shipping address...");
         // add shipping address to user

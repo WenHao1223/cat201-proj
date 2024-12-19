@@ -215,6 +215,11 @@ public class User {
         System.err.println("Order not found");
     }
 
+    // validate password
+    public boolean validatePassword(String password) {
+        return this.password.equals(password);
+    }
+
     // get username
     public String getUsername() {
         return this.username;
