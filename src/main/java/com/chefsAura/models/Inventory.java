@@ -3,26 +3,26 @@ package com.chefsAura.models;
 import java.util.ArrayList;
 
 public class Inventory {
-    ArrayList<Product> products;
+    static ArrayList<Product> products;
 
     // empty constructor
     public Inventory() {
-        this.products = new ArrayList<Product>();
+        products = new ArrayList<Product>();
     }
 
     // add product from file
     public void addProduct(Product product) {
-        this.products.add(product);
+        products.add(product);
         // System.out.println("Product " + product.getName() + " added successfully");
     }
 
     // get all products
     public ArrayList<Product> getAllProducts() {
-        return this.products;
+        return products;
     }
 
-    public Product getProduct(String productID) {
-        for (Product product : this.products) {
+    public static Product getProduct(String productID) {
+        for (Product product : products) {
             if (product.productID.equals(productID)) {
                 return product;
             }

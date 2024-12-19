@@ -33,12 +33,12 @@
                 "cvv": ""
             }
         ],
-        "cart": [
+        "carts": [
             {
                 "productID": "K001",
                 "quantity": 1,
-                "size": "8 inch",
-                "color": "Silver"
+                "sizeIndex": 0,
+                "colorIndex": 0
             }
         ],
         "orders": [
@@ -52,7 +52,9 @@
                 "products": [
                     {
                         "productID": "K001",
-                        "quantity": 1
+                        "quantity": 1,
+                        "sizeIndex": 0,
+                        "colorIndex": 0
                     }
                 ]
             }
@@ -91,12 +93,12 @@
                 "cvv": ""
             }
         ],
-        "cart": [
+        "carts": [
             {
                 "productID": "B001",
                 "quantity": 2,
-                "size": "15x10 inch",
-                "color": "Natural"
+                "sizeIndex": 0,
+                "colorIndex": 0
             }
         ],
         "orders": [
@@ -110,7 +112,9 @@
                 "products": [
                     {
                         "productID": "B001",
-                        "quantity": 2
+                        "quantity": 2,
+                        "sizeIndex": 0,
+                        "colorIndex": 0
                     }
                 ]
             }
@@ -142,12 +146,12 @@
                 "cvv": "789"
             }
         ],
-        "cart": [
+        "carts": [
             {
                 "productID": "U001",
                 "quantity": 3,
-                "size": "12 inch",
-                "color": "Red"
+                "sizeIndex": 0,
+                "colorIndex": 0
             }
         ],
         "orders": [
@@ -161,7 +165,9 @@
                 "products": [
                     {
                         "productID": "U001",
-                        "quantity": 3
+                        "quantity": 3,
+                        "sizeIndex": 0,
+                        "colorIndex": 0
                     }
                 ]
             }
@@ -193,12 +199,12 @@
                 "cvv": "012"
             }
         ],
-        "cart": [
+        "carts": [
             {
                 "productID": "U002",
                 "quantity": 1,
-                "size": "10 inch",
-                "color": "Silver"
+                "sizeIndex": 0,
+                "colorIndex": 0
             }
         ],
         "orders": [
@@ -212,7 +218,9 @@
                 "products": [
                     {
                         "productID": "U002",
-                        "quantity": 1
+                        "quantity": 1,
+                        "sizeIndex": 0,
+                        "colorIndex": 0
                     }
                 ]
             }
@@ -244,12 +252,12 @@
                 "cvv": "345"
             }
         ],
-        "cart": [
+        "carts": [
             {
                 "productID": "M001",
                 "quantity": 1,
-                "size": "Various",
-                "color": "Silver"
+                "sizeIndex": 0,
+                "colorIndex": 0
             }
         ],
         "orders": [
@@ -263,7 +271,9 @@
                 "products": [
                     {
                         "productID": "M001",
-                        "quantity": 1
+                        "quantity": 1,
+                        "sizeIndex": 0,
+                        "colorIndex": 0
                     }
                 ]
             }
@@ -295,12 +305,12 @@
                 "cvv": "678"
             }
         ],
-        "cart": [
+        "carts": [
             {
                 "productID": "U003",
                 "quantity": 2,
-                "size": "6 inch",
-                "color": "Black"
+                "sizeIndex": 0,
+                "colorIndex": 0
             }
         ],
         "orders": [
@@ -314,7 +324,9 @@
                 "products": [
                     {
                         "productID": "U003",
-                        "quantity": 2
+                        "quantity": 2,
+                        "sizeIndex": 0,
+                        "colorIndex": 0
                     }
                 ]
             }
@@ -346,12 +358,12 @@
                 "cvv": "901"
             }
         ],
-        "cart": [
+        "carts": [
             {
                 "productID": "U004",
                 "quantity": 1,
-                "size": "9 inch",
-                "color": "Silver"
+                "sizeIndex": 0,
+                "colorIndex": 0
             }
         ],
         "orders": [
@@ -365,7 +377,9 @@
                 "products": [
                     {
                         "productID": "U004",
-                        "quantity": 1
+                        "quantity": 1,
+                        "sizeIndex": 0,
+                        "colorIndex": 0
                     }
                 ]
             }
@@ -397,12 +411,12 @@
                 "cvv": "234"
             }
         ],
-        "cart": [
+        "carts": [
             {
                 "productID": "U005",
                 "quantity": 1,
-                "size": "9 inch",
-                "color": "Silver"
+                "sizeIndex": 0,
+                "colorIndex": 0
             }
         ],
         "orders": [
@@ -416,7 +430,9 @@
                 "products": [
                     {
                         "productID": "U005",
-                        "quantity": 1
+                        "quantity": 1,
+                        "sizeIndex": 0,
+                        "colorIndex": 0
                     }
                 ]
             }
@@ -436,7 +452,7 @@
         "shippingAddresses": [],
         "billingAddresses": [],
         "paymentDetails": [],
-        "cart": [],
+        "carts": [],
         "orders": []
     },
     {
@@ -472,12 +488,12 @@
                 "cvv": ""
             }
         ],
-        "cart": [
+        "carts": [
             {
                 "productID": "B002",
                 "quantity": 1,
-                "size": "17 inch",
-                "color": "Wood"
+                "sizeIndex": 0,
+                "colorIndex": 0
             }
         ],
         "orders": [
@@ -491,7 +507,9 @@
                 "products": [
                     {
                         "productID": "B002",
-                        "quantity": 1
+                        "quantity": 1,
+                        "sizeIndex": 0,
+                        "colorIndex": 0
                     }
                 ]
             }

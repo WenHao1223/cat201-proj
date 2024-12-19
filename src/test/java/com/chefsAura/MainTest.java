@@ -23,17 +23,17 @@ public class MainTest {
 
     @Test
     public void testAddQuantity() {
-        int initialQuantity = inventory.getProduct("U006").getQuantities().get(0).get(0);
+        int initialQuantity = Inventory.getProduct("U006").getQuantities().get(0).get(0);
         inventory.addQuantity("U006", 0, 0, 1);
-        int updatedQuantity = inventory.getProduct("U006").getQuantities().get(0).get(0);
+        int updatedQuantity = Inventory.getProduct("U006").getQuantities().get(0).get(0);
         assertEquals(initialQuantity + 1, updatedQuantity);
     }
 
     @Test
     public void testRemoveQuantity() {
-        int initialQuantity = inventory.getProduct("U006").getQuantities().get(0).get(0);
+        int initialQuantity = Inventory.getProduct("U006").getQuantities().get(0).get(0);
         inventory.removeQuantity("U006", 0, 0, 1);
-        int updatedQuantity = inventory.getProduct("U006").getQuantities().get(0).get(0);
+        int updatedQuantity = Inventory.getProduct("U006").getQuantities().get(0).get(0);
         assertEquals(initialQuantity - 1, updatedQuantity);
     }
 }

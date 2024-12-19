@@ -13,11 +13,12 @@ public class User {
     short gender;
     String dob;
     Boolean agreeToTerms;
+
     List<String> shippingAddresses;
     List<String> billingAddresses;
 
     List<Payment> paymentDetails;
-    List<Cart> cart;
+    List<Cart> carts;
     List<Order> orders;
 
     // empty constructor
@@ -35,7 +36,7 @@ public class User {
         shippingAddresses = null;
         billingAddresses = null;
         paymentDetails = null;
-        cart = null;
+        carts = null;
         orders = null;
     }
 
@@ -44,8 +45,9 @@ public class User {
             String nationality, String firstName, String lastName,
             String phoneNo, short gender, String dob, Boolean agreeToTerms,
             List<String> shippingAddresses, List<String> billingAddresses,
-            List<Payment> paymentDetails
-            // List<Cart> cart, List<Order> orders
+            List<Payment> paymentDetails,
+            List<Cart> carts
+            // List<Order> orders
             ) {
         this.username = username;
         this.email = email;
@@ -60,7 +62,7 @@ public class User {
         this.shippingAddresses = shippingAddresses;
         this.billingAddresses = billingAddresses;
         this.paymentDetails = paymentDetails;
-        // this.cart = cart;
+        this.carts = carts;
         // this.orders = orders;
     }
 
@@ -147,6 +149,35 @@ public class User {
         System.err.println("Payment details not found");
     }
 
+    // add product to cart
+    public void addProductToCart(Cart newCart) {
+        // check if product is valid
+        if (Inventory.getProduct(newCart.getProductID()) == null) {
+            System.err.println("Product not found");
+            return;
+        }
+        // check if quantity is available
+        if (Inventory.getProduct(newCart.getProductID()).getQuantities().get(newCart.getSizeIndex()).get(newCart.getColorIndex()) == 0) {
+            System.err.println("Quantity not available");
+            return;
+        }
+        this.carts.add(newCart);
+        System.out.println("Product added to cart successfully");
+    }
+
+    // remove product from cart
+    public void removeProductFromCart(String productID, int sizeIndex, int colorIndex) {
+        for (Cart cart : this.carts) {
+            if (cart.getProductID().equals(productID) && cart.getSizeIndex() == sizeIndex && cart.getColorIndex() == colorIndex) {
+                this.carts.remove(cart);
+                System.out.println("Product removed from cart successfully");
+                return;
+            }
+        }
+        // return error
+        System.err.println("Product not found in cart");
+    }
+
     // get username
     public String getUsername() {
         return this.username;
@@ -201,5 +232,10 @@ public class User {
     // get payment details
     public List<Payment> getPaymentDetails() {
         return this.paymentDetails;
+    }
+
+    // get carts
+    public List<Cart> getCarts() {
+        return this.carts;
     }
 }

@@ -88,12 +88,12 @@ public class Product {
     }
 
     // get product sizes
-    public List<String> getSize() {
+    public List<String> getSizes() {
         return this.sizes;
     }
 
     // get product colors
-    public List<String> getColor() {
+    public List<String> getColors() {
         return this.colors;
     }
 
