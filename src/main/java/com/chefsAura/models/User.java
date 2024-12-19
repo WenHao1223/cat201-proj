@@ -34,14 +34,18 @@ public class User {
         agreeToTerms = false;
         shippingAddresses = null;
         billingAddresses = null;
+        paymentDetails = null;
+        cart = null;
+        orders = null;
     }
 
     // used during first-time loading of users / registrati on
     public User(String username, String email, String password,
             String nationality, String firstName, String lastName,
             String phoneNo, short gender, String dob, Boolean agreeToTerms,
-            List<String> shippingAddresses, List<String> billingAddresses
-            // List<Payment> paymentDetails, List<Cart> cart, List<Order> orders
+            List<String> shippingAddresses, List<String> billingAddresses,
+            List<Payment> paymentDetails
+            // List<Cart> cart, List<Order> orders
             ) {
         this.username = username;
         this.email = email;
@@ -55,7 +59,7 @@ public class User {
         this.agreeToTerms = agreeToTerms;
         this.shippingAddresses = shippingAddresses;
         this.billingAddresses = billingAddresses;
-        // this.paymentDetails = paymentDetails;
+        this.paymentDetails = paymentDetails;
         // this.cart = cart;
         // this.orders = orders;
     }
@@ -193,5 +197,10 @@ public class User {
     // get billing addresses
     public List<String> getBillingAddresses() {
         return this.billingAddresses;
+    }
+    
+    // get payment details
+    public List<Payment> getPaymentDetails() {
+        return this.paymentDetails;
     }
 }

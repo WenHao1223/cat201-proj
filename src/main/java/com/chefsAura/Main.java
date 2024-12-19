@@ -11,6 +11,7 @@ import com.chefsAura.models.Product;
 import com.chefsAura.models.User;
 import com.chefsAura.models.UserCollection;
 import com.chefsAura.models.Payment;
+import com.chefsAura.enums.PaymentMethodEnum;
 
 import com.chefsAura.utils.ReadJson;
 
@@ -32,27 +33,34 @@ public class Main {
         for (int i = 0; i < userJSONData.length(); i++) {
             JSONObject userObject = userJSONData.getJSONObject(i);
 
-            JSONArray paymentDetails = userObject.getJSONArray("paymentDetails");
-            for (int j = 0; j < paymentDetails.length(); j++) {
-                JSONObject payment = paymentDetails.getJSONObject(j);
-                int paymentID = payment.getInt("paymentID");
-
-                // Update the largest paymentID if the current one is larger
-                if (paymentID > largestPaymentID) {
-                    largestPaymentID = paymentID;
-                }
-            }
-
+            // shipping addresses
             List<String> shippingAddresses = new ArrayList<>();
             JSONArray shippingAddressesArray = userObject.getJSONArray("shippingAddresses");
             for (int j = 0; j < shippingAddressesArray.length(); j++) {
                 shippingAddresses.add(shippingAddressesArray.getString(j));
             }
 
+            // billing addresses
             List<String> billingAddresses = new ArrayList<>();
             JSONArray billingAddressesesArray = userObject.getJSONArray("billingAddresses");
             for (int j = 0; j < billingAddressesesArray.length(); j++) {
                 billingAddresses.add(billingAddressesesArray.getString(j));
+            }
+
+            List<Payment> paymentDetailsList = new ArrayList<>();
+
+            // payment details
+            JSONArray paymentDetails = userObject.getJSONArray("paymentDetails");
+            for (int j = 0; j < paymentDetails.length(); j++) {
+                JSONObject paymentObject = paymentDetails.getJSONObject(j);
+
+                Payment newPayment = new Payment(
+                        paymentObject.getInt("paymentID"),
+                        PaymentMethodEnum.fromString(paymentObject.getString("paymentMethod")),
+                        paymentObject.getString("cardNumber"),
+                        paymentObject.getString("expiryDate"),
+                        paymentObject.getString("cvv"));
+                paymentDetailsList.add(newPayment);
             }
 
             User newUser = new User(
@@ -67,15 +75,43 @@ public class Main {
                     userObject.getString("dob"),
                     userObject.getBoolean("agreeToTerms"),
                     shippingAddresses,
-                    billingAddresses);
+                    billingAddresses,
+                    paymentDetailsList);
             userCollection.addUser(newUser);
 
             // System.out.println("User " + newUser.getFirstName() + " added successfully");
             // System.out.println("----------------");
+
+            // print the shipping address of the new user
+            for (String address : newUser.getShippingAddresses()) {
+                System.out.println("Shipping address: " + address);
+            }
+
+            // print the billing address of the new user
+            for (String address : newUser.getBillingAddresses()) {
+                System.out.println("Billing address: " + address);
+            }
+
+            // get the payment details
+            newUser.getPaymentDetails().forEach(
+                payment -> {
+                    System.out.println("Payment ID: " + payment.getPaymentID());
+                    String paymentMethod = payment.getPaymentMethod().toString();
+                    System.out.println("Payment Method: " + PaymentMethodEnum.fromString(paymentMethod));
+                    System.out.println("Card Number: " + payment.getCardNumber());
+                    if (paymentMethod.equals("debit_card") || paymentMethod.equals("credit_card")) {
+                        System.out.println("Expiry Date: " + payment.getExpiryDate());
+                    }
+                }
+            );
+
+            System.out.println("----------------");
         }
 
-        // Set the paymentSize to the largest paymentID
-        Payment.setPaymentSize(largestPaymentID + 1);
+        System.out.println("Largest Payment ID: " + Payment.getlargestPaymentID());
+        
+        // Set the largestPaymentID to the largest paymentID
+        Payment.setlargestPaymentID(largestPaymentID + 1);
 
         // System.out.println("User collection loaded successfully");
     }

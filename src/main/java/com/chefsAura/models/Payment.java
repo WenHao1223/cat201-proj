@@ -9,7 +9,7 @@ public class Payment {
     String expiryDate;
     String cvv;
 
-    static int paymentSize = 0;
+    static int largestPaymentID = 0;
 
     public Payment() {
         paymentID = 0;
@@ -19,24 +19,58 @@ public class Payment {
         cvv = "";
     }
 
-    public Payment(String paymentMethod, String cardNumber, String expiryDate, String cvv) {
-        this.paymentID = paymentSize;
-        this.paymentMethod = PaymentMethodEnum.fromString(paymentMethod);
+    public Payment(int paymentID, PaymentMethodEnum paymentMethod, String cardNumber,
+            String expiryDate, String cvv) {
+        this.paymentID = paymentID;
+        this.paymentMethod = paymentMethod;
         this.cardNumber = cardNumber;
         this.expiryDate = expiryDate;
         this.cvv = cvv;
 
-        paymentSize++;
+        if (paymentID > largestPaymentID) {
+            largestPaymentID = paymentID;
+        }
+    }
+
+    public Payment(PaymentMethodEnum paymentMethod, String cardNumber,
+            String expiryDate, String cvv) {
+        this.paymentID = largestPaymentID;
+        this.paymentMethod = paymentMethod;
+        this.cardNumber = cardNumber;
+        this.expiryDate = expiryDate;
+        this.cvv = cvv;
+
+        largestPaymentID++;
 
         System.out.println("Payment details added successfully");
     }
-    
-    public static void setPaymentSize(int size) {
-        paymentSize = size;
+
+    public static void setlargestPaymentID(int size) {
+        largestPaymentID = size;
+    }
+
+    // get largest payment ID
+    public static int getlargestPaymentID() {
+        return largestPaymentID;
     }
 
     // get payment ID
     public int getPaymentID() {
         return paymentID;
+    }
+
+    // get payment method
+    public PaymentMethodEnum getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    // get card number
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    // get expiry date
+    public String getExpiryDate() {
+        return expiryDate;
     }
 }
