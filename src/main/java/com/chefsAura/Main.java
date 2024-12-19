@@ -24,11 +24,32 @@ public class Main {
         // initialize inventory
         Inventory inventory = new Inventory();
         loadInventory(inventory);
+
+        // test adding payment details
+        System.out.println("Adding payment details...");
+        // add payment details to user
+        userCollection.getAllUsers().get(0).addPaymentDetails(
+                new Payment(
+                        PaymentMethodEnum.DEBIT_CARD,
+                        "1234567890123456",
+                        "12/23",
+                        "123"));
+        // show the payment details of the user
+        userCollection.getAllUsers().get(0).getPaymentDetails().forEach(
+                payment -> {
+                    System.out.println("Payment ID: " + payment.getPaymentID());
+                    String paymentMethod = payment.getPaymentMethod().toString();
+                    System.out.println("Payment Method: " + PaymentMethodEnum.fromString(paymentMethod));
+                    System.out.println("Card Number: " + payment.getCardNumber());
+                    if (PaymentMethodEnum.fromString(paymentMethod) == PaymentMethodEnum.DEBIT_CARD ||
+                            PaymentMethodEnum.fromString(paymentMethod) == PaymentMethodEnum.CREDIT_CARD) {
+                        System.out.println("Expiry Date: " + payment.getExpiryDate());
+                    }
+                });
     }
 
     public static void loadUserCollection(UserCollection userCollection) {
         // read user data from file
-        int largestPaymentID = 0;
         JSONArray userJSONData = new ReadJson().readJson("user");
         for (int i = 0; i < userJSONData.length(); i++) {
             JSONObject userObject = userJSONData.getJSONObject(i);
@@ -94,24 +115,23 @@ public class Main {
 
             // get the payment details
             newUser.getPaymentDetails().forEach(
-                payment -> {
-                    System.out.println("Payment ID: " + payment.getPaymentID());
-                    String paymentMethod = payment.getPaymentMethod().toString();
-                    System.out.println("Payment Method: " + PaymentMethodEnum.fromString(paymentMethod));
-                    System.out.println("Card Number: " + payment.getCardNumber());
-                    if (paymentMethod.equals("debit_card") || paymentMethod.equals("credit_card")) {
-                        System.out.println("Expiry Date: " + payment.getExpiryDate());
-                    }
-                }
-            );
+                    payment -> {
+                        System.out.println("Payment ID: " + payment.getPaymentID());
+                        String paymentMethod = payment.getPaymentMethod().toString();
+                        System.out.println("Payment Method: " + PaymentMethodEnum.fromString(paymentMethod));
+                        System.out.println("Card Number: " + payment.getCardNumber());
+                        if (PaymentMethodEnum.fromString(paymentMethod) == PaymentMethodEnum.DEBIT_CARD ||
+                                PaymentMethodEnum.fromString(paymentMethod) == PaymentMethodEnum.CREDIT_CARD) {
+                            System.out.println("Expiry Date: " + payment.getExpiryDate());
+                        }
+                    });
 
             System.out.println("----------------");
         }
 
+        // set the largest payment ID
         System.out.println("Largest Payment ID: " + Payment.getlargestPaymentID());
-        
-        // Set the largestPaymentID to the largest paymentID
-        Payment.setlargestPaymentID(largestPaymentID + 1);
+        Payment.setlargestPaymentID(Payment.getlargestPaymentID() + 1);
 
         // System.out.println("User collection loaded successfully");
     }
