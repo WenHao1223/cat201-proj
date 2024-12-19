@@ -26,7 +26,7 @@ public class Main {
         loadInventory(inventory);
 
         // test adding payment details
-        System.out.println("Adding payment details...");
+        System.out.println("\nAdding payment details...");
         // add payment details to user
         userCollection.getAllUsers().get(0).addPaymentDetails(
                 new Payment(
@@ -34,6 +34,23 @@ public class Main {
                         "1234567890123456",
                         "12/23",
                         "123"));
+        // show the payment details of the user
+        userCollection.getAllUsers().get(0).getPaymentDetails().forEach(
+                payment -> {
+                    System.out.println("Payment ID: " + payment.getPaymentID());
+                    String paymentMethod = payment.getPaymentMethod().toString();
+                    System.out.println("Payment Method: " + PaymentMethodEnum.fromString(paymentMethod));
+                    System.out.println("Card Number: " + payment.getCardNumber());
+                    if (PaymentMethodEnum.fromString(paymentMethod) == PaymentMethodEnum.DEBIT_CARD ||
+                            PaymentMethodEnum.fromString(paymentMethod) == PaymentMethodEnum.CREDIT_CARD) {
+                        System.out.println("Expiry Date: " + payment.getExpiryDate());
+                    }
+                });
+
+        // test remove payment details
+        System.out.println("\nRemoving payment details...");
+        // remove payment details from user
+        userCollection.getAllUsers().get(0).removePaymentDetails(13);
         // show the payment details of the user
         userCollection.getAllUsers().get(0).getPaymentDetails().forEach(
                 payment -> {
