@@ -46,8 +46,8 @@ public class User {
             String phoneNo, short gender, String dob, Boolean agreeToTerms,
             List<String> shippingAddresses, List<String> billingAddresses,
             List<Payment> paymentDetails,
-            List<Cart> carts
-            // List<Order> orders
+            List<Cart> carts,
+            List<Order> orders
             ) {
         this.username = username;
         this.email = email;
@@ -63,7 +63,7 @@ public class User {
         this.billingAddresses = billingAddresses;
         this.paymentDetails = paymentDetails;
         this.carts = carts;
-        // this.orders = orders;
+        this.orders = orders;
     }
 
     // update email
@@ -189,12 +189,6 @@ public class User {
         }
         // return error
         System.err.println("Product not found in cart");
-    }
-
-    // place order
-    public void placeOrder(Order newOrder) {
-        this.orders.add(newOrder);
-        System.out.println("Order placed successfully");
     }
 
     // get username

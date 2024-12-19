@@ -6,13 +6,17 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.chefsAura.enums.PaymentMethodEnum;
-import com.chefsAura.models.Cart;
 import com.chefsAura.models.Inventory;
-import com.chefsAura.models.Payment;
 import com.chefsAura.models.Product;
+import com.chefsAura.models.Cart;
+import com.chefsAura.models.Payment;
+import com.chefsAura.models.Order;
 import com.chefsAura.models.User;
 import com.chefsAura.models.UserCollection;
+
+import com.chefsAura.enums.PaymentMethodEnum;
+import com.chefsAura.enums.OrderStatusEnum;
+
 import com.chefsAura.utils.ReadJson;
 
 public class Main {
@@ -232,6 +236,39 @@ public class Main {
                 carts.add(newCart);
             }
 
+            // orders
+            List<Order> orders = new ArrayList<>();
+
+            JSONArray ordersArray = userObject.getJSONArray("orders");
+            for (int j = 0; j < ordersArray.length(); j++) {
+                JSONObject orderObject = ordersArray.getJSONObject(j);
+
+                List<Cart> cartProducts = new ArrayList<>();
+                JSONArray productsArray = orderObject.getJSONArray("products");
+                for (int k = 0; k < productsArray.length(); k++) {
+                    JSONObject productObject = productsArray.getJSONObject(k);
+
+                    Cart cartProduct = new Cart(
+                            productObject.getString("productID"),
+                            productObject.getInt("quantity"),
+                            productObject.getInt("sizeIndex"),
+                            productObject.getInt("colorIndex"));
+                    cartProducts.add(cartProduct);
+                }
+
+                Order newOrder = new Order(
+                        orderObject.getInt("orderID"),
+                        orderObject.getString("shippingAddress"),
+                        orderObject.getString("billingAddress"),
+                        orderObject.getInt("paymentID"),
+                        orderObject.getString("orderDate"),
+                        OrderStatusEnum.fromString(orderObject.getString("orderStatus")),
+                        cartProducts);
+                orders.add(newOrder);
+            }
+
+
+            // user
             User newUser = new User(
                     userObject.getString("username"),
                     userObject.getString("email"),
@@ -246,7 +283,8 @@ public class Main {
                     shippingAddresses,
                     billingAddresses,
                     paymentDetailsList,
-                    carts);
+                    carts,
+                    orders);
             userCollection.addUser(newUser);
 
             // System.out.println("User " + newUser.getFirstName() + " added successfully");
@@ -283,6 +321,28 @@ public class Main {
 
                 System.out.println(product.getBrand() + ", " + color + ", " + size + ", " + product.getName() + " - RM"
                         + product.getPrice() + " x" + cart.getQuantity());
+            }
+
+            System.out.println("");
+
+            // get the orders
+            for (Order order : newUser.getOrders()) {
+                System.out.println("Order ID: " + order.getOrderID());
+                System.out.println("Shipping Address: " + order.getShippingAddress());
+                System.out.println("Billing Address: " + order.getBillingAddress());
+                System.out.println("Payment ID: " + order.getPaymentID());
+                System.out.println("Order Date: " + order.getOrderDate());
+                System.out.println("Order Status: " + order.getOrderStatus());
+                System.out.println("Products:");
+                
+                for (Cart cartProduct : order.getCartProducts()) {
+                    Product product = Inventory.getProduct(cartProduct.getProductID());
+                    String size = product.getSizes().get(cartProduct.getSizeIndex());
+                    String color = product.getColors().get(cartProduct.getColorIndex());
+
+                    System.out.println(product.getBrand() + ", " + color + ", " + size + ", " + product.getName() + " - RM"
+                            + product.getPrice() + " x" + cartProduct.getQuantity());
+                }
             }
 
             System.out.println("----------------");
