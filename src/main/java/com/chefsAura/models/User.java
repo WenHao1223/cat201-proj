@@ -13,8 +13,8 @@ public class User {
     short gender;
     String dob;
     Boolean agreeToTerms;
-    List<String> shippingAddress;
-    List<String> billingAddress;
+    List<String> shippingAddresses;
+    List<String> billingAddresses;
 
     List<Payment> paymentDetails;
     List<Cart> cart;
@@ -32,14 +32,17 @@ public class User {
         gender = 0;
         dob = "";
         agreeToTerms = false;
-        shippingAddress = null;
-        billingAddress = null;
+        shippingAddresses = null;
+        billingAddresses = null;
     }
 
-    // used during first-time loading of users / registration
+    // used during first-time loading of users / registrati on
     public User(String username, String email, String password,
             String nationality, String firstName, String lastName,
-            String phoneNo, short gender, String dob, Boolean agreeToTerms) {
+            String phoneNo, short gender, String dob, Boolean agreeToTerms,
+            List<String> shippingAddresses, List<String> billingAddresses
+            // List<Payment> paymentDetails, List<Cart> cart, List<Order> orders
+            ) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -50,6 +53,11 @@ public class User {
         this.gender = gender;
         this.dob = dob;
         this.agreeToTerms = agreeToTerms;
+        this.shippingAddresses = shippingAddresses;
+        this.billingAddresses = billingAddresses;
+        // this.paymentDetails = paymentDetails;
+        // this.cart = cart;
+        // this.orders = orders;
     }
 
     // update email
@@ -95,25 +103,25 @@ public class User {
 
     // add shipping address
     public void addShippingAddress(String newShippingAddress) {
-        this.shippingAddress.add(newShippingAddress);
+        this.shippingAddresses.add(newShippingAddress);
         System.out.println("Shipping address added successfully");
     }
 
     // remove shipping address
     public void removeShippingAddress(String oldShippingAddress) {
-        this.shippingAddress.remove(oldShippingAddress);
+        this.shippingAddresses.remove(oldShippingAddress);
         System.out.println("Shipping address removed successfully");
     }
 
     // add billing address
-    public void addBillingAddress(String newBillingAddress) {
-        this.billingAddress.add(newBillingAddress);
+    public void addBillingAddress(String newshippingAddress) {
+        this.billingAddresses.add(newshippingAddress);
         System.out.println("Billing address added successfully");
     }
 
     // remove billing address
-    public void removeBillingAddress(String oldBillingAddress) {
-        this.billingAddress.remove(oldBillingAddress);
+    public void removeBillingAddress(String oldShippingAddress) {
+        this.billingAddresses.remove(oldShippingAddress);
         System.out.println("Billing address removed successfully");
     }
 
@@ -175,5 +183,15 @@ public class User {
     // get date of birth
     public String getDob() {
         return this.dob;
+    }
+
+    // get shipping addresses
+    public List<String> getShippingAddresses() {
+        return this.shippingAddresses;
+    }
+
+    // get billing addresses
+    public List<String> getBillingAddresses() {
+        return this.billingAddresses;
     }
 }

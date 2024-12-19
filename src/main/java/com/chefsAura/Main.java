@@ -43,6 +43,18 @@ public class Main {
                 }
             }
 
+            List<String> shippingAddresses = new ArrayList<>();
+            JSONArray shippingAddressesArray = userObject.getJSONArray("shippingAddresses");
+            for (int j = 0; j < shippingAddressesArray.length(); j++) {
+                shippingAddresses.add(shippingAddressesArray.getString(j));
+            }
+
+            List<String> billingAddresses = new ArrayList<>();
+            JSONArray billingAddressesesArray = userObject.getJSONArray("billingAddresses");
+            for (int j = 0; j < billingAddressesesArray.length(); j++) {
+                billingAddresses.add(billingAddressesesArray.getString(j));
+            }
+
             User newUser = new User(
                     userObject.getString("username"),
                     userObject.getString("email"),
@@ -53,12 +65,19 @@ public class Main {
                     userObject.getString("phoneNo"),
                     (short) userObject.getInt("gender"),
                     userObject.getString("dob"),
-                    userObject.getBoolean("agreeToTerms"));
+                    userObject.getBoolean("agreeToTerms"),
+                    shippingAddresses,
+                    billingAddresses);
             userCollection.addUser(newUser);
+
+            // System.out.println("User " + newUser.getFirstName() + " added successfully");
+            // System.out.println("----------------");
         }
 
         // Set the paymentSize to the largest paymentID
         Payment.setPaymentSize(largestPaymentID + 1);
+
+        // System.out.println("User collection loaded successfully");
     }
 
     public static void loadInventory(Inventory inventory) {
@@ -102,5 +121,7 @@ public class Main {
                     quantities);
             inventory.addProduct(newProduct);
         }
+
+        // System.out.println("Inventory loaded successfully");
     }
 }

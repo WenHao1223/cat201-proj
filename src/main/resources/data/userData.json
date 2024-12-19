@@ -10,17 +10,12 @@
         "gender": 1,
         "dob": "1990-01-01",
         "agreeToTerms": true,
-        "shippingAddress": [
-            {
-                "id": 1,
-                "address": "123 Main St, Kuala Lumpur"
-            }
+        "shippingAddresses": [
+            "123 Main St, Kuala Lumpur",
+            "234 Elm St, Kuala Lumpur"
         ],
-        "billingAddress": [
-            {
-                "id": 1,
-                "address": "123 Main St, Kuala Lumpur"
-            }
+        "billingAddresses": [
+            "123 Main St, Kuala Lumpur"
         ],
         "paymentDetails": [
             {
@@ -49,8 +44,8 @@
         "orders": [
             {
                 "orderID": 1,
-                "shippingAddressID": 1,
-                "billingAddressID": 1,
+                "shippingAddress": "123 Main St, Kuala Lumpur",
+                "billingAddress": "123 Main St, Kuala Lumpur",
                 "paymentID": 1,
                 "orderDate": "2023-10-01",
                 "orderStatus": "Shipped",
@@ -74,17 +69,11 @@
         "gender": 2,
         "dob": "1985-05-15",
         "agreeToTerms": true,
-        "shippingAddress": [
-            {
-                "id": 2,
-                "address": "456 Elm St, Kuala Lumpur"
-            }
+        "shippingAddresses": [
+            "456 Elm St, Kuala Lumpur"
         ],
-        "billingAddress": [
-            {
-                "id": 2,
-                "address": "456 Elm St, Kuala Lumpur"
-            }
+        "billingAddresses": [
+            "456 Elm St, Kuala Lumpur"
         ],
         "paymentDetails": [
             {
@@ -113,8 +102,8 @@
         "orders": [
             {
                 "orderID": 2,
-                "shippingAddressID": 2,
-                "billingAddressID": 2,
+                "shippingAddress": "456 Elm St, Kuala Lumpur",
+                "billingAddress": "456 Elm St, Kuala Lumpur",
                 "paymentID": 3,
                 "orderDate": "2023-10-02",
                 "orderStatus": "Processing",
@@ -138,17 +127,11 @@
         "gender": 1,
         "dob": "1988-03-22",
         "agreeToTerms": true,
-        "shippingAddress": [
-            {
-                "id": 3,
-                "address": "789 Pine St, Kuala Lumpur"
-            }
+        "shippingAddresses": [
+            "789 Pine St, Kuala Lumpur"
         ],
-        "billingAddress": [
-            {
-                "id": 3,
-                "address": "789 Pine St, Kuala Lumpur"
-            }
+        "billingAddresses": [
+            "789 Pine St, Kuala Lumpur"
         ],
         "paymentDetails": [
             {
@@ -170,8 +153,8 @@
         "orders": [
             {
                 "orderID": 3,
-                "shippingAddressID": 3,
-                "billingAddressID": 3,
+                "shippingAddress": "789 Pine St, Kuala Lumpur",
+                "billingAddress": "789 Pine St, Kuala Lumpur",
                 "paymentID": 5,
                 "orderDate": "2023-10-03",
                 "orderStatus": "Delivered",
@@ -195,17 +178,11 @@
         "gender": 1,
         "dob": "1992-07-11",
         "agreeToTerms": true,
-        "shippingAddress": [
-            {
-                "id": 4,
-                "address": "101 Maple St, Kuala Lumpur"
-            }
+        "shippingAddresses": [
+            "101 Maple St, Kuala Lumpur"
         ],
-        "billingAddress": [
-            {
-                "id": 4,
-                "address": "101 Maple St, Kuala Lumpur"
-            }
+        "billingAddresses": [
+            "101 Maple St, Kuala Lumpur"
         ],
         "paymentDetails": [
             {
@@ -227,8 +204,8 @@
         "orders": [
             {
                 "orderID": 4,
-                "shippingAddressID": 4,
-                "billingAddressID": 4,
+                "shippingAddress": "101 Maple St, Kuala Lumpur",
+                "billingAddress": "101 Maple St, Kuala Lumpur",
                 "paymentID": 6,
                 "orderDate": "2023-10-04",
                 "orderStatus": "Pending",
@@ -252,17 +229,11 @@
         "gender": 1,
         "dob": "1980-12-30",
         "agreeToTerms": true,
-        "shippingAddress": [
-            {
-                "id": 5,
-                "address": "202 Oak St, Kuala Lumpur"
-            }
+        "shippingAddresses": [
+            "202 Oak St, Kuala Lumpur"
         ],
-        "billingAddress": [
-            {
-                "id": 5,
-                "address": "202 Oak St, Kuala Lumpur"
-            }
+        "billingAddresses": [
+            "202 Oak St, Kuala Lumpur"
         ],
         "paymentDetails": [
             {
@@ -284,8 +255,8 @@
         "orders": [
             {
                 "orderID": 5,
-                "shippingAddressID": 5,
-                "billingAddressID": 5,
+                "shippingAddress": "202 Oak St, Kuala Lumpur",
+                "billingAddress": "202 Oak St, Kuala Lumpur",
                 "paymentID": 7,
                 "orderDate": "2023-10-05",
                 "orderStatus": "Cancelled",
@@ -309,17 +280,11 @@
         "gender": 2,
         "dob": "1995-04-20",
         "agreeToTerms": true,
-        "shippingAddress": [
-            {
-                "id": 6,
-                "address": "303 Birch St, Kuala Lumpur"
-            }
+        "shippingAddresses": [
+            "303 Birch St, Kuala Lumpur"
         ],
-        "billingAddress": [
-            {
-                "id": 6,
-                "address": "303 Birch St, Kuala Lumpur"
-            }
+        "billingAddresses": [
+            "303 Birch St, Kuala Lumpur"
         ],
         "paymentDetails": [
             {
@@ -341,8 +306,8 @@
         "orders": [
             {
                 "orderID": 6,
-                "shippingAddressID": 6,
-                "billingAddressID": 6,
+                "shippingAddress": "303 Birch St, Kuala Lumpur",
+                "billingAddress": "303 Birch St, Kuala Lumpur",
                 "paymentID": 8,
                 "orderDate": "2023-10-06",
                 "orderStatus": "Shipped",
@@ -366,17 +331,11 @@
         "gender": 1,
         "dob": "1982-09-09",
         "agreeToTerms": true,
-        "shippingAddress": [
-            {
-                "id": 7,
-                "address": "404 Cedar St, Kuala Lumpur"
-            }
+        "shippingAddresses": [
+            "404 Cedar St, Kuala Lumpur"
         ],
-        "billingAddress": [
-            {
-                "id": 7,
-                "address": "404 Cedar St, Kuala Lumpur"
-            }
+        "billingAddresses": [
+            "404 Cedar St, Kuala Lumpur"
         ],
         "paymentDetails": [
             {
@@ -398,8 +357,8 @@
         "orders": [
             {
                 "orderID": 7,
-                "shippingAddressID": 7,
-                "billingAddressID": 7,
+                "shippingAddress": "404 Cedar St, Kuala Lumpur",
+                "billingAddress": "404 Cedar St, Kuala Lumpur",
                 "paymentID": 9,
                 "orderDate": "2023-10-07",
                 "orderStatus": "Processing",
@@ -423,17 +382,11 @@
         "gender": 2,
         "dob": "1991-11-11",
         "agreeToTerms": true,
-        "shippingAddress": [
-            {
-                "id": 8,
-                "address": "505 Spruce St, Kuala Lumpur"
-            }
+        "shippingAddresses": [
+            "505 Spruce St, Kuala Lumpur"
         ],
-        "billingAddress": [
-            {
-                "id": 8,
-                "address": "505 Spruce St, Kuala Lumpur"
-            }
+        "billingAddresses": [
+            "505 Spruce St, Kuala Lumpur"
         ],
         "paymentDetails": [
             {
@@ -455,8 +408,8 @@
         "orders": [
             {
                 "orderID": 8,
-                "shippingAddressID": 8,
-                "billingAddressID": 8,
+                "shippingAddress": "505 Spruce St, Kuala Lumpur",
+                "billingAddress": "505 Spruce St, Kuala Lumpur",
                 "paymentID": 10,
                 "orderDate": "2023-10-08",
                 "orderStatus": "Delivered",
@@ -480,8 +433,8 @@
         "gender": 1,
         "dob": "1987-06-06",
         "agreeToTerms": true,
-        "shippingAddress": [],
-        "billingAddress": [],
+        "shippingAddresses": [],
+        "billingAddresses": [],
         "paymentDetails": [],
         "cart": [],
         "orders": []
@@ -497,17 +450,11 @@
         "gender": 2,
         "dob": "1993-02-02",
         "agreeToTerms": true,
-        "shippingAddress": [
-            {
-                "id": 9,
-                "address": "707 Willow St, Kuala Lumpur"
-            }
+        "shippingAddresses": [
+            "707 Willow St, Kuala Lumpur"
         ],
-        "billingAddress": [
-            {
-                "id": 9,
-                "address": "707 Willow St, Kuala Lumpur"
-            }
+        "billingAddresses": [
+            "707 Willow St, Kuala Lumpur"
         ],
         "paymentDetails": [
             {
@@ -536,8 +483,8 @@
         "orders": [
             {
                 "orderID": 9,
-                "shippingAddressID": 9,
-                "billingAddressID": 9,
+                "shippingAddress": "707 Willow St, Kuala Lumpur",
+                "billingAddress": "707 Willow St, Kuala Lumpur",
                 "paymentID": 11,
                 "orderDate": "2023-10-09",
                 "orderStatus": "Pending",
