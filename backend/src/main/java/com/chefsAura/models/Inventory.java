@@ -27,6 +27,7 @@ public class Inventory {
                 return product;
             }
         }
+        System.err.println("Product not found");
         return null;
     }
     
