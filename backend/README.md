@@ -23,6 +23,11 @@ This project is the backend for the ChefsAura application. It handles user manag
     mvn install
     ```
 
+3. Build the project:
+    ```sh
+    mvn clean install
+    ```
+
 ## Running the Application
 
 To run the application using the embedded Tomcat server, use the following command:
