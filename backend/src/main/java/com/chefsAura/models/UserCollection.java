@@ -6,25 +6,33 @@ public class UserCollection {
     static ArrayList<User> users;
     static User currentUser;
 
-    // empty constructor
-    public UserCollection() {
-        users = new ArrayList<User>();
+    // Static initializer block to initialize the users list and currentUser
+    static {
+        users = new ArrayList<>();
         currentUser = new User();
     }
 
+    // empty constructor
+    public UserCollection() {}
+
     // add user from file
-    public void addUser(User user) {
+    public static void addUser(User user) {
         users.add(user);
         // System.out.println("User " + user.getFirstName() + " added successfully");
     }
 
+    // set all users
+    public static void setAllUsers(ArrayList<User> users) {
+        UserCollection.users = users;
+    }
+
     // get all users
-    public ArrayList<User> getAllUsers() {
+    public static ArrayList<User> getAllUsers() {
         return users;
     }
 
     // register user
-    public void registerUser(String username, String email, String password,
+    public static void registerUser(String username, String email, String password,
             String nationality, String firstName, String lastName,
             String phoneNo, short gender, String dob, Boolean agreeToTerms) {
         User user = new User(username, email, password,
@@ -36,7 +44,7 @@ public class UserCollection {
     }
 
     // login user
-    public boolean loginUser(String email, String password) {
+    public static boolean loginUser(String email, String password) {
         for (User user : users) {
             if (user.getEmail().equals(email) && user.validatePassword(password)) {
                 currentUser = user;

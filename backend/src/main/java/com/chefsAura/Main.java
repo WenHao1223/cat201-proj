@@ -22,55 +22,53 @@ import com.chefsAura.utils.ReadJson;
 public class Main {
     public static void main(String[] args) {
         // initialize inventory
-        Inventory inventory = new Inventory();
-        loadInventory(inventory);
+        loadInventory();
 
         // initialize user collection
-        UserCollection userCollection = new UserCollection();
-        loadUserCollection(userCollection);
+        loadUserCollection();
 
         System.out.println("\n*********************** TEST START ***********************");
 
         // test register user
         System.out.println("\nRegistering user...");
-        userCollection.registerUser("alice123", "alice@example.com", "password",
+        UserCollection.registerUser("alice123", "alice@example.com", "password",
                 "Malaysia", "Alice", "Doe", "0123456789",
                 (short) 1, "2000-01-01", true);
         
         // test login user
         System.out.println("\nLogging in user...");
-        userCollection.loginUser("jdoe@example.com", "password");
-        userCollection.loginUser("jdoe@example.com", "password123");
-        userCollection.loginUser("alice@example.com", "password");
+        UserCollection.loginUser("jdoe@example.com", "password");
+        UserCollection.loginUser("jdoe@example.com", "password123");
+        UserCollection.loginUser("alice@example.com", "password");
 
         System.out.println("----------------");
 
         // test adding shipping address
         System.out.println("\nAdding shipping address...");
         // add shipping address to user
-        userCollection.getAllUsers().get(0).addShippingAddress("123, ABC Street, XYZ City, 12345");
-        for (String address : userCollection.getAllUsers().get(0).getShippingAddresses()) {
+        UserCollection.getAllUsers().get(0).addShippingAddress("123, ABC Street, XYZ City, 12345");
+        for (String address : UserCollection.getAllUsers().get(0).getShippingAddresses()) {
             System.out.println("Shipping address: " + address);
         }
 
         // test removing shipping address
         System.out.println("\nRemoving shipping address...");
-        userCollection.getAllUsers().get(0).removeShippingAddress("123, ABC Street, XYZ City, 12345");
-        for (String address : userCollection.getAllUsers().get(0).getShippingAddresses()) {
+        UserCollection.getAllUsers().get(0).removeShippingAddress("123, ABC Street, XYZ City, 12345");
+        for (String address : UserCollection.getAllUsers().get(0).getShippingAddresses()) {
             System.out.println("Shipping address: " + address);
         }
 
         // test adding billing address
         System.out.println("\nAdding billing address...");
-        userCollection.getAllUsers().get(0).addBillingAddress("123, ABC Street, XYZ City, 12345");
-        for (String address : userCollection.getAllUsers().get(0).getBillingAddresses()) {
+        UserCollection.getAllUsers().get(0).addBillingAddress("123, ABC Street, XYZ City, 12345");
+        for (String address : UserCollection.getAllUsers().get(0).getBillingAddresses()) {
             System.out.println("Billing address: " + address);
         }
 
         // test removing billing address
         System.out.println("\nRemoving billing address...");
-        userCollection.getAllUsers().get(0).removeBillingAddress("123, ABC Street, XYZ City, 12345");
-        for (String address : userCollection.getAllUsers().get(0).getBillingAddresses()) {
+        UserCollection.getAllUsers().get(0).removeBillingAddress("123, ABC Street, XYZ City, 12345");
+        for (String address : UserCollection.getAllUsers().get(0).getBillingAddresses()) {
             System.out.println("Billing address: " + address);
         }
 
@@ -78,14 +76,14 @@ public class Main {
 
         // test adding payment details
         System.out.println("\nAdding payment details...");
-        userCollection.getAllUsers().get(0).addPaymentDetails(
+        UserCollection.getAllUsers().get(0).addPaymentDetails(
                 new Payment(
                         PaymentMethodEnum.DEBIT_CARD,
                         "1234567890123456",
                         "12/23",
                         "123"));
         // show the payment details of the user
-        userCollection.getAllUsers().get(0).getPaymentDetails().forEach(
+        UserCollection.getAllUsers().get(0).getPaymentDetails().forEach(
                 payment -> {
                     System.out.println("Payment ID: " + payment.getPaymentID());
                     String paymentMethod = payment.getPaymentMethod().toString();
@@ -99,9 +97,9 @@ public class Main {
 
         // test remove payment details
         System.out.println("\nRemoving payment details...");
-        userCollection.getAllUsers().get(0).removePaymentDetails(13);
+        UserCollection.getAllUsers().get(0).removePaymentDetails(13);
         // show the payment details of the user
-        userCollection.getAllUsers().get(0).getPaymentDetails().forEach(
+        UserCollection.getAllUsers().get(0).getPaymentDetails().forEach(
                 payment -> {
                     System.out.println("Payment ID: " + payment.getPaymentID());
                     String paymentMethod = payment.getPaymentMethod().toString();
@@ -117,10 +115,10 @@ public class Main {
 
         // test adding product to cart
         System.out.println("\nAdding product to cart...");
-        userCollection.getAllUsers().get(0).addProductToCart(
+        UserCollection.getAllUsers().get(0).addProductToCart(
                 new Cart("K001", 1, 0, 1));
         // show the cart of the user
-        for (Cart cart : userCollection.getAllUsers().get(0).getCarts()) {
+        for (Cart cart : UserCollection.getAllUsers().get(0).getCarts()) {
             Product product = Inventory.getProduct(cart.getProductID());
             String color = product.getColors().get(cart.getColorIndex());
             String size = product.getSizes().get(cart.getSizeIndex());
@@ -131,9 +129,9 @@ public class Main {
 
         // test removing product from cart
         System.out.println("\nRemoving product from cart...");
-        userCollection.getAllUsers().get(0).removeProductFromCart("K001", 0, 0);
+        UserCollection.getAllUsers().get(0).removeProductFromCart("K001", 0, 0);
         // show the cart of the user
-        for (Cart cart : userCollection.getAllUsers().get(0).getCarts()) {
+        for (Cart cart : UserCollection.getAllUsers().get(0).getCarts()) {
             Product product = Inventory.getProduct(cart.getProductID());
             String color = product.getColors().get(cart.getColorIndex());
             String size = product.getSizes().get(cart.getSizeIndex());
@@ -145,12 +143,12 @@ public class Main {
         // test updating product quantity in cart
         System.out.println("\nUpdating product quantity in cart...");
         // add product to cart
-        userCollection.getAllUsers().get(0).addProductToCart(
+        UserCollection.getAllUsers().get(0).addProductToCart(
                 new Cart("B001", 1, 0, 0));
         // update product quantity in cart
-        userCollection.getAllUsers().get(0).updateProductQuantityInCart("B001", 0, 0, 2);
+        UserCollection.getAllUsers().get(0).updateProductQuantityInCart("B001", 0, 0, 2);
         // show the cart of the user
-        for (Cart cart : userCollection.getAllUsers().get(0).getCarts()) {
+        for (Cart cart : UserCollection.getAllUsers().get(0).getCarts()) {
             Product product = Inventory.getProduct(cart.getProductID());
             String color = product.getColors().get(cart.getColorIndex());
             String size = product.getSizes().get(cart.getSizeIndex());
@@ -167,7 +165,7 @@ public class Main {
         // add products to order
         cartProducts.add(new Cart("B001", 2, 0, 0));
         // add order
-        userCollection.getAllUsers().get(0).addOrder(
+        UserCollection.getAllUsers().get(0).addOrder(
                 new Order(
                         "123, ABC Street, XYZ City, 12345",
                         "123, ABC Street, XYZ City, 12345",
@@ -175,7 +173,7 @@ public class Main {
                         OrderStatusEnum.ORDERED,
                         cartProducts));
         // show the orders of the user
-        for (Order order : userCollection.getAllUsers().get(0).getOrders()) {
+        for (Order order : UserCollection.getAllUsers().get(0).getOrders()) {
             System.out.println("Order ID: " + order.getOrderID());
             System.out.println("Shipping Address: " + order.getShippingAddress());
             System.out.println("Billing Address: " + order.getBillingAddress());
@@ -195,9 +193,9 @@ public class Main {
 
         // test cancelling order
         System.out.println("\nCancelling order...");
-        userCollection.getAllUsers().get(0).cancelOrder(10);
+        UserCollection.getAllUsers().get(0).cancelOrder(10);
         // show the orders of the user
-        for (Order order : userCollection.getAllUsers().get(0).getOrders()) {
+        for (Order order : UserCollection.getAllUsers().get(0).getOrders()) {
             System.out.println("Order ID: " + order.getOrderID());
             System.out.println("Shipping Address: " + order.getShippingAddress());
             System.out.println("Billing Address: " + order.getBillingAddress());
@@ -217,7 +215,7 @@ public class Main {
         }
     }
 
-    public static void loadInventory(Inventory inventory) {
+    public static void loadInventory() {
         // read inventory data from file
         JSONArray inventoryJSONData = new ReadJson().readJson("product");
         for (int i = 0; i < inventoryJSONData.length(); i++) {
@@ -256,13 +254,13 @@ public class Main {
                     sizes,
                     colors,
                     quantities);
-            inventory.addProduct(newProduct);
+            Inventory.addProduct(newProduct);
         }
 
         // System.out.println("Inventory loaded successfully");
     }
 
-    public static void loadUserCollection(UserCollection userCollection) {
+    public static void loadUserCollection() {
         // read user data from file
         JSONArray userJSONData = new ReadJson().readJson("user");
         for (int i = 0; i < userJSONData.length(); i++) {
@@ -361,7 +359,7 @@ public class Main {
                     paymentDetailsList,
                     carts,
                     orders);
-            userCollection.addUser(newUser);
+            UserCollection.addUser(newUser);
 
             // System.out.println("User " + newUser.getFirstName() + " added successfully");
             // System.out.println("----------------");

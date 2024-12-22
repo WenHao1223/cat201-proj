@@ -1,0 +1,136 @@
+[
+    {
+        "productID": "K001",
+        "name": "Chef Knife",
+        "description": "High-quality stainless steel chef knife",
+        "price": 29.99,
+        "category": "Knives",
+        "brand": "BrandA",
+        "sizes": ["8 inch", "10 inch"],
+        "colors": ["Silver", "Black"],
+        "quantities": [
+            [20, 10],
+            [10, 10]
+        ]
+    },
+    {
+        "productID": "B001",
+        "name": "Cutting Board",
+        "description": "Durable bamboo cutting board",
+        "price": 19.99,
+        "category": "Boards",
+        "brand": "BrandB",
+        "sizes": ["15x10 inch", "18x12 inch"],
+        "colors": ["Natural"],
+        "quantities": [
+            [60],
+            [40]
+        ]
+    },
+    {
+        "productID": "U001",
+        "name": "Spatula",
+        "description": "Heat-resistant silicone spatula",
+        "price": 9.99,
+        "category": "Utensils",
+        "brand": "BrandC",
+        "sizes": ["12 inch"],
+        "colors": ["Red", "Blue"],
+        "quantities": [
+            [100, 100]
+        ]
+    },
+    {
+        "productID": "U002",
+        "name": "Whisk",
+        "description": "Stainless steel balloon whisk",
+        "price": 7.99,
+        "category": "Utensils",
+        "brand": "BrandD",
+        "sizes": ["10 inch", "12 inch"],
+        "colors": ["Silver"],
+        "quantities": [
+            [70],
+            [80]
+        ]
+    },
+    {
+        "productID": "M001",
+        "name": "Measuring Cups",
+        "description": "Set of 5 stainless steel measuring cups",
+        "price": 14.99,
+        "category": "Measuring Tools",
+        "brand": "BrandE",
+        "sizes": ["Various"],
+        "colors": ["Silver"],
+        "quantities": [
+            [75]
+        ]
+    },
+    {
+        "productID": "U003",
+        "name": "Peeler",
+        "description": "Ergonomic vegetable peeler",
+        "price": 5.99,
+        "category": "Utensils",
+        "brand": "BrandF",
+        "sizes": ["6 inch"],
+        "colors": ["Black", "Green"],
+        "quantities": [
+            [60, 60]
+        ]
+    },
+    {
+        "productID": "U004",
+        "name": "Tongs",
+        "description": "Stainless steel kitchen tongs",
+        "price": 12.99,
+        "category": "Utensils",
+        "brand": "BrandG",
+        "sizes": ["9 inch", "12 inch"],
+        "colors": ["Silver"],
+        "quantities": [
+            [40],
+            [40]
+        ]
+    },
+    {
+        "productID": "U005",
+        "name": "Grater",
+        "description": "Multi-purpose box grater",
+        "price": 11.99,
+        "category": "Utensils",
+        "brand": "BrandH",
+        "sizes": ["9 inch"],
+        "colors": ["Silver"],
+        "quantities": [
+            [90]
+        ]
+    },
+    {
+        "productID": "B002",
+        "name": "Rolling Pin",
+        "description": "Non-stick rolling pin",
+        "price": 13.99,
+        "category": "Baking Tools",
+        "brand": "BrandI",
+        "sizes": ["17 inch"],
+        "colors": ["Wood"],
+        "quantities": [
+            [60]
+        ]
+    },
+    {
+        "productID": "U006",
+        "name": "Ladle",
+        "description": "Heat-resistant soup ladle",
+        "price": 8.99,
+        "category": "Utensils",
+        "brand": "BrandJ",
+        "sizes": ["12 inch"],
+        "colors": ["Black", "Red"],
+        "quantities": [
+            [55, 55]
+        ]
+    }
+]
