@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import SamplePage1 from "./pages/SamplePage1";
+import SamplePage2 from "./pages/SamplePage2";
 
 // Define the type for the data object
 interface MyObject {
@@ -30,37 +33,51 @@ const App: React.FC = () => {
     }
 
     return (
-        <div>
-            <h1>Welcome to Vite with React!</h1>
-            <button
-                onClick={() => {
-                    const fetchData = async () => {
-                        try {
-                            const response = await fetch(
-                                "http://localhost:9090/api/data"
-                            ); // Adjust URL as necessary
-                            const result: MyObject = await response.json();
-                            setData(result);
-                        } catch (err) {
-                            setError(
-                                "Error fetching data: " + (err as Error).message
-                            );
-                        }
-                    };
-                    fetchData();
-                }}
-            >
-                Fetch Data
-            </button>
-            {data ? (
+        <Router>
+            <div>
+                <h1>Welcome to Vite with React!</h1>
+                <button
+                    onClick={() => {
+                        const fetchData = async () => {
+                            try {
+                                const response = await fetch(
+                                    "http://localhost:9090/api/data"
+                                ); // Adjust URL as necessary
+                                const result: MyObject = await response.json();
+                                setData(result);
+                            } catch (err) {
+                                setError(
+                                    "Plese start the backend server as well.\nRefer to README.md in backend folder as well.\n Error fetching data: " + (err as Error).message
+                                );
+                            }
+                        };
+                        fetchData();
+                    }}
+                >
+                    Fetch Data
+                </button>
+                {data ? (
+                    <div>
+                        <p>Name: {data.name}</p>
+                        <p>ID: {data.id}</p>
+                    </div>
+                ) : (
+                    <p>Loading data...</p>
+                )}
                 <div>
-                    <p>Name: {data.name}</p>
-                    <p>ID: {data.id}</p>
+                    <Link to="/sample1">
+                        <button>Go to Sample Page 1</button>
+                    </Link>
+                    <Link to="/sample2">
+                        <button>Go to Sample Page 2</button>
+                    </Link>
                 </div>
-            ) : (
-                <p>Loading data...</p>
-            )}
-        </div>
+                <Routes>
+                    <Route path="/sample1" element={<SamplePage1 />} />
+                    <Route path="/sample2" element={<SamplePage2 />} />
+                </Routes>
+            </div>
+        </Router>
     );
 };
 
