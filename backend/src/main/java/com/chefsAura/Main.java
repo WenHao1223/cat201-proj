@@ -32,7 +32,7 @@ public class Main {
         UserCollection.registerUser("alice123", "alice@example.com", "password",
                 "Malaysia", "Alice", "Doe", "0123456789",
                 (short) 1, "2000-01-01", true);
-        
+
         // test login user
         System.out.println("\nLogging in user...");
         UserCollection.loginUser("jdoe@example.com", "password");
@@ -159,17 +159,14 @@ public class Main {
 
         // test adding order
         System.out.println("\nAdding order...");
-        List<Cart> cartProducts = new ArrayList<>();
-        // add products to order
-        cartProducts.add(new Cart("B001", 2, 0, 0));
+        // add product to cart
+        UserCollection.getAllUsers().get(0).addProductToCart(
+                new Cart("B001", 1, 0, 0));
         // add order
         UserCollection.getAllUsers().get(0).addOrder(
-                new Order(
-                        "123, ABC Street, XYZ City, 12345",
-                        "123, ABC Street, XYZ City, 12345",
-                        12,
-                        OrderStatusEnum.ORDERED,
-                        cartProducts));
+                "123, ABC Street, XYZ City, 12345",
+                "123, ABC Street, XYZ City, 12345",
+                12);
         // show the orders of the user
         for (Order order : UserCollection.getAllUsers().get(0).getOrders()) {
             System.out.println("Order ID: " + order.getOrderID());

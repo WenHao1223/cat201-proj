@@ -43,9 +43,8 @@ public class User {
 
     // used during registration
     public User(String username, String email, String password,
-        String nationality, String firstName, String lastName,
-        String phoneNo, short gender, String dob, Boolean agreeToTerms
-    ) {
+            String nationality, String firstName, String lastName,
+            String phoneNo, short gender, String dob, Boolean agreeToTerms) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -70,8 +69,7 @@ public class User {
             List<String> shippingAddresses, List<String> billingAddresses,
             List<Payment> paymentDetails,
             List<Cart> carts,
-            List<Order> orders
-            ) {
+            List<Order> orders) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -180,7 +178,8 @@ public class User {
             return;
         }
         // check if quantity is available
-        if (Inventory.getProduct(newCart.getProductID()).getQuantities().get(newCart.getSizeIndex()).get(newCart.getColorIndex()) == 0) {
+        if (Inventory.getProduct(newCart.getProductID()).getQuantities().get(newCart.getSizeIndex())
+                .get(newCart.getColorIndex()) == 0) {
             System.err.println("Quantity not available");
             return;
         }
@@ -191,7 +190,8 @@ public class User {
     // remove product from cart
     public void removeProductFromCart(String productID, int sizeIndex, int colorIndex) {
         for (Cart cart : this.carts) {
-            if (cart.getProductID().equals(productID) && cart.getSizeIndex() == sizeIndex && cart.getColorIndex() == colorIndex) {
+            if (cart.getProductID().equals(productID) && cart.getSizeIndex() == sizeIndex
+                    && cart.getColorIndex() == colorIndex) {
                 this.carts.remove(cart);
                 System.out.println("Product removed from cart successfully");
                 return;
@@ -204,7 +204,8 @@ public class User {
     // update product quantity in cart
     public void updateProductQuantityInCart(String productID, int sizeIndex, int colorIndex, int newQuantity) {
         for (Cart cart : this.carts) {
-            if (cart.getProductID().equals(productID) && cart.getSizeIndex() == sizeIndex && cart.getColorIndex() == colorIndex) {
+            if (cart.getProductID().equals(productID) && cart.getSizeIndex() == sizeIndex
+                    && cart.getColorIndex() == colorIndex) {
                 cart.setQuantity(newQuantity);
                 System.out.println("Product quantity updated successfully");
                 return;
@@ -215,7 +216,13 @@ public class User {
     }
 
     // add order
-    public void addOrder(Order newOrder) {
+    public void addOrder(String shippingAddress, String billingAddress, int paymentID) {
+        Order newOrder = new Order(
+                shippingAddress,
+                billingAddress,
+                paymentID,
+                OrderStatusEnum.ORDERED,
+                this.carts);
         this.orders.add(newOrder);
         System.out.println("Order added successfully");
     }
@@ -292,7 +299,7 @@ public class User {
     public List<String> getBillingAddresses() {
         return this.billingAddresses;
     }
-    
+
     // get payment details
     public List<Payment> getPaymentDetails() {
         return this.paymentDetails;
