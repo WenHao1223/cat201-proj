@@ -112,4 +112,9 @@ Can do a save button in Cart page
 ## Payment
 ### Add cart items to order
 - parse userID (from sys), shippingAddress, billingAddress, paymentID
-- get time, cartProducts
+- return true if items are added to order
+- return false if user is not found; incorrect format; index out of range; shipping / billing address not found; payment id not found; session expired; server disconnected
+### Cancel order
+- parse userID (from sys), orderID
+- return true if order is cancelled
+- return false if user is not found; order is not found; session expired; server disconnected
