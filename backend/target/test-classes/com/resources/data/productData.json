@@ -1,216 +1,201 @@
 [
     {
-        "productID": "K001",
-        "name": "Chef Knife",
-        "description": "High-quality stainless steel chef knife",
-        "price": 29.99,
-        "category": "Knives",
-        "brand": "BrandA",
+        "productID": "B001",
+        "name": "KitchenAid ® Go ™ Cordless Hand Blender with Battery",
+        "description": "A black cordless immersion blender allows you to easily puree and blend anywhere. The powerful rechargeable lithium ion battery delivers optimal runtime, performance and portability for up to 30 minutes of blending. The clever pan guard protects cookware from the spinning stainless steel blades, and the blending arm twists off for easy clean up in the dishwasher. Dishwasher-safe for easy cleanup, the lidded blender jar stores your concoctions in the refrigerator or lets you take them to go.",
+        "price": 69.99,
+        "category": "Blender",
+        "brand": "Kitchen Aid",
         "sizes": [
-            "8 inch",
-            "10 inch"
+            "15 inch"
         ],
         "colors": [
-            "Silver",
             "Black"
         ],
         "quantities": [
             [
-                20,
-                10
-            ],
-            [
-                10,
-                10
-            ]
-        ]
-    },
-    {
-        "productID": "B001",
-        "name": "Cutting Board",
-        "description": "Durable bamboo cutting board",
-        "price": 19.99,
-        "category": "Boards",
-        "brand": "BrandB",
-        "sizes": [
-            "15x10 inch",
-            "18x12 inch"
-        ],
-        "colors": [
-            "Natural"
-        ],
-        "quantities": [
-            [
-                60
-            ],
-            [
-                40
-            ]
-        ]
-    },
-    {
-        "productID": "U001",
-        "name": "Spatula",
-        "description": "Heat-resistant silicone spatula",
-        "price": 9.99,
-        "category": "Utensils",
-        "brand": "BrandC",
-        "sizes": [
-            "12 inch"
-        ],
-        "colors": [
-            "Red",
-            "Blue"
-        ],
-        "quantities": [
-            [
-                100,
-                100
-            ]
-        ]
-    },
-    {
-        "productID": "U002",
-        "name": "Whisk",
-        "description": "Stainless steel balloon whisk",
-        "price": 7.99,
-        "category": "Utensils",
-        "brand": "BrandD",
-        "sizes": [
-            "10 inch",
-            "12 inch"
-        ],
-        "colors": [
-            "Silver"
-        ],
-        "quantities": [
-            [
-                70
-            ],
-            [
-                80
-            ]
-        ]
-    },
-    {
-        "productID": "M001",
-        "name": "Measuring Cups",
-        "description": "Set of 5 stainless steel measuring cups",
-        "price": 14.99,
-        "category": "Measuring Tools",
-        "brand": "BrandE",
-        "sizes": [
-            "Various"
-        ],
-        "colors": [
-            "Silver"
-        ],
-        "quantities": [
-            [
-                75
-            ]
-        ]
-    },
-    {
-        "productID": "U003",
-        "name": "Peeler",
-        "description": "Ergonomic vegetable peeler",
-        "price": 5.99,
-        "category": "Utensils",
-        "brand": "BrandF",
-        "sizes": [
-            "6 inch"
-        ],
-        "colors": [
-            "Black",
-            "Green"
-        ],
-        "quantities": [
-            [
-                60,
-                60
-            ]
-        ]
-    },
-    {
-        "productID": "U004",
-        "name": "Tongs",
-        "description": "Stainless steel kitchen tongs",
-        "price": 12.99,
-        "category": "Utensils",
-        "brand": "BrandG",
-        "sizes": [
-            "9 inch",
-            "12 inch"
-        ],
-        "colors": [
-            "Silver"
-        ],
-        "quantities": [
-            [
-                40
-            ],
-            [
-                40
-            ]
-        ]
-    },
-    {
-        "productID": "U005",
-        "name": "Grater",
-        "description": "Multi-purpose box grater",
-        "price": 11.99,
-        "category": "Utensils",
-        "brand": "BrandH",
-        "sizes": [
-            "9 inch"
-        ],
-        "colors": [
-            "Silver"
-        ],
-        "quantities": [
-            [
-                90
+                20
             ]
         ]
     },
     {
         "productID": "B002",
-        "name": "Rolling Pin",
-        "description": "Non-stick rolling pin",
-        "price": 13.99,
-        "category": "Baking Tools",
-        "brand": "BrandI",
-        "sizes": [
-            "17 inch"
-        ],
-        "colors": [
-            "Wood"
-        ],
-        "quantities": [
-            [
-                60
-            ]
-        ]
-    },
-    {
-        "productID": "U006",
-        "name": "Ladle",
-        "description": "Heat-resistant soup ladle",
-        "price": 8.99,
-        "category": "Utensils",
-        "brand": "BrandJ",
+        "name": "KitchenAid ® Go ™ Cordless Personal Blender 16-Oz",
+        "description": "A black personal blender whips up smoothies, protein shakes, sauces and frozen cocktails with one-touch operation. The powerful rechargeable lithium ion battery delivers optimal runtime, performance and portability. Featuring a blade specially designed to handle frozen ingredients with ease, the cordless blender includes a dishwasher-safe blending jar with travel lid so you can take your custom drinks on the go",
+        "price": 89.99,
+        "category": "Blender",
+        "brand": "Kitchen Aid",
         "sizes": [
             "12 inch"
         ],
         "colors": [
-            "Black",
-            "Red"
+            "Black"
         ],
         "quantities": [
             [
-                55,
-                55
+                30
+            ]
+        ]
+    },
+    {
+        "productID": "B003",
+        "name": "KitchenAid ® Steel Blender",
+        "description": "Equipped with a powerful motor and uniquely asymmetrical stainless steel blade, this blender gets perfectly smooth results out of even the toughest ingredients. Intelligent motor control senses the contents of the pitcher, maintaining the ideal speed to power through them effectively. The ingenious Soft Start feature prevents splatters by starting the motor gently, pulling ingredients into the blade and gradually increasing speed to the desired setting. Three presets crush ice, mix smoothies and blend festive frozen drinks.",
+        "price": 129.99,
+        "category": "Blender",
+        "brand": "Kitchen Aid",
+        "sizes": [
+            "15.8 inch"
+        ],
+        "colors": [
+            "Black",
+            "Steel Blue"
+        ],
+        "quantities": [
+            [
+                35,
+                35
+            ]
+        ]
+    },
+    {
+        "productID": "B004",
+        "name": "KitchenAid ® K150 Matte Black Blender with 2 Personal Blender Jars",
+        "description": "Equipped with a uniquely asymmetrical stainless steel blade and powerful motor, this modern matte black blender crushes ice in less than 10 seconds and gets impeccably smooth results out of even the toughest ingredients. The ingenious Soft Start feature prevents splatters by starting the motor gently, pulling ingredients into the blade and gradually increasing speed to the desired setting. Intelligent motor control senses the pitcher's contents, maintaining the ideal speed to power through them effectively. Two lidded personal blender jars store sauces in the refrigerator and take smoothies on the go.",
+        "price": 199.99,
+        "category": "Blender",
+        "brand": "Kitchen Aid",
+        "sizes": [
+            "15 inch"
+        ],
+        "colors": [
+            "Black"
+        ],
+        "quantities": [
+            [
+                15
+            ]
+        ]
+    },
+    {
+        "productID": "PM001",
+        "name": "KitchenAid ® 3.5-Cup Food Chopper",
+        "description": "Compact and convenient for everyday use, this two-speed food chopper in chic matte black chops and purees with one-touch operation. With a three-cup capacity and wet-ingredient opening on the lid, it's easy to whip up cheese dips, hummus, salsa and lots more.",
+        "price": 99.99,
+        "category": "Food Processor and Mixer",
+        "brand": "Kitchen Aid",
+        "sizes": [
+            "10 inch"
+        ],
+        "colors": [
+            "Matte Black",
+            "Metallic Chrome"
+        ],
+        "quantities": [
+            [
+                20,
+                15
+            ]
+        ]
+    },
+    {
+        "productID": "PM002",
+        "name": "KitchenAid ® 5 Cup Food Chopper",
+        "description": "Compact and convenient for everyday use, this two-speed food chopper in chic matte black chops and purees with one-touch operation. With a three-cup capacity and wet-ingredient opening on the lid, it's easy to whip up cheese dips, hummus, salsa and lots more.",
+        "price": 149.99,
+        "category": "Food Processor and Mixer",
+        "brand": "Kitchen Aid",
+        "sizes": [
+            "10 inch"
+        ],
+        "colors": [
+            "Matte Black"
+        ],
+        "quantities": [
+            [
+                15
+            ]
+        ]
+    },
+    {
+        "productID": "PM003",
+        "name": "KitchenAid ® 7 Cup Food Chopper",
+        "description": "Compact and convenient for everyday use, this two-speed food chopper in chic matte black chops and purees with one-touch operation. With a seven-cup capacity and wet-ingredient opening on the lid, it's easy to whip up cheese dips, hummus, salsa and lots more.",
+        "price": 199.99,
+        "category": "Food Processor and Mixer",
+        "brand": "Kitchen Aid",
+        "sizes": [
+            "15 inch"
+        ],
+        "colors": [
+            "Black",
+            "Empire Red"
+        ],
+        "quantities": [
+            [
+                10,
+                15
+            ]
+        ]
+    },
+    {
+        "productID": "PM004",
+        "name": "KitchenAid Go ™ Cordless 5-Cup Food Chopper with Battery",
+        "description": "Compact and convenient for everyday use, this black food processor chops and purees with one-touch operation. Designed with a powerful rechargeable lithium ion battery, the two-speed cordless food chopper delivers optimal runtime, performance and portability. The stainless steel multipurpose blade chops garlic, mixes dressings and purees beans for perfectly creamy dips, while the whisk accessory lets you whip, beat and stir. The blade and whisk store neatly inside the five-cup work bowl for space-saving storage.",
+        "price": 219.99,
+        "category": "Food Processor and Mixer",
+        "brand": "Kitchen Aid",
+        "sizes": [
+            "10.5 inch"
+        ],
+        "colors": [
+            "Black"
+        ],
+        "quantities": [
+            [
+                10
+            ]
+        ]
+    },
+    {
+        "productID": "PM005",
+        "name": "KitchenAid ® 7-Speed Hand Mixer",
+        "description": "From the stand mixer mavens at KitchenAid, this digital hand mixer features a durable and quiet DC motor, seven speeds for versatility and control, and soft start feature for delicate ingredients. Enduring, stylish design features a sleek silver finish and comfort-grip handle. Integrated sensor adjusts to the resistance of your mix for smooth, consistent results. Includes two stainless steel Turbo Beater II accessories and pro whisk. Swivel cord locks out of the way to either side.",
+        "price": 79.99,
+        "category": "Food Processor and Mixer",
+        "brand": "Kitchen Aid",
+        "sizes": [
+            "6 inch"
+        ],
+        "colors": [
+            "Silver"
+        ],
+        "quantities": [
+            [
+                15
+            ]
+        ]
+    },
+    {
+        "productID": "PM006",
+        "name": "KitchenAid® Artisan® Series 5-Quart Tilt-Head Stand Mixer.",
+        "description": "A favorite of home and professional chefs since 1919. From mixing cake batter and whipping cream to kneading bread dough and shredding chicken, you'll find endless uses for this heavy-duty mixer that's built to last. The Artisan Series tilt-head stand mixer features ten-speed control with settings from very slow stirring to high-speed beating. Its five-quart stainless bowl with ergonomic handle accommodates large batches of your favorite recipes, and the tilting head and easy-install pouring shield facilitate easy addition of ingredients",
+        "price": 249.99,
+        "category": "Food Processor and Mixer",
+        "brand": "Kitchen Aid",
+        "sizes": [
+            "14 inch"
+        ],
+        "colors": [
+            "Empire Red",
+            "Matte Black",
+            "Matte Blue"
+        ],
+        "quantities": [
+            [
+                25,
+                5,
+                10
             ]
         ]
     }
