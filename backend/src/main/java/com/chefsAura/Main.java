@@ -6,17 +6,15 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.chefsAura.models.Inventory;
-import com.chefsAura.models.Product;
+import com.chefsAura.enums.OrderStatusEnum;
+import com.chefsAura.enums.PaymentMethodEnum;
 import com.chefsAura.models.Cart;
-import com.chefsAura.models.Payment;
+import com.chefsAura.models.Inventory;
 import com.chefsAura.models.Order;
+import com.chefsAura.models.Payment;
+import com.chefsAura.models.Product;
 import com.chefsAura.models.User;
 import com.chefsAura.models.UserCollection;
-
-import com.chefsAura.enums.PaymentMethodEnum;
-import com.chefsAura.enums.OrderStatusEnum;
-
 import com.chefsAura.utils.ReadJson;
 
 public class Main {
@@ -180,7 +178,7 @@ public class Main {
             System.out.println("Payment ID: " + order.getPaymentID());
             System.out.println("Order Date: " + order.getOrderDate());
             System.out.println("Order Status: " + order.getOrderStatus());
-            System.out.println("Products:");
+            System.out.println("Cart Products:");
             for (Cart cartProduct : order.getCartProducts()) {
                 Product product = Inventory.getProduct(cartProduct.getProductID());
                 String color = product.getColors().get(cartProduct.getColorIndex());
@@ -202,7 +200,7 @@ public class Main {
             System.out.println("Payment ID: " + order.getPaymentID());
             System.out.println("Order Date: " + order.getOrderDate());
             System.out.println("Order Status: " + order.getOrderStatus());
-            System.out.println("Products:");
+            System.out.println("Cart Products:");
             for (Cart cartProduct : order.getCartProducts()) {
                 Product product = Inventory.getProduct(cartProduct.getProductID());
                 String color = product.getColors().get(cartProduct.getColorIndex());
@@ -319,9 +317,9 @@ public class Main {
                 JSONObject orderObject = ordersArray.getJSONObject(j);
 
                 List<Cart> cartProducts = new ArrayList<>();
-                JSONArray productsArray = orderObject.getJSONArray("products");
-                for (int k = 0; k < productsArray.length(); k++) {
-                    JSONObject productObject = productsArray.getJSONObject(k);
+                JSONArray cartProductsArray = orderObject.getJSONArray("cartProducts");
+                for (int k = 0; k < cartProductsArray.length(); k++) {
+                    JSONObject productObject = cartProductsArray.getJSONObject(k);
 
                     Cart cartProduct = new Cart(
                             productObject.getString("productID"),
@@ -407,7 +405,7 @@ public class Main {
                 System.out.println("Payment ID: " + order.getPaymentID());
                 System.out.println("Order Date: " + order.getOrderDate());
                 System.out.println("Order Status: " + order.getOrderStatus());
-                System.out.println("Products:");
+                System.out.println("Cart Products:");
 
                 for (Cart cartProduct : order.getCartProducts()) {
                     Product product = Inventory.getProduct(cartProduct.getProductID());
