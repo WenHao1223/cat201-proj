@@ -1,4 +1,4 @@
-package com.chefsAura.utils;
+package com.chefsAura.utils.enums;
 
 import com.chefsAura.enums.OrderStatusEnum;
 import com.google.gson.JsonDeserializationContext;

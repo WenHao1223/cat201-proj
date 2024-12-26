@@ -1,4 +1,4 @@
-package com.chefsAura.utils;
+package com.chefsAura.utils.enums;
 
 import com.chefsAura.enums.PaymentMethodEnum;
 import com.google.gson.JsonElement;
