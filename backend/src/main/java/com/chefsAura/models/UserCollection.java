@@ -13,7 +13,8 @@ public class UserCollection {
     }
 
     // empty constructor
-    public UserCollection() {}
+    public UserCollection() {
+    }
 
     // add user from file
     public static void addUser(User user) {
@@ -32,15 +33,29 @@ public class UserCollection {
     }
 
     // register user
-    public static void registerUser(String username, String email, String password,
+    public static String registerUser(String username, String email, String password,
             String nationality, String firstName, String lastName,
             String phoneNo, short gender, String dob, Boolean agreeToTerms) {
-        User user = new User(username, email, password,
-                nationality, firstName, lastName, phoneNo,
-                gender, dob, agreeToTerms);
-        users.add(user);
-        currentUser = user;
-        System.out.println(currentUser.getFirstName() + " registered successfully");
+        try {
+            for (User user : users) {
+                if (user.getEmail().equals(email)) {
+                    return ("User with email " + email + " already exists");
+                }
+                if (user.getUsername().equals(username)) {
+                    return ("User with username " + username + " already exists");
+                }
+            }
+            User user = new User(username, email, password,
+                    nationality, firstName, lastName, phoneNo,
+                    gender, dob, agreeToTerms);
+            users.add(user);
+            currentUser = user;
+            System.out.println(currentUser.getFirstName() + " registered successfully");
+            return "Success";
+        } catch (Exception e) {
+            System.err.println("Error registering user: " + e.getMessage());
+            return "Error registering user: " + e.getMessage();
+        }
     }
 
     // login user
