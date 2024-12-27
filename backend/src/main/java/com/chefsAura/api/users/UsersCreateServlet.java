@@ -1,4 +1,4 @@
-package com.chefsAura.api.users.create;
+package com.chefsAura.api.users;
 
 import java.io.BufferedReader;
 import java.io.IOException;
