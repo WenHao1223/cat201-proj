@@ -4,8 +4,6 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 
-import com.chefsAura.Main;
-
 import java.io.IOException;
 
 @WebFilter("/*")
