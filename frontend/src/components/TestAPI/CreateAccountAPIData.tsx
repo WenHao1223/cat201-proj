@@ -1,5 +1,5 @@
 import React from "react";
-import { User } from "@interfaces/API/UserInterface";
+import { UserInterface } from "@interfaces/API/UserInterface";
 
 interface CreateAccountAPIDataProps {
     createAccountUsername: string;

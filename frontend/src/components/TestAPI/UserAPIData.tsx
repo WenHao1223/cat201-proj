@@ -1,8 +1,8 @@
 import React from "react";
-import { User } from "@interfaces/API/UserInterface";
+import { UserInterface } from "@interfaces/API/UserInterface";
 
 interface UserAPIDataProps {
-    users: User[];
+    users: UserInterface[];
 }
 
 const UserAPIData: React.FC<UserAPIDataProps> = ({ users }) => {

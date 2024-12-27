@@ -72,4 +72,14 @@ public class UserCollection {
         System.err.println("Invalid email or password");
         return false;
     }
+
+    // get user by email
+    public static User getUserByEmail(String email) {
+        for (User user : users) {
+            if (user.getEmail().equals(email)) {
+                return user;
+            }
+        }
+        return null;
+    }
 }

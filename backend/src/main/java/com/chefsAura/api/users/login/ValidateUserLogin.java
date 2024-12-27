@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.chefsAura.models.User;
 import com.chefsAura.models.UserCollection;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -50,6 +51,20 @@ public class ValidateUserLogin extends HttpServlet {
         // Create JSON response
         JsonObject jsonResponse = new JsonObject();
         jsonResponse.addProperty("loginStatus", loginStatus);
+        
+        if (loginStatus) {
+            User currentUser = UserCollection.getUserByEmail(email);
+            JsonObject userJson = new JsonObject();
+            userJson.addProperty("username", currentUser.getUsername());
+            userJson.addProperty("email", currentUser.getEmail());
+            userJson.addProperty("nationality", currentUser.getNationality());
+            userJson.addProperty("firstName", currentUser.getFirstName());
+            userJson.addProperty("lastName", currentUser.getLastName());
+            userJson.addProperty("phoneNo", currentUser.getPhoneNo());
+            userJson.addProperty("gender", currentUser.getGender());
+            userJson.addProperty("dob", currentUser.getDob());
+            jsonResponse.addProperty("user", userJson.toString());
+        }
 
         // Write the response
         PrintWriter out = response.getWriter();

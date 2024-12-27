@@ -1,4 +1,4 @@
-export interface User {
+export interface UserInterface {
     username: string;
     email: string;
     password: string;
@@ -11,12 +11,23 @@ export interface User {
     agreeToTerms: boolean;
     shippingAddresses?: string[];
     billingAddresses?: string[];
-    paymentDetails?: Payment[];
-    carts?: Cart[];
-    orders?: Order[];
+    paymentDetails?: PaymentInterface[];
+    carts?: CartInterface[];
+    orders?: OrderInterface[];
 }
 
-export interface Payment {
+export interface UserGeneralDetailsInterface {
+    username: string;
+    email: string;
+    nationality: string;
+    firstName: string;
+    lastName: string;
+    phoneNo: string;
+    gender: number;
+    dob: string;
+}
+
+export interface PaymentInterface {
     paymentID: number;
     paymentMethod: string;
     cardNumber: string;
@@ -24,19 +35,19 @@ export interface Payment {
     cvv: string;
 }
 
-export interface Cart {
+export interface CartInterface {
     productID: string;
     quantity: number;
     sizeIndex: number;
     colorIndex: number;
 }
 
-export interface Order {
+export interface OrderInterface {
     orderID: number;
     shippingAddress: string;
     billingAddress: string;
     paymentID: number;
     orderDate: string;
     orderStatus: string;
-    cartProducts?: Cart[];
+    cartProducts?: CartInterface[];
 }

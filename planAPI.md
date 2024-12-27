@@ -4,7 +4,8 @@
 ### Validate users' email and password - validateUserLogin
 after clicking login button
 - parse email, password
-- return true if successfully validated info; 
+- return true if successfully validated info;
+- return maps {username, email, nationality, firstName, lastName, phoneNo, gender, dob}
 - return err if wrong credentials; server disconnected
 - frontend needs to handle cases where email or password is missing or malformed
 - rate-limiting to prevent brute-force attacks
@@ -19,10 +20,6 @@ after clicking login button
 - hash password before storing
 
 ## Profile
-### Fetch user's account
-- parse email (from sys)
-- return maps {username, email, nationality, firstName, lastName, phoneNo, gender, dob}
-- return err if user is not found; session expired; server disconnected
 ### View all shipping addresses
 after user clicking the Shipping Address option
 - parse email(from sys)

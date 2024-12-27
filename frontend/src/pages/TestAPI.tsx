@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 
-import { User } from "@interfaces/API/UserInterface";
+import {
+    UserInterface,
+    UserGeneralDetailsInterface,
+} from "@interfaces/API/UserInterface";
 import { Product } from "@interfaces/API/ProductInterface";
 
 import UserAPIData from "@components/TestAPI/UserAPIData";
@@ -12,7 +15,7 @@ const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     // Fetch user data
-    const [users, setUsers] = useState<User[]>([]);
+    const [users, setUsers] = useState<UserInterface[]>([]);
     const [showUsers, setShowUsers] = useState<boolean>(false);
 
     // Fetch product data
@@ -25,14 +28,17 @@ const TestAPI: React.FC = () => {
     const [userLoginStatus, setUserLoginStatus] = useState<boolean>(false);
     const [userEmail, setUserEmail] = useState<string>("jdoe@example.com");
     const [userPassword, setUserPassword] = useState<string>("password123");
+    const [currentUserGeneralDetails, setCurrentUserGeneralDetails] =
+        useState<UserGeneralDetailsInterface | null>(null);
 
     // Create account
     const [showCreateAccount, setShowCreateAccount] = useState<boolean>(false);
     const [createAccount, setCreateAccount] = useState<boolean>(false);
     const [createAccountUsername, setCreateAccountUsername] =
         useState<string>("jdoe");
-    const [createAccountEmail, setCreateAccountEmail] =
-        useState<string>("testRegistering@example.com");
+    const [createAccountEmail, setCreateAccountEmail] = useState<string>(
+        "testRegistering@example.com"
+    );
     const [createAccountPassword, setCreateAccountPassword] =
         useState<string>("password123");
     const [createAccountNationality, setCreateAccountNationality] =
@@ -49,17 +55,25 @@ const TestAPI: React.FC = () => {
     const [createAccountAgreeToTerms, setCreateAccountAgreeToTerms] =
         useState<boolean>(true);
 
+    // Fetch user general details
+    const [showUserGeneralDetails, setShowUserGeneralDetails] =
+        useState<boolean>(false);
+    const [userGeneralDetails, setUserGeneralDetails] = useState(
+        {} as UserGeneralDetailsInterface
+    );
+
     const setToDefault = () => {
         setShowUsers(false);
         setShowProducts(false);
         setShowUserLoginStatus(false);
         setShowCreateAccount(false);
+        setShowUserGeneralDetails(false);
     };
 
     const fetchUserData = async () => {
         try {
             const response = await fetch("http://localhost:9090/api/users");
-            const result: User[] = await response.json();
+            const result: UserInterface[] = await response.json();
             setUsers(result);
 
             setToDefault();
@@ -107,6 +121,7 @@ const TestAPI: React.FC = () => {
             if (response.ok) {
                 result = await response.json();
                 if (result.loginStatus) {
+                    setCurrentUserGeneralDetails(JSON.parse(result.user));
                     setUserLoginStatus(true);
                     setError(null);
                 } else {
@@ -162,7 +177,10 @@ const TestAPI: React.FC = () => {
                     setCreateAccount(true);
                     setError(null);
                 } else {
-                    setError("\n Error creating account: " + result.registerStatusMessage);
+                    setError(
+                        "\n Error creating account: " +
+                            result.registerStatusMessage
+                    );
                 }
             } else {
                 console.error(
@@ -200,6 +218,7 @@ const TestAPI: React.FC = () => {
                         userEmail={userEmail}
                         userPassword={userPassword}
                         userLoginStatus={userLoginStatus}
+                        currentUserGeneralDetails={currentUserGeneralDetails}
                     />
                 )}
                 {showCreateAccount && (
