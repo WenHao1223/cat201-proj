@@ -9,18 +9,32 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.chefsAura.models.MyObject;
+import com.chefsAura.models.UserCollection;
 import com.google.gson.Gson;
 
-@WebServlet("/api/data")
+@WebServlet("/api/test")
 public class DataServlet extends HttpServlet {
-    private MyObject myObject;
+    // private MyObject myObject;
 
     @Override
     public void init() throws ServletException {
         super.init();
         // Initialize MyObject
-        myObject = new MyObject("Example Name", 123);
+        // myObject = new MyObject("Example Name", 123);
+
+        Main.loadInventory();
+        Main.loadUserCollection();
+
+        // test register user
+        System.out.println("\nRegistering user...");
+        UserCollection.registerUser("alice123", "alice@example.com", "password",
+                "Malaysia", "Alice", "Doe", "0123456789",
+                (short) 1, "2000-01-01", true);
+
+        // test login user
+        System.out.println("\nLogging in user...");
+        UserCollection.loginUser("jdoe@example.com", "password");
+        UserCollection.loginUser("jdoe@example.com", "password123");
 
         System.out.println("Servlet initialized.");
     }
@@ -33,13 +47,19 @@ public class DataServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
+        // Retrieve parameters from the request
+        String paramName = request.getParameter("name");
+        String paramValue = request.getParameter("value");
+        System.out.println("GET request received with parameters: " + paramName + " = " + paramValue);
+
         // Example response: JSON data
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
         // Convert object to JSON using Gson
         Gson gson = new Gson();
-        String jsonResponse = gson.toJson(myObject);
+        // String jsonResponse = gson.toJson(myObject);
+        String jsonResponse = gson.toJson(UserCollection.getAllUsers());
 
         // Write the response
         PrintWriter out = response.getWriter();

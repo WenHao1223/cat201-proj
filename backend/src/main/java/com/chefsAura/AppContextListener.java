@@ -12,7 +12,6 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 import com.chefsAura.models.Inventory;
-// import com.chefsAura.models.MyObject;
 import com.chefsAura.models.Product;
 import com.chefsAura.models.User;
 import com.chefsAura.models.UserCollection;
@@ -32,14 +31,8 @@ import java.io.Reader;
 
 @WebListener
 public class AppContextListener implements ServletContextListener {
-    private static final String USER_DATA_FILE = "src/main/resources/data/userData.json"; // Adjust the path as
-                                                                                          // necessary
-    private static final String PRODUCT_DATA_FILE = "src/main/resources/data/productData.json"; // Adjust the path as
-                                                                                                // necessary
-    // private static final String MY_OBJECT_DATA_FILE =
-    // "src/main/resources/data/myObject.json"; // Path to store MyObject data
-
-    // private MyObject myObject;
+    private static final String USER_DATA_FILE = "src/main/resources/data/userData.json";
+    private static final String PRODUCT_DATA_FILE = "src/main/resources/data/productData.json";
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -103,14 +96,5 @@ public class AppContextListener implements ServletContextListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // Save MyObject data to JSON file
-        // try (Writer writer = new FileWriter(MY_OBJECT_DATA_FILE)) {
-        // Gson gson = new Gson();
-        // gson.toJson(myObject, writer);
-        // System.out.println("MyObject data saved.");
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
     }
 }
