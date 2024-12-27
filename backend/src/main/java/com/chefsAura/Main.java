@@ -355,75 +355,12 @@ public class Main {
                     carts,
                     orders);
             UserCollection.addUser(newUser);
-
-            // System.out.println("User " + newUser.getFirstName() + " added successfully");
-            // System.out.println("----------------");
-
-            // print the shipping address of the new user
-            for (String address : newUser.getShippingAddresses()) {
-                System.out.println("Shipping address: " + address);
-            }
-
-            // print the billing address of the new user
-            for (String address : newUser.getBillingAddresses()) {
-                System.out.println("Billing address: " + address);
-            }
-
-            // get the payment details
-            newUser.getPaymentDetails().forEach(
-                    payment -> {
-                        System.out.println("Payment ID: " + payment.getPaymentID());
-                        String paymentMethod = payment.getPaymentMethod().toString();
-                        System.out.println("Payment Method: " + PaymentMethodEnum.fromString(paymentMethod));
-                        System.out.println("Card Number: " + payment.getCardNumber());
-                        if (PaymentMethodEnum.fromString(paymentMethod) == PaymentMethodEnum.DEBIT_CARD ||
-                                PaymentMethodEnum.fromString(paymentMethod) == PaymentMethodEnum.CREDIT_CARD) {
-                            System.out.println("Expiry Date: " + payment.getExpiryDate());
-                        }
-                    });
-
-            // get the carts
-            for (Cart cart : newUser.getCarts()) {
-                Product product = Inventory.getProduct(cart.getProductID());
-                String size = product.getSizes().get(cart.getSizeIndex());
-                String color = product.getColors().get(cart.getColorIndex());
-
-                System.out.println(product.getBrand() + ", " + color + ", " + size + ", " + product.getName() + " - RM"
-                        + product.getPrice() + " x" + cart.getQuantity());
-            }
-
-            System.out.println("");
-
-            // get the orders
-            for (Order order : newUser.getOrders()) {
-                System.out.println("Order ID: " + order.getOrderID());
-                System.out.println("Shipping Address: " + order.getShippingAddress());
-                System.out.println("Billing Address: " + order.getBillingAddress());
-                System.out.println("Payment ID: " + order.getPaymentID());
-                System.out.println("Order Date: " + order.getOrderDate());
-                System.out.println("Order Status: " + order.getOrderStatus());
-                System.out.println("Cart Products:");
-
-                for (Cart cartProduct : order.getCartProducts()) {
-                    Product product = Inventory.getProduct(cartProduct.getProductID());
-                    String size = product.getSizes().get(cartProduct.getSizeIndex());
-                    String color = product.getColors().get(cartProduct.getColorIndex());
-
-                    System.out.println(
-                            product.getBrand() + ", " + color + ", " + size + ", " + product.getName() + " - RM"
-                                    + product.getPrice() + " x" + cartProduct.getQuantity());
-                }
-            }
-
-            System.out.println("----------------");
         }
 
         // set the largest payment ID
-        // System.out.println("Largest Payment ID: " + Payment.getlargestPaymentID());
         Payment.setlargestPaymentID(Payment.getlargestPaymentID() + 1);
 
         // set the largest order ID
-        // System.out.println("Largest Order ID: " + Order.getlargestOrderID());
         Order.setlargestOrderID(Order.getlargestOrderID() + 1);
 
         // System.out.println("User collection loaded successfully");

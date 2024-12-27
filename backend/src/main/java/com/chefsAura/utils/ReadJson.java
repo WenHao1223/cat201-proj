@@ -35,7 +35,7 @@ public class ReadJson {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(filePath + " loaded successfully");
+        // System.out.println(filePath + " loaded successfully");
         return jsonArray;
     }
 }
