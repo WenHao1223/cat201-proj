@@ -37,6 +37,8 @@ public class AppContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         System.out.println("Context initialized.");
+        Main.loadInventory();
+        Main.loadUserCollection();
 
         // Load user data from JSON file
         try (Reader reader = new FileReader(USER_DATA_FILE)) {
