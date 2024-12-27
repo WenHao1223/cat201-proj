@@ -1,6 +1,5 @@
 com\chefsAura\utils\ReadJson.class
 com\chefsAura\models\User.class
-com\chefsAura\DataServlet.class
 com\chefsAura\models\Order.class
 com\chefsAura\Main.class
 com\chefsAura\enums\PaymentMethodEnum.class

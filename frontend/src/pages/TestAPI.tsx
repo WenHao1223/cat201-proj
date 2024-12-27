@@ -67,7 +67,7 @@ const TestAPI: React.FC = () => {
     const fetchUserData = async () => {
         try {
             const response = await fetch(
-                "http://localhost:9090/api/test?name=NewName&value=456"
+                "http://localhost:9090/api/users"
             ); // Adjust URL as necessary
             const result: User[] = await response.json();
             setUsers(result);
