@@ -10,11 +10,12 @@ after clicking login button
 - rate-limiting to prevent brute-force attacks
 
 ## Register
-### Create account
-- parse username, email, password, nationality, firstName, lastname, phoneNo, dob, agreeToTerms
+### Create account - createAccount
+- parse username, email, password, nationality, firstName, lastname, phoneNo, gender, dob, agreeToTerms
 - return true if account is created
 - return err if server is disconnected; missing information; wrong format; existing username; existing email
-- frontendhand need to validate all fields for correct format and completeness
+- frontend needs to validate all fields for correct format and completeness
+- frontend needs to double confirm password
 - hash password before storing
 
 ## Profile
