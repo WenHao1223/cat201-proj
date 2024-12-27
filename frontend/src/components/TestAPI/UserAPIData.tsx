@@ -1,5 +1,5 @@
 import React from "react";
-import { User } from "../../interfaces/API/UserInterface";
+import { User } from "@interfaces/API/UserInterface";
 
 interface UserAPIDataProps {
     users: User[];

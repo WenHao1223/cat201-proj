@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import UserAPIData from "../components/TestAPI/UserAPIData";
-import ProductAPIData from "../components/TestAPI/ProductAPIData";
-import { User } from "../interfaces/API/UserInterface";
-import { Product } from "../interfaces/API/ProductInterface";
+import UserAPIData from "@components/TestAPI/UserAPIData";
+import ProductAPIData from "@components/TestAPI/ProductAPIData";
+import { User } from "@interfaces/API/UserInterface";
+import { Product } from "@interfaces/API/ProductInterface";
 
 const TestAPI: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);

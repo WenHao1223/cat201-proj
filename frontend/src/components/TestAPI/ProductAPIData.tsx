@@ -1,5 +1,5 @@
 import React from "react";
-import { Product } from "../../interfaces/API/ProductInterface";
+import { Product } from "@interfaces/API/ProductInterface";
 
 interface ProductAPIDataProps {
     products: Product[];
