@@ -526,5 +526,17 @@
     "gender": 1,
     "dob": "2000-01-01",
     "agreeToTerms": true
+  },
+  {
+    "username": "alice123",
+    "email": "alice@example.com",
+    "password": "password",
+    "nationality": "Malaysia",
+    "firstName": "Alice",
+    "lastName": "Doe",
+    "phoneNo": "0123456789",
+    "gender": 1,
+    "dob": "2000-01-01",
+    "agreeToTerms": true
   }
 ]
