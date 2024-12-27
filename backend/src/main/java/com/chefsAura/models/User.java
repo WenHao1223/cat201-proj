@@ -1,5 +1,6 @@
 package com.chefsAura.models;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.chefsAura.enums.OrderStatusEnum; // Add this import statement
 
@@ -34,11 +35,11 @@ public class User {
         gender = 0;
         dob = "";
         agreeToTerms = false;
-        shippingAddresses = null;
-        billingAddresses = null;
-        paymentDetails = null;
-        carts = null;
-        orders = null;
+        shippingAddresses = new ArrayList<>();
+        billingAddresses = new ArrayList<>();
+        paymentDetails = new ArrayList<>();
+        carts = new ArrayList<>();
+        orders = new ArrayList<>();
     }
 
     // used during registration
@@ -55,11 +56,11 @@ public class User {
         this.gender = gender;
         this.dob = dob;
         this.agreeToTerms = agreeToTerms;
-        shippingAddresses = null;
-        billingAddresses = null;
-        paymentDetails = null;
-        carts = null;
-        orders = null;
+        shippingAddresses = new ArrayList<>();
+        billingAddresses = new ArrayList<>();
+        paymentDetails = new ArrayList<>();
+        carts = new ArrayList<>();
+        orders = new ArrayList<>();
     }
 
     // used during first-time loading of users

@@ -39,9 +39,11 @@ public class UserCollection {
         try {
             for (User user : users) {
                 if (user.getEmail().equals(email)) {
+                    System.err.println("User with email " + email + " already exists");
                     return ("User with email " + email + " already exists");
                 }
                 if (user.getUsername().equals(username)) {
+                    System.err.println("User with username " + username + " already exists");
                     return ("User with username " + username + " already exists");
                 }
             }
