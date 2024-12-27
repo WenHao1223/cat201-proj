@@ -6,10 +6,10 @@ import {
 } from "@interfaces/API/UserInterface";
 import { Product } from "@interfaces/API/ProductInterface";
 
-import UserAPIData from "@components/TestAPI/UserAPIData";
-import ProductAPIData from "@components/TestAPI/ProductAPIData";
-import ValidateUserLoginAPIData from "@components/TestAPI/ValidateUserLoginAPIData";
-import CreateAccountAPIData from "@components/TestAPI/CreateAccountAPIData";
+import UsersServlet from "@components/TestAPI/UsersServlet";
+import ProductsServlet from "@components/TestAPI/ProductsServlet";
+import UsersLoginServlet from "@components/TestAPI/UsersLoginServlet";
+import UsersCreateServlet from "@components/TestAPI/UsersCreateServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -32,8 +32,9 @@ const TestAPI: React.FC = () => {
         useState<UserGeneralDetailsInterface | null>(null);
 
     // Create account
-    const [showCreateAccount, setShowCreateAccount] = useState<boolean>(false);
-    const [createAccount, setCreateAccount] = useState<boolean>(false);
+    const [showUsersCreateAccount, setShowUsersCreateAccount] =
+        useState<boolean>(false);
+    const [createAccountStatus, setCreateAccountStatus] = useState<boolean>(false);
     const [createAccountUsername, setCreateAccountUsername] =
         useState<string>("jdoe");
     const [createAccountEmail, setCreateAccountEmail] = useState<string>(
@@ -55,19 +56,11 @@ const TestAPI: React.FC = () => {
     const [createAccountAgreeToTerms, setCreateAccountAgreeToTerms] =
         useState<boolean>(true);
 
-    // Fetch user general details
-    const [showUserGeneralDetails, setShowUserGeneralDetails] =
-        useState<boolean>(false);
-    const [userGeneralDetails, setUserGeneralDetails] = useState(
-        {} as UserGeneralDetailsInterface
-    );
-
     const setToDefault = () => {
         setShowUsers(false);
         setShowProducts(false);
         setShowUserLoginStatus(false);
-        setShowCreateAccount(false);
-        setShowUserGeneralDetails(false);
+        setShowUsersCreateAccount(false);
     };
 
     const fetchUserData = async () => {
@@ -174,7 +167,7 @@ const TestAPI: React.FC = () => {
             if (response.ok) {
                 result = await response.json();
                 if (result.registerStatusMessage === "Success") {
-                    setCreateAccount(true);
+                    setCreateAccountStatus(true);
                     setError(null);
                 } else {
                     setError(
@@ -192,7 +185,7 @@ const TestAPI: React.FC = () => {
             }
 
             setToDefault();
-            setShowCreateAccount(true);
+            setShowUsersCreateAccount(true);
         } catch (err) {
             setError("\n Error creating account: " + (err as Error).message);
         }
@@ -209,31 +202,35 @@ const TestAPI: React.FC = () => {
             <button onClick={createUserAccount}>Create Account</button>
             <div>
                 <p style={{ color: "red" }}>{error}</p>
-                {showUsers && users.length > 0 && <UserAPIData users={users} />}
+                {showUsers && users.length > 0 && (
+                    <UsersServlet users={users} />
+                )}
                 {showProducts && products.length > 0 && (
-                    <ProductAPIData products={products} />
+                    <ProductsServlet products={products} />
                 )}
                 {showUserLoginStatus && (
-                    <ValidateUserLoginAPIData
+                    <UsersLoginServlet
                         userEmail={userEmail}
                         userPassword={userPassword}
                         userLoginStatus={userLoginStatus}
                         currentUserGeneralDetails={currentUserGeneralDetails}
                     />
                 )}
-                {showCreateAccount && (
-                    <CreateAccountAPIData
-                        createAccountUsername={createAccountUsername}
-                        createAccountEmail={createAccountEmail}
-                        createAccountPassword={createAccountPassword}
-                        createAccountNationality={createAccountNationality}
-                        createAccountFirstName={createAccountFirstName}
-                        createAccountLastName={createAccountLastName}
-                        createAccountPhoneNo={createAccountPhoneNo}
-                        createAccountGender={createAccountGender}
-                        createAccountDOB={createAccountDOB}
-                        createAccountAgreeToTerms={createAccountAgreeToTerms}
-                        createAccount={createAccount}
+                {showUsersCreateAccount && (
+                    <UsersCreateServlet
+                        username={createAccountUsername}
+                        email={createAccountEmail}
+                        password={createAccountPassword}
+                        nationality={createAccountNationality}
+                        firstName={createAccountFirstName}
+                        lastName={createAccountLastName}
+                        phoneNo={createAccountPhoneNo}
+                        gender={createAccountGender}
+                        dob={createAccountDOB}
+                        agreeToTerms={
+                            createAccountAgreeToTerms
+                        }
+                        createAccountStatus={createAccountStatus}
                     />
                 )}
             </div>
