@@ -1,7 +1,7 @@
 # API Plan
 
 ## Login
-### Validate users' email and password
+### Validate users' email and password - validateUserLogin
 after clicking login button
 - parse email, password
 - return true if successfully validated info; 
