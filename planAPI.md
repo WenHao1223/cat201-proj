@@ -67,6 +67,8 @@ username, nationality, firstName, lastName, phoneNo, gender, dob
 - return err msg if password is wrong, user not found
 - return err if session expired; server disconnected;
 ### Add new shipping address
+#### /api/users/shippingAddresses/add
+#### UsersShippingAddressesAddServlet.java
 - parse email (from sys), new shipping address
 - return true if shipping address is added
 - return err if session expired; server disconnected; user not found

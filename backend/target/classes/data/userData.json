@@ -12,7 +12,8 @@
     "agreeToTerms": true,
     "shippingAddresses": [
       "123 Main St, Kuala Lumpur",
-      "234 Elm St, Kuala Lumpur"
+      "234 Elm St, Kuala Lumpur",
+      "123, Test Street, Test City, Test State, Test Country, 12345"
     ],
     "billingAddresses": [
       "123 Main St, Kuala Lumpur"
