@@ -118,6 +118,8 @@ username, nationality, firstName, lastName, phoneNo, gender, dob
 
 ## Home
 ### View all products
+#### /api/products
+#### ProductsServlet.java
 - return list [maps {productID, name, desccripton, price, category, brand}]
 - return null if no product is found
 - return err if server disconnected
