@@ -85,6 +85,8 @@ username, nationality, firstName, lastName, phoneNo, gender, dob
 - return true if shipping address is removed
 - return err if session expired; server disconnected; user not found, index out of range
 ### Add new billing address
+#### /api/users/billingAddresses/add
+#### UsersBillingAddressesAddServlet.java
 - parse email (from sys), new billing address
 - return true if shipping address is added
 - return err if session expired; server disconnected; user not found
