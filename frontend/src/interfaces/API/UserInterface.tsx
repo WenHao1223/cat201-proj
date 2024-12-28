@@ -35,6 +35,12 @@ export interface PaymentInterface {
     cvv: string;
 }
 
+export interface PaymentGeneralInterface {
+    paymentID: number;
+    paymentMethod: string;
+    cardNumber: string;
+}
+
 export interface CartInterface {
     productID: string;
     quantity: number;

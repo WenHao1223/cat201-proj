@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import {
     UserInterface,
     UserGeneralDetailsInterface,
+    PaymentGeneralInterface,
 } from "@interfaces/API/UserInterface";
 import { Product } from "@interfaces/API/ProductInterface";
 
@@ -61,8 +62,17 @@ const TestAPI: React.FC = () => {
         useState<string[]>([]);
 
     // View all billing addresses of current user
-    const [showBillingAddresses, setShowBillingAddresses] = useState<boolean>(false);
-    const [currentUserBillingAddresses, setCurrentUserBillingAddresses] = useState<string[]>([]);
+    const [showBillingAddresses, setShowBillingAddresses] =
+        useState<boolean>(false);
+    const [currentUserBillingAddresses, setCurrentUserBillingAddresses] =
+        useState<string[]>([]);
+
+    // View all payment details of current user
+    const [showPaymentDetails, setShowPaymentDetails] =
+        useState<boolean>(false);
+    const [currentUserPaymentDetails, setCurrentUserPaymentDetails] = useState<
+        PaymentGeneralInterface[]
+    >([]);
 
     const setToDefault = () => {
         setShowUsers(false);
@@ -71,6 +81,7 @@ const TestAPI: React.FC = () => {
         setShowUsersCreateAccount(false);
         setShowShippingAddresses(false);
         setShowBillingAddresses(false);
+        setShowPaymentDetails(false);
     };
 
     const fetchUserData = async () => {
@@ -163,19 +174,6 @@ const TestAPI: React.FC = () => {
         setCreateAccountGender(1);
         setCreateAccountDOB("1990-01-01");
         setCreateAccountAgreeToTerms(true);
-        console.log(
-            "Creating account with details:",
-            createAccountUsername,
-            createAccountEmail,
-            createAccountPassword,
-            createAccountNationality,
-            createAccountFirstName,
-            createAccountLastName,
-            createAccountPhoneNo,
-            createAccountGender,
-            createAccountDOB,
-            createAccountAgreeToTerms
-        );
         try {
             const response = await fetch(
                 "http://localhost:9090/api/users/create",
@@ -289,8 +287,7 @@ const TestAPI: React.FC = () => {
                     response.statusText
                 );
                 setError(
-                    "\n Error viewing billing addresses: " +
-                        response.statusText
+                    "\n Error viewing billing addresses: " + response.statusText
                 );
             }
 
@@ -299,6 +296,48 @@ const TestAPI: React.FC = () => {
         } catch (err) {
             setError(
                 "\n Error viewing billing addresses: " + (err as Error).message
+            );
+        }
+    };
+
+    const viewCurrentUserPaymentDetails = async () => {
+        try {
+            const response = await fetch(
+                "http://localhost:9090/api/users/paymentDetails?email=" +
+                    userEmail
+            );
+            let result;
+            if (response.ok) {
+                result = await response.json();
+                console.log(result.paymentDetails);
+                if (result.status === "Success") {
+                    const paymentDetailsArray = result.paymentDetails.map((paymentDetail: string) =>
+                        JSON.parse(paymentDetail)
+                    );
+
+                    setCurrentUserPaymentDetails(paymentDetailsArray);
+                    setError(null);
+                } else {
+                    setError(
+                        "\n Error viewing payment details: " + result.message
+                    );
+                }
+            } else {
+                console.error(
+                    "HTTP error",
+                    response.status,
+                    response.statusText
+                );
+                setError(
+                    "\n Error viewing payment details: " + response.statusText
+                );
+            }
+
+            setToDefault();
+            setShowPaymentDetails(true);
+        } catch (err) {
+            setError(
+                "\n Error viewing payment details 3: " + (err as Error).message
             );
         }
     };
@@ -321,6 +360,9 @@ const TestAPI: React.FC = () => {
             </button>
             <button onClick={viewCurrentUserBillingAddresses}>
                 View Billing Addresses
+            </button>
+            <button onClick={viewCurrentUserPaymentDetails}>
+                View Payment Details
             </button>
             <div>
                 <p style={{ color: "red" }}>{error}</p>
@@ -374,6 +416,25 @@ const TestAPI: React.FC = () => {
                                     <li key={index}>{address}</li>
                                 )
                             )}
+                        </ul>
+                    </div>
+                )}
+                {showPaymentDetails && (
+                    <div>
+                        <h2>Payment Details</h2>
+                        <ul>
+                            {currentUserPaymentDetails.map((payment, index) => (
+                                <div
+                                key={index}
+                                style={{
+                                    border: "1px solid #ccc",
+                                    padding: "10px",
+                                }}>
+                                    <p>Payment ID: {payment.paymentID}</p>
+                                    <p>Payment Method: {payment.paymentMethod}</p>
+                                    <p>Card Number: {payment.cardNumber}</p>
+                                </div>
+                            ))}
                         </ul>
                     </div>
                 )}
