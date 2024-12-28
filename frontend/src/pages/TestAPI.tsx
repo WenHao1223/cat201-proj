@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import {
     UserInterface,
@@ -86,83 +86,85 @@ const TestAPI: React.FC = () => {
         setShowPaymentDetails(false);
     };
 
-    const fetchUserData = async () => {
+    const handleApiCall = async (
+        url: string,
+        method: string,
+        body: any,
+        onSuccess: (result: any) => void,
+        onError: (error: string) => void
+    ) => {
         try {
-            const response = await fetch("http://localhost:9090/api/users");
-            const result: UserInterface[] = await response.json();
-            setUsers(result);
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: body ? JSON.stringify(body) : null,
+                credentials: "include",
+            });
 
-            setToDefault();
-            setShowUsers(true);
-            setError(null);
+            if (response.ok) {
+                const result = await response.json();
+                onSuccess(result);
+                setError(null);
+            } else {
+                console.error("HTTP error", response.status, response.statusText);
+                onError(response.statusText);
+            }
         } catch (err) {
-            setError("\n Error fetching user data: " + (err as Error).message);
+            onError((err as Error).message);
+            setToDefault();
         }
     };
 
-    const fetchProductData = async () => {
-        try {
-            const response = await fetch("http://localhost:9090/api/products");
-            const result: Product[] = await response.json();
-            setProducts(result);
+    const fetchUserData = async () => {
+        await handleApiCall(
+            "http://localhost:9090/api/users",
+            "GET",
+            null,
+            (result) => {
+                setUsers(result);
+                setToDefault();
+                setShowUsers(true);
+            },
+            (error) => setError("\n Error fetching user data: " + error)
+        );
+    };
 
-            setToDefault();
-            setShowProducts(true);
-            setError(null);
-        } catch (err) {
-            setError(
-                "\n Error fetching product data: " + (err as Error).message
-            );
-        }
+    const fetchProductData = async () => {
+        await handleApiCall(
+            "http://localhost:9090/api/products",
+            "GET",
+            null,
+            (result) => {
+                setProducts(result);
+                setToDefault();
+                setShowProducts(true);
+            },
+            (error) => setError("\n Error fetching product data: " + error)
+        );
     };
 
     const validateUserLogin = async (email: string, password: string) => {
         setUserEmail(email);
         setUserPassword(password);
-        try {
-            const response = await fetch(
-                "http://localhost:9090/api/users/login",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                        password: password,
-                    }),
-                    credentials: "include",
-                }
-            );
-            let result;
-
-            if (response.ok) {
-                result = await response.json();
-                if (result.loginStatus) {
+        await handleApiCall(
+            "http://localhost:9090/api/users/login",
+            "POST",
+            { email, password },
+            async (result) => {
+                if (await result.loginStatus) {
                     setCurrentUserGeneralDetails(JSON.parse(result.user));
                     setUserLoginStatus(true);
-                    setError(null);
                 } else {
+                    console.log("test");
                     setError("\n Invalid email or password");
                 }
-            } else {
-                console.error(
-                    "HTTP error",
-                    response.status,
-                    response.statusText
-                );
-                setError(
-                    "\n Error validating user login: " + response.statusText
-                );
-            }
-
-            setToDefault();
-            setShowUserLoginStatus(true);
-        } catch (err) {
-            setError(
-                "\n Error validating user login: " + (err as Error).message
-            );
-        }
+                setToDefault();
+                setShowUserLoginStatus(true);
+            },
+            (error) => setError("\n Error validating user login: " + error)
+        );
     };
 
     const createUserAccount = async () => {
@@ -176,171 +178,100 @@ const TestAPI: React.FC = () => {
         setCreateAccountGender(1);
         setCreateAccountDOB("1990-01-01");
         setCreateAccountAgreeToTerms(true);
-        try {
-            const response = await fetch(
-                "http://localhost:9090/api/users/create",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        username: createAccountUsername,
-                        email: createAccountEmail,
-                        password: createAccountPassword,
-                        nationality: createAccountNationality,
-                        firstName: createAccountFirstName,
-                        lastName: createAccountLastName,
-                        phoneNo: createAccountPhoneNo,
-                        gender: createAccountGender,
-                        dob: createAccountDOB,
-                        agreeToTerms: createAccountAgreeToTerms,
-                    }),
-                }
-            );
-            let result;
-            if (response.ok) {
-                result = await response.json();
-                if (result.status === "Success") {
+        await handleApiCall(
+            "http://localhost:9090/api/users/create",
+            "POST",
+            {
+                username: createAccountUsername,
+                email: createAccountEmail,
+                password: createAccountPassword,
+                nationality: createAccountNationality,
+                firstName: createAccountFirstName,
+                lastName: createAccountLastName,
+                phoneNo: createAccountPhoneNo,
+                gender: createAccountGender,
+                dob: createAccountDOB,
+                agreeToTerms: createAccountAgreeToTerms,
+            },
+            async (result) => {
+                if (await result.status === "Success") {
                     setCreateAccountStatus(true);
-                    setError(null);
                 } else {
                     setError("\n Error creating account: " + result.message);
                 }
-            } else {
-                console.error(
-                    "HTTP error",
-                    response.status,
-                    response.statusText
-                );
-                setError("\n Error creating account: " + response.statusText);
-            }
-
-            setToDefault();
-            setShowUsersCreateAccount(true);
-        } catch (err) {
-            setError("\n Error creating account: " + (err as Error).message);
-        }
+                setToDefault();
+                setShowUsersCreateAccount(true);
+            },
+            (error) => setError("\n Error creating account: " + error)
+        );
     };
 
     const viewCurrentUserShippingAddresses = async () => {
-        try {
-            const response = await fetch(
-                "http://localhost:9090/api/users/shippingAddresses?email=" +
-                    userEmail
-            );
-            let result;
-            if (response.ok) {
-                result = await response.json();
-                if (result.status === "Success") {
+        await handleApiCall(
+            `http://localhost:9090/api/users/shippingAddresses?email=${userEmail}`,
+            "GET",
+            null,
+            async (result) => {
+                if (await result.status === "Success") {
                     setCurrentUserShippingAddresses(
                         JSON.parse(result.shippingAddresses)
                     );
-                    setError(null);
                 } else {
                     setError(
                         "\n Error viewing shipping addresses: " + result.message
                     );
                 }
-            } else {
-                console.error(
-                    "HTTP error",
-                    response.status,
-                    response.statusText
-                );
-                setError(
-                    "\n Error viewing shipping addresses: " +
-                        response.statusText
-                );
-            }
-
-            setToDefault();
-            setShowShippingAddresses(true);
-        } catch (err) {
-            setError(
-                "\n Error viewing shipping addresses: " + (err as Error).message
-            );
-        }
+                setToDefault();
+                setShowShippingAddresses(true);
+            },
+            (error) =>
+                setError("\n Error viewing shipping addresses: " + error)
+        );
     };
 
     const viewCurrentUserBillingAddresses = async () => {
-        try {
-            const response = await fetch(
-                "http://localhost:9090/api/users/billingAddresses?email=" +
-                    userEmail
-            );
-            let result;
-            if (response.ok) {
-                result = await response.json();
-                if (result.status === "Success") {
+        await handleApiCall(
+            `http://localhost:9090/api/users/billingAddresses?email=${userEmail}`,
+            "GET",
+            null,
+            async (result) => {
+                if (await result.status === "Success") {
                     setCurrentUserBillingAddresses(
                         JSON.parse(result.billingAddresses)
                     );
-                    setError(null);
                 } else {
                     setError(
                         "\n Error viewing billing addresses: " + result.message
                     );
                 }
-            } else {
-                console.error(
-                    "HTTP error",
-                    response.status,
-                    response.statusText
-                );
-                setError(
-                    "\n Error viewing billing addresses: " + response.statusText
-                );
-            }
-
-            setToDefault();
-            setShowBillingAddresses(true);
-        } catch (err) {
-            setError(
-                "\n Error viewing billing addresses: " + (err as Error).message
-            );
-        }
+                setToDefault();
+                setShowBillingAddresses(true);
+            },
+            (error) => setError("\n Error viewing billing addresses: " + error)
+        );
     };
 
     const viewCurrentUserPaymentDetails = async () => {
-        try {
-            const response = await fetch(
-                "http://localhost:9090/api/users/paymentDetails?email=" +
-                    userEmail
-            );
-            let result;
-            if (response.ok) {
-                result = await response.json();
-                if (result.status === "Success") {
-                    const paymentDetailsArray = result.paymentDetails.map((paymentDetail: string) =>
-                        JSON.parse(paymentDetail)
+        await handleApiCall(
+            `http://localhost:9090/api/users/paymentDetails?email=${userEmail}`,
+            "GET",
+            null,
+            async (result) => {
+                if (await result.status === "Success") {
+                    const paymentDetailsArray = result.paymentDetails.map(
+                        (paymentDetail: string) => JSON.parse(paymentDetail)
                     );
-
                     setCurrentUserPaymentDetails(paymentDetailsArray);
-                    setError(null);
                 } else {
                     setError(
                         "\n Error viewing payment details: " + result.message
                     );
                 }
-            } else {
-                console.error(
-                    "HTTP error",
-                    response.status,
-                    response.statusText
-                );
-                setError(
-                    "\n Error viewing payment details: " + response.statusText
-                );
-            }
-
-            setToDefault();
-            setShowPaymentDetails(true);
-        } catch (err) {
-            setError(
-                "\n Error viewing payment details 3: " + (err as Error).message
-            );
-        }
+                setToDefault();
+                setShowPaymentDetails(true);
+            },
+            (error) => setError("\n Error viewing payment details: " + error)
+        );
     };
 
     return (
@@ -366,7 +297,7 @@ const TestAPI: React.FC = () => {
                 View Payment Details
             </button>
             <div>
-                <p style={{ color: "red" }}>{error}</p>
+                {error && <p style={{ color: "red" }}>{error}</p>}
                 {showUsers && users.length > 0 && (
                     <UsersServlet users={users} />
                 )}
