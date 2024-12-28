@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
     UserInterface,
@@ -34,27 +34,25 @@ const TestAPI: React.FC = () => {
     // Create account
     const [showUsersCreateAccount, setShowUsersCreateAccount] =
         useState<boolean>(false);
-    const [createAccountStatus, setCreateAccountStatus] = useState<boolean>(false);
+    const [createAccountStatus, setCreateAccountStatus] =
+        useState<boolean>(false);
     const [createAccountUsername, setCreateAccountUsername] =
-        useState<string>("jdoe");
-    const [createAccountEmail, setCreateAccountEmail] = useState<string>(
-        "testRegistering@example.com"
-    );
+        useState<string>("");
+    const [createAccountEmail, setCreateAccountEmail] = useState<string>("");
     const [createAccountPassword, setCreateAccountPassword] =
-        useState<string>("password123");
+        useState<string>("");
     const [createAccountNationality, setCreateAccountNationality] =
-        useState<string>("Malaysia");
+        useState<string>("");
     const [createAccountFirstName, setCreateAccountFirstName] =
-        useState<string>("John");
+        useState<string>("");
     const [createAccountLastName, setCreateAccountLastName] =
-        useState<string>("Doe");
+        useState<string>("");
     const [createAccountPhoneNo, setCreateAccountPhoneNo] =
-        useState<string>("0123456789");
-    const [createAccountGender, setCreateAccountGender] = useState<Number>(1);
-    const [createAccountDOB, setCreateAccountDOB] =
-        useState<string>("1990-01-01");
+        useState<string>("");
+    const [createAccountGender, setCreateAccountGender] = useState<Number>(0);
+    const [createAccountDOB, setCreateAccountDOB] = useState<string>("");
     const [createAccountAgreeToTerms, setCreateAccountAgreeToTerms] =
-        useState<boolean>(true);
+        useState<boolean>(false);
 
     // View all shipping addresses of current user
     const [showShippingAddresses, setShowShippingAddresses] =
@@ -150,6 +148,29 @@ const TestAPI: React.FC = () => {
     };
 
     const createUserAccount = async () => {
+        setCreateAccountUsername("jdoe");
+        setCreateAccountEmail("testRegistering@example.com");
+        setCreateAccountPassword("password123");
+        setCreateAccountNationality("Malaysia");
+        setCreateAccountFirstName("John");
+        setCreateAccountLastName("Doe");
+        setCreateAccountPhoneNo("0123456789");
+        setCreateAccountGender(1);
+        setCreateAccountDOB("1990-01-01");
+        setCreateAccountAgreeToTerms(true);
+        console.log(
+            "Creating account with details:",
+            createAccountUsername,
+            createAccountEmail,
+            createAccountPassword,
+            createAccountNationality,
+            createAccountFirstName,
+            createAccountLastName,
+            createAccountPhoneNo,
+            createAccountGender,
+            createAccountDOB,
+            createAccountAgreeToTerms
+        );
         try {
             const response = await fetch(
                 "http://localhost:9090/api/users/create",
@@ -175,14 +196,11 @@ const TestAPI: React.FC = () => {
             let result;
             if (response.ok) {
                 result = await response.json();
-                if (result.registerStatusMessage === "Success") {
+                if (result.status === "Success") {
                     setCreateAccountStatus(true);
                     setError(null);
                 } else {
-                    setError(
-                        "\n Error creating account: " +
-                            result.registerStatusMessage
-                    );
+                    setError("\n Error creating account: " + result.message);
                 }
             } else {
                 console.error(
@@ -203,13 +221,16 @@ const TestAPI: React.FC = () => {
     const viewCurrentUserShippingAddresses = async () => {
         try {
             const response = await fetch(
-                "http://localhost:9090/api/users/shippingAddresses?email=" + userEmail
+                "http://localhost:9090/api/users/shippingAddresses?email=" +
+                    userEmail
             );
             let result;
             if (response.ok) {
                 result = await response.json();
                 if (result.status === "Success") {
-                    setCurrentUserShippingAddresses(JSON.parse(result.shippingAddresses));
+                    setCurrentUserShippingAddresses(
+                        JSON.parse(result.shippingAddresses)
+                    );
                     setError(null);
                 } else {
                     setError(
@@ -223,7 +244,8 @@ const TestAPI: React.FC = () => {
                     response.statusText
                 );
                 setError(
-                    "\n Error viewing shipping addresses: " + response.statusText
+                    "\n Error viewing shipping addresses: " +
+                        response.statusText
                 );
             }
 
@@ -234,14 +256,18 @@ const TestAPI: React.FC = () => {
                 "\n Error viewing shipping addresses: " + (err as Error).message
             );
         }
-    }
+    };
 
     return (
         <div>
             <h1>Test API Page</h1>
             <button onClick={fetchUserData}>Fetch User Data</button>
             <button onClick={fetchProductData}>Fetch Product Data</button>
-            <button onClick={() => validateUserLogin("jdoe@example.com", "password123")}>
+            <button
+                onClick={() =>
+                    validateUserLogin("jdoe@example.com", "password123")
+                }
+            >
                 Validate User Login
             </button>
             <button onClick={createUserAccount}>Create Account</button>
@@ -275,9 +301,7 @@ const TestAPI: React.FC = () => {
                         phoneNo={createAccountPhoneNo}
                         gender={createAccountGender}
                         dob={createAccountDOB}
-                        agreeToTerms={
-                            createAccountAgreeToTerms
-                        }
+                        agreeToTerms={createAccountAgreeToTerms}
                         createAccountStatus={createAccountStatus}
                     />
                 )}
@@ -285,9 +309,11 @@ const TestAPI: React.FC = () => {
                     <div>
                         <h2>Shipping Addresses</h2>
                         <ul>
-                            {currentUserShippingAddresses.map((address, index) => (
-                                <li key={index}>{address}</li>
-                            ))}
+                            {currentUserShippingAddresses.map(
+                                (address, index) => (
+                                    <li key={index}>{address}</li>
+                                )
+                            )}
                         </ul>
                     </div>
                 )}

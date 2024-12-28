@@ -53,13 +53,18 @@ public class UsersCreateServlet extends HttpServlet {
         System.out.println("UsersCreateServlet POST request received with parameters: " + email + " = " + password);
 
         // Validate user login
-        String registerStatusMessage = UserCollection.registerUser(username, email, password, nationality, firstName, lastName,
+        String status = UserCollection.registerUser(username, email, password, nationality, firstName, lastName,
                 phoneNo, gender, dob, agreeToTerms);
         ;
 
         // Create JSON response
         JsonObject jsonResponse = new JsonObject();
-        jsonResponse.addProperty("registerStatusMessage", registerStatusMessage);
+        if (status.equals("Success")) {
+            jsonResponse.addProperty("status", status);
+        } else {
+            jsonResponse.addProperty("status", "Error");
+            jsonResponse.addProperty("message", status);
+        }
 
         // Write the response
         PrintWriter out = response.getWriter();

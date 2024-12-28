@@ -37,6 +37,12 @@ public class UserCollection {
             String nationality, String firstName, String lastName,
             String phoneNo, short gender, String dob, Boolean agreeToTerms) {
         try {
+            if(username == "" || email == "" || password == "" ||
+                    nationality == "" || firstName == "" || lastName == "" ||
+                    phoneNo == "" || gender == 0 || dob == "" || agreeToTerms == false) {
+                System.err.println("All fields are required");
+                return "All fields are required";
+            }
             for (User user : users) {
                 if (user.getEmail().equals(email)) {
                     System.err.println("User with email " + email + " already exists");

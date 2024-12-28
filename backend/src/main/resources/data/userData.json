@@ -514,39 +514,5 @@
         ]
       }
     ]
-  },
-  {
-    "username": "alice123",
-    "email": "alice@example.com",
-    "password": "password",
-    "nationality": "Malaysia",
-    "firstName": "Alice",
-    "lastName": "Doe",
-    "phoneNo": "0123456789",
-    "gender": 1,
-    "dob": "2000-01-01",
-    "agreeToTerms": true,
-    "shippingAddresses": [],
-    "billingAddresses": [],
-    "paymentDetails": [],
-    "carts": [],
-    "orders": []
-  },
-  {
-    "username": "jdoe",
-    "email": "testRegistering@example.com",
-    "password": "password123",
-    "nationality": "Malaysia",
-    "firstName": "John",
-    "lastName": "Doe",
-    "phoneNo": "0123456789",
-    "gender": 1,
-    "dob": "1990-01-01",
-    "agreeToTerms": true,
-    "shippingAddresses": [],
-    "billingAddresses": [],
-    "paymentDetails": [],
-    "carts": [],
-    "orders": []
   }
 ]
