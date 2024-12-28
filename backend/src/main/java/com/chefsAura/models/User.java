@@ -204,6 +204,14 @@ public class User {
 
     // add payment details
     public void addPaymentDetails(Payment newPaymentDetails) {
+        for (Payment payment : this.paymentDetails) {
+            if (payment.getPaymentMethod().equals(newPaymentDetails.getPaymentMethod()) &&
+                    payment.getCardNumber().equals(newPaymentDetails.getCardNumber()) &&
+                    payment.getExpiryDate().equals(newPaymentDetails.getExpiryDate())) {
+                System.err.println("Payment details already exists");
+                throw new IllegalArgumentException("Payment details already exists");
+            }
+        }
         this.paymentDetails.add(newPaymentDetails);
         System.out.println("Payment details added successfully");
     }
