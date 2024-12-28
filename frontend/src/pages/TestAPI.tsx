@@ -19,6 +19,7 @@ import UsersShippingAddressesAddServlet from "@components/TestAPI/UsersShippingA
 import UsersShippingAddressesUpdateServlet from "@components/TestAPI/UsersShippingAddressesUpdateServlet";
 import UsersShippingAddressesRemoveServlet from "@components/TestAPI/UsersShippingAddressRemoveServlet";
 import UsersBillingAddressesAddServlet from "@components/TestAPI/UsersBillingAddressesAddServlet";
+import UsersBillingAddressesUpdateServlet from "@components/TestAPI/UsersBillingAddressesUpdateServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -130,6 +131,16 @@ const TestAPI: React.FC = () => {
         useState<boolean>(false);
     const [newBillingAddress, setNewBillingAddress] = useState<string>("");
 
+    // Update billing address
+    const [showUpdateBillingAddress, setShowUpdateBillingAddress] =
+        useState<boolean>(false);
+    const [updateBillingAddressStatus, setUpdateBillingAddressStatus] =
+        useState<boolean>(false);
+    const [updateBillingAddressIndex, setUpdateBillingAddressIndex] =
+        useState<number>(-1);
+    const [updateBillingAddress, setUpdateBillingAddress] =
+        useState<string>("");
+
     // Reset all states to default
     const setToDefault = () => {
         setShowUsers(false);
@@ -145,6 +156,7 @@ const TestAPI: React.FC = () => {
         setShowUpdateShippingAddress(false);
         setShowRemoveShippingAddress(false);
         setShowAddBillingAddress(false);
+        setShowUpdateBillingAddress(false);
     };
 
     const handleApiCall = async (
@@ -515,6 +527,38 @@ const TestAPI: React.FC = () => {
         );
     };
 
+    const updateBillingAddressMethod = async (
+        index: number,
+        updateBillingAddress: string
+    ) => {
+        setUpdateBillingAddressIndex(index);
+        setUpdateBillingAddress(newBillingAddress);
+        await handleApiCall(
+            "http://localhost:9090/api/users/billingAddresses/update",
+            "PUT",
+            {
+                email: userEmail,
+                index,
+                updateBillingAddress,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setUpdateBillingAddressStatus(true);
+                    setCurrentUserBillingAddresses(
+                        JSON.parse(result.billingAddresses)
+                    );
+                } else {
+                    setError(
+                        "\n Error updating billing address: " + result.message
+                    );
+                }
+                setToDefault();
+                setShowUpdateBillingAddress(true);
+            },
+            (error) => setError("\n Error updating billing address: " + error)
+        );
+    };
+
     return (
         <div>
             <h1>Test API Page</h1>
@@ -600,6 +644,16 @@ const TestAPI: React.FC = () => {
                 }
             >
                 Add Billing Address
+            </button>
+            <button
+                onClick={() =>
+                    updateBillingAddressMethod(
+                        0,
+                        "123, Test Street, Test City, Test State, Test Country, 12345"
+                    )
+                }
+            >
+                Update Billing Address
             </button>
 
             <div>
@@ -688,6 +742,13 @@ const TestAPI: React.FC = () => {
                     <UsersBillingAddressesAddServlet
                         newAddress={newBillingAddress}
                         addAddressStatus={addNewBillingAddressStatus}
+                        addresses={currentUserBillingAddresses}
+                    />
+                )}
+                {showUpdateBillingAddress && (
+                    <UsersBillingAddressesUpdateServlet
+                        updateAddress={updateBillingAddress}
+                        updateAddressStatus={updateBillingAddressStatus}
                         addresses={currentUserBillingAddresses}
                     />
                 )}

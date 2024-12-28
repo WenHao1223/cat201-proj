@@ -166,6 +166,12 @@ public class User {
         System.out.println("Billing address added successfully");
     }
 
+    // update billing address (by index)
+    public void updateBillingAddress(int index, String newBillingAddress) {
+        this.billingAddresses.set(index, newBillingAddress);
+        System.out.println("Billing address updated successfully");
+    }
+
     // remove billing address
     public void removeBillingAddress(String oldShippingAddress) {
         this.billingAddresses.remove(oldShippingAddress);
