@@ -52,6 +52,8 @@ after user clicking the Payment Details option
 - return err if session expired; server disconnected
 - frontend needs to handle cases where the user does not have any payment details
 ### Edit profile
+#### /api/users/editProfile
+#### UsersEditProfileServlet.java
 username, nationality, firstName, lastName, phoneNo, gender, dob
 - parse email (from sys), fieldToEdit, newData
 - return true if profile is updated

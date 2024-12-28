@@ -13,6 +13,7 @@ import UsersLoginServlet from "@components/TestAPI/UsersLoginServlet";
 import UsersCreateServlet from "@components/TestAPI/UsersCreateServlet";
 import UsersShippingAddressesServlet from "@components/TestAPI/UsersShippingAddressesServlet";
 import UsersPaymentDetailsServlet from "@components/TestAPI/UsersPaymentDetailsServlet";
+import UsersEditProfileServlet from "@components/TestAPI/UsersEditProfileServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -76,6 +77,13 @@ const TestAPI: React.FC = () => {
         PaymentGeneralInterface[]
     >([]);
 
+    // Edit user details according to field
+    const [showEditProfile, setShowEditProfile] = useState<boolean>(false);
+    const [editProfileStatus, setEditProfileStatus] = useState<boolean>(false);
+    const [editField, setEditField] = useState<string>("");
+    const [editValue, setEditValue] = useState<string>("");
+
+    // Reset all states to default
     const setToDefault = () => {
         setShowUsers(false);
         setShowProducts(false);
@@ -84,6 +92,7 @@ const TestAPI: React.FC = () => {
         setShowShippingAddresses(false);
         setShowBillingAddresses(false);
         setShowPaymentDetails(false);
+        setShowEditProfile(false);
     };
 
     const handleApiCall = async (
@@ -167,31 +176,36 @@ const TestAPI: React.FC = () => {
         );
     };
 
-    const createUserAccount = async () => {
-        setCreateAccountUsername("jdoe");
-        setCreateAccountEmail("testRegistering@example.com");
-        setCreateAccountPassword("password123");
-        setCreateAccountNationality("Malaysia");
-        setCreateAccountFirstName("John");
-        setCreateAccountLastName("Doe");
-        setCreateAccountPhoneNo("0123456789");
-        setCreateAccountGender(1);
-        setCreateAccountDOB("1990-01-01");
-        setCreateAccountAgreeToTerms(true);
+    const createUserAccount = async (
+        username: string,
+        email: string,
+        password: string,
+        nationality: string,
+        firstName: string,
+        lastName: string,
+        phoneNo: string,
+        gender: Number,
+        dob: string,
+        agreeToTerms: boolean
+    ) => {
+        setCreateAccountUsername(username);
+        setCreateAccountEmail(email);
+        setCreateAccountPassword(password);
+        setCreateAccountNationality(nationality);
+        setCreateAccountFirstName(firstName);
+        setCreateAccountLastName(lastName);
+        setCreateAccountPhoneNo(phoneNo);
+        setCreateAccountGender(gender);
+        setCreateAccountDOB(dob);
+        setCreateAccountAgreeToTerms(agreeToTerms);
+
         await handleApiCall(
             "http://localhost:9090/api/users/create",
             "POST",
             {
-                username: createAccountUsername,
-                email: createAccountEmail,
-                password: createAccountPassword,
-                nationality: createAccountNationality,
-                firstName: createAccountFirstName,
-                lastName: createAccountLastName,
-                phoneNo: createAccountPhoneNo,
-                gender: createAccountGender,
-                dob: createAccountDOB,
-                agreeToTerms: createAccountAgreeToTerms,
+                username, email, password,
+                nationality, firstName, lastName,
+                phoneNo, gender, dob, agreeToTerms
             },
             async (result) => {
                 if (await result.status === "Success") {
@@ -274,6 +288,27 @@ const TestAPI: React.FC = () => {
         );
     };
 
+    const editProfile = async (field: string, value: string) => {
+        setEditField(field);
+        setEditValue(value);
+        await handleApiCall(
+            "http://localhost:9090/api/users/editProfile",
+            "PUT",
+            {userEmail, field, value},
+            async (result) => {
+                if (await result.status) {
+                    setCurrentUserGeneralDetails(JSON.parse(result.user));
+                    setEditProfileStatus(true);
+                } else {
+                    setError("\n Error updating profile: " + result.message);
+                }
+                setToDefault();
+                setShowEditProfile(true);
+            },
+            (error) => setError("\n Error updating profile: " + error)
+        );
+    };
+
     return (
         <div>
             <h1>Test API Page</h1>
@@ -286,7 +321,18 @@ const TestAPI: React.FC = () => {
             >
                 Validate User Login
             </button>
-            <button onClick={createUserAccount}>Create Account</button>
+            <button onClick={() => createUserAccount(
+                "jdoe",
+                "testRegistering@example.com",
+                "password123",
+                "Singapore",
+                "John",
+                "Doe",
+                "0123456789",
+                1,
+                "1990-01-01",
+                true
+            )}>Create Account</button>
             <button onClick={viewCurrentUserShippingAddresses}>
                 View Shipping Addresses
             </button>
@@ -295,6 +341,9 @@ const TestAPI: React.FC = () => {
             </button>
             <button onClick={viewCurrentUserPaymentDetails}>
                 View Payment Details
+            </button>
+            <button onClick={() => editProfile("phoneNo", "0123456789")}>
+                Edit Profile
             </button>
             <div>
                 {error && <p style={{ color: "red" }}>{error}</p>}
@@ -340,6 +389,14 @@ const TestAPI: React.FC = () => {
                 {showPaymentDetails && (
                     <UsersPaymentDetailsServlet
                         paymentDetails={currentUserPaymentDetails}
+                    />
+                )}
+                {showEditProfile && (
+                    <UsersEditProfileServlet
+                        field={editField}
+                        value={editValue}
+                        editProfileStatus={editProfileStatus}
+                        currentUserGeneralDetails={currentUserGeneralDetails}
                     />
                 )}
             </div>

@@ -16,7 +16,7 @@ const UsersLoginServlet: React.FC<UsersLoginServletProps> = ({
 }) => {
     return (
         <div>
-            <h2>User Login Status</h2>
+            <h3>User Login Status</h3>
             <div>
                 Email: {userEmail}
                 <br />
@@ -34,7 +34,7 @@ const UsersLoginServlet: React.FC<UsersLoginServletProps> = ({
                         padding: "10px",
                     }}
                 >
-                    <h2>{currentUserGeneralDetails.username}</h2>
+                    <h3>{currentUserGeneralDetails.username}</h3>
                     <p>Email: {currentUserGeneralDetails.email}</p>
                     <p>First Name: {currentUserGeneralDetails.firstName}</p>
                     <p>Last Name: {currentUserGeneralDetails.lastName}</p>
