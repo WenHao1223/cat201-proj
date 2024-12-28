@@ -89,9 +89,9 @@ public class User {
     }
 
     // update email
-    public void setEmail(String newEmail) {
-        this.email = newEmail;
-        System.out.println("Email updated successfully");
+    public void setUsername(String newUsername) {
+        this.username = newUsername;
+        System.out.println("Username updated successfully");
     }
 
     // update password
@@ -127,6 +127,18 @@ public class User {
     public void setPhoneNo(String newPhoneNo) {
         this.phoneNo = newPhoneNo;
         System.out.println("Phone number updated successfully");
+    }
+
+    // update gender
+    public void setGender(short newGender) {
+        this.gender = newGender;
+        System.out.println("Gender updated successfully");
+    }
+
+    // update date of birth
+    public void setDob(String newDob) {
+        this.dob = newDob;
+        System.out.println("Date of birth updated successfully");
     }
 
     // add shipping address

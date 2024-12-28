@@ -294,7 +294,11 @@ const TestAPI: React.FC = () => {
         await handleApiCall(
             "http://localhost:9090/api/users/editProfile",
             "PUT",
-            {userEmail, field, value},
+            {
+                email: userEmail,
+                field,
+                value
+            },
             async (result) => {
                 if (await result.status) {
                     setCurrentUserGeneralDetails(JSON.parse(result.user));
@@ -328,7 +332,7 @@ const TestAPI: React.FC = () => {
                 "Singapore",
                 "John",
                 "Doe",
-                "0123456789",
+                "+6012-345 6789",
                 1,
                 "1990-01-01",
                 true
@@ -342,7 +346,7 @@ const TestAPI: React.FC = () => {
             <button onClick={viewCurrentUserPaymentDetails}>
                 View Payment Details
             </button>
-            <button onClick={() => editProfile("phoneNo", "0123456789")}>
+            <button onClick={() => editProfile("phoneNo", "+6011-5860 6808")}>
                 Edit Profile
             </button>
             <div>
