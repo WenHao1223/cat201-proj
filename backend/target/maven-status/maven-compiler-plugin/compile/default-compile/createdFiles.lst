@@ -5,8 +5,8 @@ com\chefsAura\models\User.class
 com\chefsAura\utils\enums\PaymentMethodEnumDeserializer.class
 com\chefsAura\AppContextListener$1.class
 com\chefsAura\api\products\ProductsServlet.class
+com\chefsAura\api\users\UsersCreateServlet.class
 com\chefsAura\utils\enums\OrderStatusEnumSerializer.class
-com\chefsAura\api\users\create\UsersCreateServlet.class
 com\chefsAura\AppContextListener$2.class
 com\chefsAura\models\Order.class
 com\chefsAura\Main.class

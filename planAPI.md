@@ -1,7 +1,9 @@
 # API Plan
 
 ## Login
-### Validate users' email and password - UsersLoginServlet
+### Validate users' email and password
+#### /api/users/login
+#### UsersLoginServlet.java
 after clicking login button
 - parse email, password
 - return true if successfully validated info;
@@ -11,7 +13,9 @@ after clicking login button
 - rate-limiting to prevent brute-force attacks
 
 ## Register
-### Create account - UsersCreateServlet
+### Create account
+#### /api/users/create
+#### UsersCreateServlet
 - parse username, email, password, nationality, firstName, lastname, phoneNo, gender, dob, agreeToTerms
 - return true if account is created
 - return err if server is disconnected; missing information; wrong format; existing username; existing email
