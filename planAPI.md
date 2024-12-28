@@ -73,6 +73,8 @@ username, nationality, firstName, lastName, phoneNo, gender, dob
 - return true if shipping address is added
 - return err if session expired; server disconnected; user not found
 ### Update shipping address
+#### /api/users/shippingAddresses/update
+#### UsersShippingAddressesUpdateServlet.java
 - parse email (from sys), index of shipping address, new shipping address
 - return true if shipping address is updated
 - return err if session expired; server disconnected; user not found, index out of range

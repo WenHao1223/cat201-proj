@@ -148,6 +148,12 @@ public class User {
         System.out.println("Shipping address added successfully");
     }
 
+    // update shipping address (by index)
+    public void updateShippingAddress(int index, String newShippingAddress) {
+        this.shippingAddresses.set(index, newShippingAddress);
+        System.out.println("Shipping address updated successfully");
+    }
+
     // remove shipping address
     public void removeShippingAddress(String oldShippingAddress) {
         this.shippingAddresses.remove(oldShippingAddress);

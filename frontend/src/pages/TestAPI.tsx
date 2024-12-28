@@ -16,6 +16,7 @@ import UsersPaymentDetailsServlet from "@components/TestAPI/UsersPaymentDetailsS
 import UsersEditProfileServlet from "@components/TestAPI/UsersEditProfileServlet";
 import UsersChangePasswordServlet from "@components/TestAPI/UsersChangePasswordServlet";
 import UsersShippingAddressesAddServlet from "@components/TestAPI/UsersShippingAddressesAddServlet";
+import UsersShippingAddressesUpdateServlet from "@components/TestAPI/UsersShippingAddressesUpdateServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -86,15 +87,31 @@ const TestAPI: React.FC = () => {
     const [editValue, setEditValue] = useState<string>("");
 
     // Change password
-    const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
-    const [changePasswordStatus, setChangePasswordStatus] = useState<boolean>(false);
-    const [changePasswordCurrentPassword, setChangePasswordCurrentPassword] = useState<string>("");
-    const [changePasswordNewPassword, setChangePasswordNewPassword] = useState<string>("");
+    const [showChangePassword, setShowChangePassword] =
+        useState<boolean>(false);
+    const [changePasswordStatus, setChangePasswordStatus] =
+        useState<boolean>(false);
+    const [changePasswordCurrentPassword, setChangePasswordCurrentPassword] =
+        useState<string>("");
+    const [changePasswordNewPassword, setChangePasswordNewPassword] =
+        useState<string>("");
 
     // Add new shipping address
-    const [showAddShippingAddress, setShowAddShippingAddress] = useState<boolean>(false);
-    const [addNewShippingAddressStatus, setAddNewShippingAddressStatus] = useState<boolean>(false);
+    const [showAddShippingAddress, setShowAddShippingAddress] =
+        useState<boolean>(false);
+    const [addNewShippingAddressStatus, setAddNewShippingAddressStatus] =
+        useState<boolean>(false);
     const [newShippingAddress, setNewShippingAddress] = useState<string>("");
+
+    // Update shipping address
+    const [showUpdateShippingAddress, setShowUpdateShippingAddress] =
+        useState<boolean>(false);
+    const [updateShippingAddressStatus, setUpdateShippingAddressStatus] =
+        useState<boolean>(false);
+    const [updateShippingAddressIndex, setUpdateShippingAddressIndex] =
+        useState<number>(-1);
+    const [updateShippingAddress, setUpdateShippingAddress] =
+        useState<string>("");
 
     // Reset all states to default
     const setToDefault = () => {
@@ -108,6 +125,7 @@ const TestAPI: React.FC = () => {
         setShowEditProfile(false);
         setShowChangePassword(false);
         setShowAddShippingAddress(false);
+        setShowUpdateShippingAddress(false);
     };
 
     const handleApiCall = async (
@@ -132,7 +150,11 @@ const TestAPI: React.FC = () => {
                 onSuccess(result);
                 setError(null);
             } else {
-                console.error("HTTP error", response.status, response.statusText);
+                console.error(
+                    "HTTP error",
+                    response.status,
+                    response.statusText
+                );
                 onError(response.statusText);
             }
         } catch (err) {
@@ -218,12 +240,19 @@ const TestAPI: React.FC = () => {
             "http://localhost:9090/api/users/create",
             "POST",
             {
-                username, email, password,
-                nationality, firstName, lastName,
-                phoneNo, gender, dob, agreeToTerms
+                username,
+                email,
+                password,
+                nationality,
+                firstName,
+                lastName,
+                phoneNo,
+                gender,
+                dob,
+                agreeToTerms,
             },
             async (result) => {
-                if (await result.status === "Success") {
+                if ((await result.status) === "Success") {
                     setCreateAccountStatus(true);
                 } else {
                     setError("\n Error creating account: " + result.message);
@@ -241,7 +270,7 @@ const TestAPI: React.FC = () => {
             "GET",
             null,
             async (result) => {
-                if (await result.status === "Success") {
+                if ((await result.status) === "Success") {
                     setCurrentUserShippingAddresses(
                         JSON.parse(result.shippingAddresses)
                     );
@@ -253,8 +282,7 @@ const TestAPI: React.FC = () => {
                 setToDefault();
                 setShowShippingAddresses(true);
             },
-            (error) =>
-                setError("\n Error viewing shipping addresses: " + error)
+            (error) => setError("\n Error viewing shipping addresses: " + error)
         );
     };
 
@@ -264,7 +292,7 @@ const TestAPI: React.FC = () => {
             "GET",
             null,
             async (result) => {
-                if (await result.status === "Success") {
+                if ((await result.status) === "Success") {
                     setCurrentUserBillingAddresses(
                         JSON.parse(result.billingAddresses)
                     );
@@ -286,7 +314,7 @@ const TestAPI: React.FC = () => {
             "GET",
             null,
             async (result) => {
-                if (await result.status === "Success") {
+                if ((await result.status) === "Success") {
                     const paymentDetailsArray = result.paymentDetails.map(
                         (paymentDetail: string) => JSON.parse(paymentDetail)
                     );
@@ -312,7 +340,7 @@ const TestAPI: React.FC = () => {
             {
                 email: userEmail,
                 field,
-                value
+                value,
             },
             async (result) => {
                 if (await result.status) {
@@ -328,7 +356,10 @@ const TestAPI: React.FC = () => {
         );
     };
 
-    const changePassword = async (currentPassword: string, newPassword: string) => {
+    const changePassword = async (
+        currentPassword: string,
+        newPassword: string
+    ) => {
         setChangePasswordCurrentPassword(currentPassword);
         setChangePasswordNewPassword(newPassword);
         await handleApiCall(
@@ -337,10 +368,10 @@ const TestAPI: React.FC = () => {
             {
                 email: userEmail,
                 currentPassword,
-                newPassword
+                newPassword,
             },
             async (result) => {
-                if (await result.status == "Success") {
+                if ((await result.status) == "Success") {
                     setChangePasswordStatus(true);
                 } else {
                     setError("\n Error changing password: " + result.message);
@@ -359,24 +390,57 @@ const TestAPI: React.FC = () => {
             "PUT",
             {
                 email: userEmail,
-                newShippingAddress
+                newShippingAddress,
             },
             async (result) => {
-                if (await result.status == "Success") {
+                if ((await result.status) == "Success") {
                     setAddNewShippingAddressStatus(true);
                     setCurrentUserShippingAddresses(
                         JSON.parse(result.shippingAddresses)
                     );
-                    
                 } else {
-                    setError("\n Error adding shipping address: " + result.message);
+                    setError(
+                        "\n Error adding shipping address: " + result.message
+                    );
                 }
                 setToDefault();
                 setShowAddShippingAddress(true);
             },
             (error) => setError("\n Error adding shipping address: " + error)
         );
-    }
+    };
+
+    const updateShippingAddressServlet = async (
+        index: number,
+        updateShippingAddress: string
+    ) => {
+        setUpdateShippingAddressIndex(index);
+        setUpdateShippingAddress(newShippingAddress);
+        await handleApiCall(
+            "http://localhost:9090/api/users/shippingAddresses/update",
+            "PUT",
+            {
+                email: userEmail,
+                index,
+                updateShippingAddress,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setUpdateShippingAddressStatus(true);
+                    setCurrentUserShippingAddresses(
+                        JSON.parse(result.shippingAddresses)
+                    );
+                } else {
+                    setError(
+                        "\n Error updating shipping address: " + result.message
+                    );
+                }
+                setToDefault();
+                setShowUpdateShippingAddress(true);
+            },
+            (error) => setError("\n Error updating shipping address: " + error)
+        );
+    };
 
     return (
         <div>
@@ -390,18 +454,24 @@ const TestAPI: React.FC = () => {
             >
                 Validate User Login
             </button>
-            <button onClick={() => createUserAccount(
-                "jdoe",
-                "testRegistering@example.com",
-                "password123",
-                "Singapore",
-                "John",
-                "Doe",
-                "+6012-345 6789",
-                1,
-                "1990-01-01",
-                true
-            )}>Create Account</button>
+            <button
+                onClick={() =>
+                    createUserAccount(
+                        "jdoe",
+                        "testRegistering@example.com",
+                        "password123",
+                        "Singapore",
+                        "John",
+                        "Doe",
+                        "+6012-345 6789",
+                        1,
+                        "1990-01-01",
+                        true
+                    )
+                }
+            >
+                Create Account
+            </button>
             <button onClick={viewCurrentUserShippingAddresses}>
                 View Shipping Addresses
             </button>
@@ -414,11 +484,29 @@ const TestAPI: React.FC = () => {
             <button onClick={() => editProfile("phoneNo", "+6011-5860 6808")}>
                 Edit Profile
             </button>
-            <button onClick={() => changePassword("password123", "password1234")}>
+            <button
+                onClick={() => changePassword("password123", "password1234")}
+            >
                 Change Password
             </button>
-            <button onClick={() => addShippingAddress("123, Test Street, Test City, Test State, Test Country, 12345")}>
+            <button
+                onClick={() =>
+                    addShippingAddress(
+                        "123, Test Street, Test City, Test State, Test Country, 12345"
+                    )
+                }
+            >
                 Add Shipping Address
+            </button>
+            <button
+                onClick={() =>
+                    updateShippingAddressServlet(
+                        0,
+                        "123, Test Street, Test City, Test State, Test Country, 12345"
+                    )
+                }
+            >
+                Update Shipping Address
             </button>
 
             <div>
@@ -486,6 +574,13 @@ const TestAPI: React.FC = () => {
                     <UsersShippingAddressesAddServlet
                         newAddress={newShippingAddress}
                         addAddressStatus={addNewShippingAddressStatus}
+                        addresses={currentUserShippingAddresses}
+                    />
+                )}
+                {showUpdateShippingAddress && (
+                    <UsersShippingAddressesUpdateServlet
+                        updateAddress={updateShippingAddress}
+                        updateAddressStatus={updateShippingAddressStatus}
                         addresses={currentUserShippingAddresses}
                     />
                 )}
