@@ -50,7 +50,7 @@ public class UsersCreateServlet extends HttpServlet {
         String dob = jsonObject.get("dob").getAsString();
         boolean agreeToTerms = jsonObject.get("agreeToTerms").getAsBoolean();
 
-        System.out.println("POST request received with parameters: " + email + " = " + password);
+        System.out.println("UsersCreateServlet POST request received with parameters: " + email + " = " + password);
 
         // Validate user login
         String registerStatusMessage = UserCollection.registerUser(username, email, password, nationality, firstName, lastName,

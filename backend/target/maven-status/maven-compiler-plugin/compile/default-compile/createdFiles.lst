@@ -4,6 +4,7 @@ com\chefsAura\utils\ReadJson.class
 com\chefsAura\models\User.class
 com\chefsAura\utils\enums\PaymentMethodEnumDeserializer.class
 com\chefsAura\AppContextListener$1.class
+com\chefsAura\api\users\UsersShippingAddressesServlet.class
 com\chefsAura\api\products\ProductsServlet.class
 com\chefsAura\api\users\UsersCreateServlet.class
 com\chefsAura\utils\enums\OrderStatusEnumSerializer.class

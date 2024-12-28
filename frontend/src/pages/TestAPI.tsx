@@ -26,8 +26,8 @@ const TestAPI: React.FC = () => {
     const [showUserLoginStatus, setShowUserLoginStatus] =
         useState<boolean>(false);
     const [userLoginStatus, setUserLoginStatus] = useState<boolean>(false);
-    const [userEmail, setUserEmail] = useState<string>("jdoe@example.com");
-    const [userPassword, setUserPassword] = useState<string>("password123");
+    const [userEmail, setUserEmail] = useState<string>("");
+    const [userPassword, setUserPassword] = useState<string>("");
     const [currentUserGeneralDetails, setCurrentUserGeneralDetails] =
         useState<UserGeneralDetailsInterface | null>(null);
 
@@ -56,11 +56,18 @@ const TestAPI: React.FC = () => {
     const [createAccountAgreeToTerms, setCreateAccountAgreeToTerms] =
         useState<boolean>(true);
 
+    // View all shipping addresses of current user
+    const [showShippingAddresses, setShowShippingAddresses] =
+        useState<boolean>(false);
+    const [currentUserShippingAddresses, setCurrentUserShippingAddresses] =
+        useState<string[]>([]);
+
     const setToDefault = () => {
         setShowUsers(false);
         setShowProducts(false);
         setShowUserLoginStatus(false);
         setShowUsersCreateAccount(false);
+        setShowShippingAddresses(false);
     };
 
     const fetchUserData = async () => {
@@ -94,6 +101,8 @@ const TestAPI: React.FC = () => {
     };
 
     const validateUserLogin = async (email: string, password: string) => {
+        setUserEmail(email);
+        setUserPassword(password);
         try {
             const response = await fetch(
                 "http://localhost:9090/api/users/login",
@@ -191,15 +200,54 @@ const TestAPI: React.FC = () => {
         }
     };
 
+    const viewCurrentUserShippingAddresses = async () => {
+        try {
+            const response = await fetch(
+                "http://localhost:9090/api/users/shippingAddresses?email=" + userEmail
+            );
+            let result;
+            if (response.ok) {
+                result = await response.json();
+                if (result.status === "Success") {
+                    setCurrentUserShippingAddresses(JSON.parse(result.shippingAddresses));
+                    setError(null);
+                } else {
+                    setError(
+                        "\n Error viewing shipping addresses: " + result.message
+                    );
+                }
+            } else {
+                console.error(
+                    "HTTP error",
+                    response.status,
+                    response.statusText
+                );
+                setError(
+                    "\n Error viewing shipping addresses: " + response.statusText
+                );
+            }
+
+            setToDefault();
+            setShowShippingAddresses(true);
+        } catch (err) {
+            setError(
+                "\n Error viewing shipping addresses: " + (err as Error).message
+            );
+        }
+    }
+
     return (
         <div>
             <h1>Test API Page</h1>
             <button onClick={fetchUserData}>Fetch User Data</button>
             <button onClick={fetchProductData}>Fetch Product Data</button>
-            <button onClick={() => validateUserLogin(userEmail, userPassword)}>
+            <button onClick={() => validateUserLogin("jdoe@example.com", "password123")}>
                 Validate User Login
             </button>
             <button onClick={createUserAccount}>Create Account</button>
+            <button onClick={viewCurrentUserShippingAddresses}>
+                View Shipping Addresses
+            </button>
             <div>
                 <p style={{ color: "red" }}>{error}</p>
                 {showUsers && users.length > 0 && (
@@ -232,6 +280,16 @@ const TestAPI: React.FC = () => {
                         }
                         createAccountStatus={createAccountStatus}
                     />
+                )}
+                {showShippingAddresses && (
+                    <div>
+                        <h2>Shipping Addresses</h2>
+                        <ul>
+                            {currentUserShippingAddresses.map((address, index) => (
+                                <li key={index}>{address}</li>
+                            ))}
+                        </ul>
+                    </div>
                 )}
             </div>
         </div>

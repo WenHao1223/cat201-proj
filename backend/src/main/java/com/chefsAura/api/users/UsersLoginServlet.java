@@ -43,7 +43,7 @@ public class UsersLoginServlet extends HttpServlet {
         String email = jsonObject.get("email").getAsString();
         String password = jsonObject.get("password").getAsString();
 
-        System.out.println("POST request received with parameters: " + email + " = " + password);
+        System.out.println("UsersLoginServlet POST request received with parameters: " + email + " = " + password);
 
         // Validate user login
         boolean loginStatus = UserCollection.loginUser(email, password);
