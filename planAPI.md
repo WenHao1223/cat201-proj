@@ -103,6 +103,8 @@ username, nationality, firstName, lastName, phoneNo, gender, dob
 - return true if shipping address is removed
 - return err if session expired; server disconnected; user not found, index out of range
 ### Add new payment details
+#### /api/users/paymentDetails/add
+#### UsersPaymentDetailsAddServlet.java
 - parse paymentMethod, cardNumber, expiryDate, cvv
 - return true if payment details are added
 - return err if session expired; server disconnected; user not found

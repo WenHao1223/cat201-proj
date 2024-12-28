@@ -3,7 +3,8 @@ package com.chefsAura.enums;
 public enum PaymentMethodEnum {
     DEBIT_CARD("debit_card"),
     CREDIT_CARD("credit_card"),
-    PAYPAL("paypal");
+    PAYPAL("paypal"),
+    VISA("visa");
 
     private final String method;
 

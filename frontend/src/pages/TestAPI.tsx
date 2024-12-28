@@ -4,6 +4,7 @@ import {
     UserInterface,
     UserGeneralDetailsInterface,
     PaymentGeneralInterface,
+    PaymentInterface,
 } from "@interfaces/API/UserInterface";
 import { Product } from "@interfaces/API/ProductInterface";
 
@@ -21,6 +22,7 @@ import UsersShippingAddressesRemoveServlet from "@components/TestAPI/UsersShippi
 import UsersBillingAddressesAddServlet from "@components/TestAPI/UsersBillingAddressesAddServlet";
 import UsersBillingAddressesUpdateServlet from "@components/TestAPI/UsersBillingAddressesUpdateServlet";
 import UsersBillingAddressesRemoveServlet from "@components/TestAPI/UsersBillingAddressesRemoveServlet";
+import UsersPaymentDetailsAddServlet from "@components/TestAPI/UsersPaymentDetailsAddServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -150,6 +152,19 @@ const TestAPI: React.FC = () => {
     const [removeBillingAddress, setRemoveBillingAddress] =
         useState<string>("");
 
+    // Add new payment detail
+    const [showAddPaymentDetail, setShowAddPaymentDetail] =
+        useState<boolean>(false);
+    const [addNewPaymentDetailStatus, setAddNewPaymentDetailStatus] =
+        useState<boolean>(false);
+    const [newPaymentDetails, setNewPaymentDetails] =
+        useState<PaymentInterface>({
+            paymentMethod: "",
+            cardNumber: "",
+            expiryDate: "",
+            cvv: "",
+        });
+
     // Reset all states to default
     const setToDefault = () => {
         setShowUsers(false);
@@ -167,6 +182,7 @@ const TestAPI: React.FC = () => {
         setShowAddBillingAddress(false);
         setShowUpdateBillingAddress(false);
         setShowRemoveBillingAddress(false);
+        setShowAddPaymentDetail(false);
     };
 
     const handleApiCall = async (
@@ -244,7 +260,6 @@ const TestAPI: React.FC = () => {
                     setCurrentUserGeneralDetails(JSON.parse(result.user));
                     setUserLoginStatus(true);
                 } else {
-                    console.log("test");
                     setError("\n Invalid email or password");
                 }
                 setToDefault();
@@ -594,7 +609,48 @@ const TestAPI: React.FC = () => {
             },
             (error) => setError("\n Error removing billing address: " + error)
         );
-    }
+    };
+
+    const addPaymentDetailMethod = async (
+        paymentMethod: string,
+        cardNumber: string,
+        expiryDate?: string,
+        cvv?: string
+    ) => {
+        setNewPaymentDetails({
+            paymentMethod,
+            cardNumber,
+            expiryDate: expiryDate || "",
+            cvv: cvv || "",
+        });
+        await handleApiCall(
+            "http://localhost:9090/api/users/paymentDetails/add",
+            "PUT",
+            {
+                email: userEmail,
+                paymentMethod,
+                cardNumber,
+                expiryDate,
+                cvv,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setAddNewPaymentDetailStatus(true);
+                    const parsedPaymentDetails = result.paymentDetails.map(
+                        (paymentDetail: string) => JSON.parse(paymentDetail)
+                    );
+                    setCurrentUserPaymentDetails(parsedPaymentDetails);
+                } else {
+                    setError(
+                        "\n Error adding payment detail: " + result.message
+                    );
+                }
+                setToDefault();
+                setShowAddPaymentDetail(true);
+            },
+            (error) => setError("\n Error adding payment detail: " + error)
+        );
+    };
 
     return (
         <div>
@@ -699,6 +755,18 @@ const TestAPI: React.FC = () => {
             >
                 Remove Billing Address
             </button>
+            <button
+                onClick={() =>
+                    addPaymentDetailMethod(
+                        "Visa",
+                        "1234 5678 9012 3456",
+                        "12/24",
+                        "123"
+                    )
+                }
+            >
+                Add Payment Details
+            </button>
 
             <div>
                 {error && <p style={{ color: "red" }}>{error}</p>}
@@ -801,6 +869,13 @@ const TestAPI: React.FC = () => {
                         removeBillingAddress={removeBillingAddress}
                         removeAddressStatus={removeBillingAddressStatus}
                         addresses={currentUserBillingAddresses}
+                    />
+                )}
+                {showAddPaymentDetail && (
+                    <UsersPaymentDetailsAddServlet
+                        newPaymentDetails={newPaymentDetails}
+                        addPaymentDetailStatus={addNewPaymentDetailStatus}
+                        paymentDetails={currentUserPaymentDetails}
                     />
                 )}
             </div>

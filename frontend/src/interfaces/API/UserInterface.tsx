@@ -28,7 +28,7 @@ export interface UserGeneralDetailsInterface {
 }
 
 export interface PaymentInterface {
-    paymentID: number;
+    paymentID?: number;
     paymentMethod: string;
     cardNumber: string;
     expiryDate: string;

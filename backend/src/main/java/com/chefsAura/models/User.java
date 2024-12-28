@@ -181,6 +181,7 @@ public class User {
     // add payment details
     public void addPaymentDetails(Payment newPaymentDetails) {
         this.paymentDetails.add(newPaymentDetails);
+        System.out.println("Payment details added successfully");
     }
 
     // remove payment details
