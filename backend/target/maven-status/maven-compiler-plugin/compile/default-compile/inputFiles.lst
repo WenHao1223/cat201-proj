@@ -1,6 +1,7 @@
 D:\Academic\Y2\S1\CAT201 Integrated Software Development Workshop\Project\cat201-proj\backend\src\main\java\com\chefsAura\api\CorsFilter.java
 D:\Academic\Y2\S1\CAT201 Integrated Software Development Workshop\Project\cat201-proj\backend\src\main\java\com\chefsAura\api\products\ProductsServlet.java
 D:\Academic\Y2\S1\CAT201 Integrated Software Development Workshop\Project\cat201-proj\backend\src\main\java\com\chefsAura\api\users\UsersBillingAddressesAddServlet.java
+D:\Academic\Y2\S1\CAT201 Integrated Software Development Workshop\Project\cat201-proj\backend\src\main\java\com\chefsAura\api\users\UsersBillingAddressesRemoveServlet.java
 D:\Academic\Y2\S1\CAT201 Integrated Software Development Workshop\Project\cat201-proj\backend\src\main\java\com\chefsAura\api\users\UsersBillingAddressesServlet.java
 D:\Academic\Y2\S1\CAT201 Integrated Software Development Workshop\Project\cat201-proj\backend\src\main\java\com\chefsAura\api\users\UsersBillingAddressesUpdateServlet.java
 D:\Academic\Y2\S1\CAT201 Integrated Software Development Workshop\Project\cat201-proj\backend\src\main\java\com\chefsAura\api\users\UsersChangePassword.java

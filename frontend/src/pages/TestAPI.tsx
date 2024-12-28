@@ -17,9 +17,10 @@ import UsersEditProfileServlet from "@components/TestAPI/UsersEditProfileServlet
 import UsersChangePasswordServlet from "@components/TestAPI/UsersChangePasswordServlet";
 import UsersShippingAddressesAddServlet from "@components/TestAPI/UsersShippingAddressesAddServlet";
 import UsersShippingAddressesUpdateServlet from "@components/TestAPI/UsersShippingAddressesUpdateServlet";
-import UsersShippingAddressesRemoveServlet from "@components/TestAPI/UsersShippingAddressRemoveServlet";
+import UsersShippingAddressesRemoveServlet from "@components/TestAPI/UsersShippingAddressesRemoveServlet";
 import UsersBillingAddressesAddServlet from "@components/TestAPI/UsersBillingAddressesAddServlet";
 import UsersBillingAddressesUpdateServlet from "@components/TestAPI/UsersBillingAddressesUpdateServlet";
+import UsersBillingAddressesRemoveServlet from "@components/TestAPI/UsersBillingAddressesRemoveServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -141,6 +142,14 @@ const TestAPI: React.FC = () => {
     const [updateBillingAddress, setUpdateBillingAddress] =
         useState<string>("");
 
+    // Remove billing address
+    const [showRemoveBillingAddress, setShowRemoveBillingAddress] =
+        useState<boolean>(false);
+    const [removeBillingAddressStatus, setRemoveBillingAddressStatus] =
+        useState<boolean>(false);
+    const [removeBillingAddress, setRemoveBillingAddress] =
+        useState<string>("");
+
     // Reset all states to default
     const setToDefault = () => {
         setShowUsers(false);
@@ -157,6 +166,7 @@ const TestAPI: React.FC = () => {
         setShowRemoveShippingAddress(false);
         setShowAddBillingAddress(false);
         setShowUpdateBillingAddress(false);
+        setShowRemoveBillingAddress(false);
     };
 
     const handleApiCall = async (
@@ -559,6 +569,33 @@ const TestAPI: React.FC = () => {
         );
     };
 
+    const removeBillingAddressMethod = async (removedAddress: string) => {
+        setRemoveBillingAddress(removedAddress);
+        await handleApiCall(
+            "http://localhost:9090/api/users/billingAddresses/remove",
+            "DELETE",
+            {
+                email: userEmail,
+                removedAddress,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setRemoveBillingAddressStatus(true);
+                    setCurrentUserBillingAddresses(
+                        JSON.parse(result.billingAddresses)
+                    );
+                } else {
+                    setError(
+                        "\n Error removing billing address: " + result.message
+                    );
+                }
+                setToDefault();
+                setShowRemoveBillingAddress(true);
+            },
+            (error) => setError("\n Error removing billing address: " + error)
+        );
+    }
+
     return (
         <div>
             <h1>Test API Page</h1>
@@ -655,6 +692,13 @@ const TestAPI: React.FC = () => {
             >
                 Update Billing Address
             </button>
+            <button
+                onClick={() =>
+                    removeBillingAddressMethod("123 Main St, Kuala Lumpur")
+                }
+            >
+                Remove Billing Address
+            </button>
 
             <div>
                 {error && <p style={{ color: "red" }}>{error}</p>}
@@ -749,6 +793,13 @@ const TestAPI: React.FC = () => {
                     <UsersBillingAddressesUpdateServlet
                         updateAddress={updateBillingAddress}
                         updateAddressStatus={updateBillingAddressStatus}
+                        addresses={currentUserBillingAddresses}
+                    />
+                )}
+                {showRemoveBillingAddress && (
+                    <UsersBillingAddressesRemoveServlet
+                        removeBillingAddress={removeBillingAddress}
+                        removeAddressStatus={removeBillingAddressStatus}
                         addresses={currentUserBillingAddresses}
                     />
                 )}

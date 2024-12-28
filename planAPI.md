@@ -97,6 +97,8 @@ username, nationality, firstName, lastName, phoneNo, gender, dob
 - return true if shipping address is updated
 - return err if session expired; server disconnected; user not found, index out of range
 ### Remove billing address
+#### /api/users/billingAddresses/remove
+#### UsersBillingAddressesRemoveServlet.java
 - parse email (from sys), index of billing address
 - return true if shipping address is removed
 - return err if session expired; server disconnected; user not found, index out of range
