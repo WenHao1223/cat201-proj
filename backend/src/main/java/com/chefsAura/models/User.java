@@ -94,14 +94,15 @@ public class User {
         System.out.println("Username updated successfully");
     }
 
-    // update password
-    public void setPassword(String oldPassword, String newPassword) {
-        if (this.password == oldPassword) {
+    // change password
+    public boolean changePassword(String currentPassword, String newPassword) {
+        if (this.password.equals(currentPassword)) {
             this.password = newPassword;
             System.out.println("Password updated successfully");
+            return true;
         } else {
-            // return error
             System.err.println("Incorrect password");
+            return false;
         }
     }
 

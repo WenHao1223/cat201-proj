@@ -60,6 +60,8 @@ username, nationality, firstName, lastName, phoneNo, gender, dob
 - return err if session expired; server disconnected; user not found
 - validate the new data for correct format
 ### Change password
+#### /api/users/changePassword
+#### UsersChangePassword.java
 - parse email (from sys), old password, new password
 - return true if old password is validated, new password update
 - return err msg if password is wrong, user not found

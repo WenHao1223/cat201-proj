@@ -78,7 +78,7 @@ public class UsersEditProfileServlet extends HttpServlet {
             } else {
                 status = "Error";
                 jsonResponse.addProperty("status", status);
-                jsonResponse.addProperty("message", "User is not logged in");
+                jsonResponse.addProperty("message", "User not found");
             }
 
             if (status == "Success") {
@@ -94,6 +94,10 @@ public class UsersEditProfileServlet extends HttpServlet {
                 userJson.addProperty("dob", currentUser.getDob());
                 jsonResponse.addProperty("user", userJson.toString());
             }
+        } else {
+            status = "Error";
+            jsonResponse.addProperty("status", status);
+            jsonResponse.addProperty("message", "No user is logged in");
         }
 
         // Write the response

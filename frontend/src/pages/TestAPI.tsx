@@ -14,6 +14,7 @@ import UsersCreateServlet from "@components/TestAPI/UsersCreateServlet";
 import UsersShippingAddressesServlet from "@components/TestAPI/UsersShippingAddressesServlet";
 import UsersPaymentDetailsServlet from "@components/TestAPI/UsersPaymentDetailsServlet";
 import UsersEditProfileServlet from "@components/TestAPI/UsersEditProfileServlet";
+import UsersChangePasswordServlet from "@components/TestAPI/UsersChangePasswordServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -83,6 +84,12 @@ const TestAPI: React.FC = () => {
     const [editField, setEditField] = useState<string>("");
     const [editValue, setEditValue] = useState<string>("");
 
+    // Change password
+    const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
+    const [changePasswordStatus, setChangePasswordStatus] = useState<boolean>(false);
+    const [changePasswordCurrentPassword, setChangePasswordCurrentPassword] = useState<string>("");
+    const [changePasswordNewPassword, setChangePasswordNewPassword] = useState<string>("");
+
     // Reset all states to default
     const setToDefault = () => {
         setShowUsers(false);
@@ -93,6 +100,7 @@ const TestAPI: React.FC = () => {
         setShowBillingAddresses(false);
         setShowPaymentDetails(false);
         setShowEditProfile(false);
+        setShowChangePassword(false);
     };
 
     const handleApiCall = async (
@@ -313,6 +321,30 @@ const TestAPI: React.FC = () => {
         );
     };
 
+    const changePassword = async (currentPassword: string, newPassword: string) => {
+        setChangePasswordCurrentPassword(currentPassword);
+        setChangePasswordNewPassword(newPassword);
+        await handleApiCall(
+            "http://localhost:9090/api/users/changePassword",
+            "PUT",
+            {
+                email: userEmail,
+                currentPassword,
+                newPassword
+            },
+            async (result) => {
+                if (await result.status == "Success") {
+                    setChangePasswordStatus(true);
+                } else {
+                    setError("\n Error changing password: " + result.message);
+                }
+                setToDefault();
+                setShowChangePassword(true);
+            },
+            (error) => setError("\n Error changing password: " + error)
+        );
+    };
+
     return (
         <div>
             <h1>Test API Page</h1>
@@ -349,6 +381,10 @@ const TestAPI: React.FC = () => {
             <button onClick={() => editProfile("phoneNo", "+6011-5860 6808")}>
                 Edit Profile
             </button>
+            <button onClick={() => changePassword("password123", "password1234")}>
+                Change Password
+            </button>
+
             <div>
                 {error && <p style={{ color: "red" }}>{error}</p>}
                 {showUsers && users.length > 0 && (
@@ -401,6 +437,13 @@ const TestAPI: React.FC = () => {
                         value={editValue}
                         editProfileStatus={editProfileStatus}
                         currentUserGeneralDetails={currentUserGeneralDetails}
+                    />
+                )}
+                {showChangePassword && (
+                    <UsersChangePasswordServlet
+                        currentPassword={changePasswordCurrentPassword}
+                        newPassword={changePasswordNewPassword}
+                        changePasswordStatus={changePasswordStatus}
                     />
                 )}
             </div>
