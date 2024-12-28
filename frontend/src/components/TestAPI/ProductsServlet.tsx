@@ -8,7 +8,7 @@ interface ProductsServletProps {
 const ProductsServlet: React.FC<ProductsServletProps> = ({ products }) => {
     return (
         <div>
-            <h1>Product Data</h1>
+            <h2>Product Data</h2>
             {products.map((product) => (
                 <div
                     key={product.productID}

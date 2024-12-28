@@ -11,6 +11,8 @@ import UsersServlet from "@components/TestAPI/UsersServlet";
 import ProductsServlet from "@components/TestAPI/ProductsServlet";
 import UsersLoginServlet from "@components/TestAPI/UsersLoginServlet";
 import UsersCreateServlet from "@components/TestAPI/UsersCreateServlet";
+import UsersShippingAddressesServlet from "@components/TestAPI/UsersShippingAddressesServlet";
+import UsersPaymentDetailsServlet from "@components/TestAPI/UsersPaymentDetailsServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -309,7 +311,6 @@ const TestAPI: React.FC = () => {
             let result;
             if (response.ok) {
                 result = await response.json();
-                console.log(result.paymentDetails);
                 if (result.status === "Success") {
                     const paymentDetailsArray = result.paymentDetails.map((paymentDetail: string) =>
                         JSON.parse(paymentDetail)
@@ -396,47 +397,19 @@ const TestAPI: React.FC = () => {
                     />
                 )}
                 {showShippingAddresses && (
-                    <div>
-                        <h2>Shipping Addresses</h2>
-                        <ul>
-                            {currentUserShippingAddresses.map(
-                                (address, index) => (
-                                    <li key={index}>{address}</li>
-                                )
-                            )}
-                        </ul>
-                    </div>
+                    <UsersShippingAddressesServlet
+                        addresses={currentUserShippingAddresses}
+                    />
                 )}
                 {showBillingAddresses && (
-                    <div>
-                        <h2>Billing Addresses</h2>
-                        <ul>
-                            {currentUserBillingAddresses.map(
-                                (address, index) => (
-                                    <li key={index}>{address}</li>
-                                )
-                            )}
-                        </ul>
-                    </div>
+                    <UsersShippingAddressesServlet
+                        addresses={currentUserBillingAddresses}
+                    />
                 )}
                 {showPaymentDetails && (
-                    <div>
-                        <h2>Payment Details</h2>
-                        <ul>
-                            {currentUserPaymentDetails.map((payment, index) => (
-                                <div
-                                key={index}
-                                style={{
-                                    border: "1px solid #ccc",
-                                    padding: "10px",
-                                }}>
-                                    <p>Payment ID: {payment.paymentID}</p>
-                                    <p>Payment Method: {payment.paymentMethod}</p>
-                                    <p>Card Number: {payment.cardNumber}</p>
-                                </div>
-                            ))}
-                        </ul>
-                    </div>
+                    <UsersPaymentDetailsServlet
+                        paymentDetails={currentUserPaymentDetails}
+                    />
                 )}
             </div>
         </div>

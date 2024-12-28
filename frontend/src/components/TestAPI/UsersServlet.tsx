@@ -8,7 +8,7 @@ interface UsersServletProps {
 const UsersServlet: React.FC<UsersServletProps> = ({ users }) => {
     return (
         <div>
-            <h1>User Data</h1>
+            <h2>User Data</h2>
             {users.map((user) => (
                 <div
                     key={user.email}

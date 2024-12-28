@@ -16,7 +16,7 @@ const UsersLoginServlet: React.FC<UsersLoginServletProps> = ({
 }) => {
     return (
         <div>
-            <h1>User Login Status</h1>
+            <h2>User Login Status</h2>
             <div>
                 Email: {userEmail}
                 <br />

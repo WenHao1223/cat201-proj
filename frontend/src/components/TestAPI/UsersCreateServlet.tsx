@@ -30,7 +30,7 @@ const UsersCreateServlet: React.FC<UsersCreateServletProps> = ({
 }) => {
     return (
         <div>
-            <h1>Create Account Status</h1>
+            <h2>Create Account Status</h2>
             <div>
                 Username: {username}
                 <br />

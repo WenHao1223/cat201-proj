@@ -8,7 +8,7 @@ const App: React.FC = () => {
     return (
         <Router>
             <div>
-                <h1>Welcome to Vite with React!</h1>
+                <h1>Chef's Aura</h1>
                 <div>
                     <Link to="/testapi">
                         <button>Go to Test API Page</button>
