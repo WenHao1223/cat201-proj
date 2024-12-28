@@ -17,6 +17,7 @@ import UsersEditProfileServlet from "@components/TestAPI/UsersEditProfileServlet
 import UsersChangePasswordServlet from "@components/TestAPI/UsersChangePasswordServlet";
 import UsersShippingAddressesAddServlet from "@components/TestAPI/UsersShippingAddressesAddServlet";
 import UsersShippingAddressesUpdateServlet from "@components/TestAPI/UsersShippingAddressesUpdateServlet";
+import UsersShippingAddressesRemoveServlet from "@components/TestAPI/UsersShippingAddressRemoveServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -113,6 +114,14 @@ const TestAPI: React.FC = () => {
     const [updateShippingAddress, setUpdateShippingAddress] =
         useState<string>("");
 
+    // Remove shipping address
+    const [showRemoveShippingAddress, setShowRemoveShippingAddress] =
+        useState<boolean>(false);
+    const [removeShippingAddressStatus, setRemoveShippingAddressStatus] =
+        useState<boolean>(false);
+    const [removeShippingAddress, setRemoveShippingAddress] =
+        useState<string>("");
+
     // Reset all states to default
     const setToDefault = () => {
         setShowUsers(false);
@@ -126,6 +135,7 @@ const TestAPI: React.FC = () => {
         setShowChangePassword(false);
         setShowAddShippingAddress(false);
         setShowUpdateShippingAddress(false);
+        setShowRemoveShippingAddress(false);
     };
 
     const handleApiCall = async (
@@ -191,7 +201,7 @@ const TestAPI: React.FC = () => {
         );
     };
 
-    const validateUserLogin = async (email: string, password: string) => {
+    const validateUserLoginMethod = async (email: string, password: string) => {
         setUserEmail(email);
         setUserPassword(password);
         await handleApiCall(
@@ -213,7 +223,7 @@ const TestAPI: React.FC = () => {
         );
     };
 
-    const createUserAccount = async (
+    const createUserAccountMethod = async (
         username: string,
         email: string,
         password: string,
@@ -264,7 +274,7 @@ const TestAPI: React.FC = () => {
         );
     };
 
-    const viewCurrentUserShippingAddresses = async () => {
+    const viewCurrentUserShippingAddressesMethod = async () => {
         await handleApiCall(
             `http://localhost:9090/api/users/shippingAddresses?email=${userEmail}`,
             "GET",
@@ -286,7 +296,7 @@ const TestAPI: React.FC = () => {
         );
     };
 
-    const viewCurrentUserBillingAddresses = async () => {
+    const viewCurrentUserBillingAddressesMethod = async () => {
         await handleApiCall(
             `http://localhost:9090/api/users/billingAddresses?email=${userEmail}`,
             "GET",
@@ -308,7 +318,7 @@ const TestAPI: React.FC = () => {
         );
     };
 
-    const viewCurrentUserPaymentDetails = async () => {
+    const viewCurrentUserPaymentDetailsMethod = async () => {
         await handleApiCall(
             `http://localhost:9090/api/users/paymentDetails?email=${userEmail}`,
             "GET",
@@ -331,7 +341,7 @@ const TestAPI: React.FC = () => {
         );
     };
 
-    const editProfile = async (field: string, value: string) => {
+    const editProfileMethod = async (field: string, value: string) => {
         setEditField(field);
         setEditValue(value);
         await handleApiCall(
@@ -356,7 +366,7 @@ const TestAPI: React.FC = () => {
         );
     };
 
-    const changePassword = async (
+    const changePasswordMethod = async (
         currentPassword: string,
         newPassword: string
     ) => {
@@ -383,7 +393,7 @@ const TestAPI: React.FC = () => {
         );
     };
 
-    const addShippingAddress = async (newShippingAddress: string) => {
+    const addShippingAddressMethod = async (newShippingAddress: string) => {
         setNewShippingAddress(newShippingAddress);
         await handleApiCall(
             "http://localhost:9090/api/users/shippingAddresses/add",
@@ -410,7 +420,7 @@ const TestAPI: React.FC = () => {
         );
     };
 
-    const updateShippingAddressServlet = async (
+    const updateShippingAddressMethod = async (
         index: number,
         updateShippingAddress: string
     ) => {
@@ -442,6 +452,33 @@ const TestAPI: React.FC = () => {
         );
     };
 
+    const removeShippingAddressMethod = async (removedAddress: string) => {
+        setRemoveShippingAddress(removedAddress);
+        await handleApiCall(
+            "http://localhost:9090/api/users/shippingAddresses/remove",
+            "DELETE",
+            {
+                email: userEmail,
+                removedAddress,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setRemoveShippingAddressStatus(true);
+                    setCurrentUserShippingAddresses(
+                        JSON.parse(result.shippingAddresses)
+                    );
+                } else {
+                    setError(
+                        "\n Error removing shipping address: " + result.message
+                    );
+                }
+                setToDefault();
+                setShowRemoveShippingAddress(true);
+            },
+            (error) => setError("\n Error removing shipping address: " + error)
+        );
+    };
+
     return (
         <div>
             <h1>Test API Page</h1>
@@ -449,14 +486,14 @@ const TestAPI: React.FC = () => {
             <button onClick={fetchProductData}>Fetch Product Data</button>
             <button
                 onClick={() =>
-                    validateUserLogin("jdoe@example.com", "password123")
+                    validateUserLoginMethod("jdoe@example.com", "password123")
                 }
             >
                 Validate User Login
             </button>
             <button
                 onClick={() =>
-                    createUserAccount(
+                    createUserAccountMethod(
                         "jdoe",
                         "testRegistering@example.com",
                         "password123",
@@ -472,26 +509,30 @@ const TestAPI: React.FC = () => {
             >
                 Create Account
             </button>
-            <button onClick={viewCurrentUserShippingAddresses}>
+            <button onClick={viewCurrentUserShippingAddressesMethod}>
                 View Shipping Addresses
             </button>
-            <button onClick={viewCurrentUserBillingAddresses}>
+            <button onClick={viewCurrentUserBillingAddressesMethod}>
                 View Billing Addresses
             </button>
-            <button onClick={viewCurrentUserPaymentDetails}>
+            <button onClick={viewCurrentUserPaymentDetailsMethod}>
                 View Payment Details
             </button>
-            <button onClick={() => editProfile("phoneNo", "+6011-5860 6808")}>
+            <button
+                onClick={() => editProfileMethod("phoneNo", "+6011-5860 6808")}
+            >
                 Edit Profile
             </button>
             <button
-                onClick={() => changePassword("password123", "password1234")}
+                onClick={() =>
+                    changePasswordMethod("password123", "password1234")
+                }
             >
                 Change Password
             </button>
             <button
                 onClick={() =>
-                    addShippingAddress(
+                    addShippingAddressMethod(
                         "123, Test Street, Test City, Test State, Test Country, 12345"
                     )
                 }
@@ -500,13 +541,22 @@ const TestAPI: React.FC = () => {
             </button>
             <button
                 onClick={() =>
-                    updateShippingAddressServlet(
+                    updateShippingAddressMethod(
                         0,
                         "123, Test Street, Test City, Test State, Test Country, 12345"
                     )
                 }
             >
                 Update Shipping Address
+            </button>
+            <button
+                onClick={() =>
+                    removeShippingAddressMethod(
+                        "234 Elm St, Kuala Lumpur"
+                    )
+                }
+            >
+                Remove Shipping Address
             </button>
 
             <div>
@@ -581,6 +631,13 @@ const TestAPI: React.FC = () => {
                     <UsersShippingAddressesUpdateServlet
                         updateAddress={updateShippingAddress}
                         updateAddressStatus={updateShippingAddressStatus}
+                        addresses={currentUserShippingAddresses}
+                    />
+                )}
+                {showRemoveShippingAddress && (
+                    <UsersShippingAddressesRemoveServlet
+                        removeShippingAddress={removeShippingAddress}
+                        removeAddressStatus={removeShippingAddressStatus}
                         addresses={currentUserShippingAddresses}
                     />
                 )}

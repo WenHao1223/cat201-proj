@@ -915,3 +915,17 @@
 0:0:0:0:0:0:0:1 - - [28/Dec/2024:16:57:07 +0800] "OPTIONS /api/users/shippingAddresses/update HTTP/1.1" 200 - http-bio-9090-exec-9 2
 0:0:0:0:0:0:0:1 - - [28/Dec/2024:16:57:07 +0800] "PUT /api/users/shippingAddresses/update HTTP/1.1" 200 140 http-bio-9090-exec-10 4
 0:0:0:0:0:0:0:1 - - [28/Dec/2024:16:57:08 +0800] "GET /api/users/shippingAddresses?email=jdoe@example.com HTTP/1.1" 200 140 http-bio-9090-exec-10 1
+0:0:0:0:0:0:0:1 - - [28/Dec/2024:17:14:52 +0800] "OPTIONS /api/users HTTP/1.1" 200 - http-bio-9090-exec-1 26
+0:0:0:0:0:0:0:1 - - [28/Dec/2024:17:14:52 +0800] "GET /api/users HTTP/1.1" 200 7673 http-bio-9090-exec-3 7
+0:0:0:0:0:0:0:1 - - [28/Dec/2024:17:14:54 +0800] "OPTIONS /api/users/login HTTP/1.1" 200 - http-bio-9090-exec-2 3
+0:0:0:0:0:0:0:1 - - [28/Dec/2024:17:14:54 +0800] "POST /api/users/login HTTP/1.1" 200 238 http-bio-9090-exec-4 7
+0:0:0:0:0:0:0:1 - - [28/Dec/2024:17:14:55 +0800] "OPTIONS /api/users/shippingAddresses?email=jdoe@example.com HTTP/1.1" 200 - http-bio-9090-exec-5 2
+0:0:0:0:0:0:0:1 - - [28/Dec/2024:17:14:55 +0800] "GET /api/users/shippingAddresses?email=jdoe@example.com HTTP/1.1" 200 105 http-bio-9090-exec-6 4
+0:0:0:0:0:0:0:1 - - [28/Dec/2024:17:14:58 +0800] "OPTIONS /api/users/shippingAddresses/update HTTP/1.1" 200 - http-bio-9090-exec-7 2
+0:0:0:0:0:0:0:1 - - [28/Dec/2024:17:14:58 +0800] "PUT /api/users/shippingAddresses/update HTTP/1.1" 200 140 http-bio-9090-exec-8 4
+0:0:0:0:0:0:0:1 - - [28/Dec/2024:17:15:01 +0800] "OPTIONS /api/users/shippingAddresses?email=jdoe@example.com HTTP/1.1" 200 - http-bio-9090-exec-9 1
+0:0:0:0:0:0:0:1 - - [28/Dec/2024:17:15:01 +0800] "GET /api/users/shippingAddresses?email=jdoe@example.com HTTP/1.1" 200 140 http-bio-9090-exec-10 2
+0:0:0:0:0:0:0:1 - - [28/Dec/2024:17:15:05 +0800] "OPTIONS /api/users/shippingAddresses/remove HTTP/1.1" 200 - http-bio-9090-exec-9 2
+0:0:0:0:0:0:0:1 - - [28/Dec/2024:17:15:05 +0800] "DELETE /api/users/shippingAddresses/remove HTTP/1.1" 200 111 http-bio-9090-exec-10 2
+0:0:0:0:0:0:0:1 - - [28/Dec/2024:17:15:07 +0800] "OPTIONS /api/users/shippingAddresses?email=jdoe@example.com HTTP/1.1" 200 - http-bio-9090-exec-9 1
+0:0:0:0:0:0:0:1 - - [28/Dec/2024:17:15:07 +0800] "GET /api/users/shippingAddresses?email=jdoe@example.com HTTP/1.1" 200 111 http-bio-9090-exec-10 2
