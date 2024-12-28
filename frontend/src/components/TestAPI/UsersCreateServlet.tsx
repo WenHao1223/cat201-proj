@@ -2,57 +2,39 @@ import React from "react";
 import { UserInterface } from "@interfaces/API/UserInterface";
 
 interface UsersCreateServletProps {
-    username: string;
-    email: string;
-    password: string;
-    nationality: string;
-    firstName: string;
-    lastName: string;
-    phoneNo: string;
-    gender: Number;
-    dob: string;
-    agreeToTerms: boolean;
+    craeteAccountObject: UserInterface;
     createAccountStatus: boolean;
 }
 
 const UsersCreateServlet: React.FC<UsersCreateServletProps> = ({
-    username,
-    email,
-    password,
-    nationality,
-    firstName,
-    lastName,
-    phoneNo,
-    gender,
-    dob,
-    agreeToTerms,
+    craeteAccountObject,
     createAccountStatus,
 }) => {
     return (
         <div>
             <h2>Create Account Status</h2>
             <div>
-                Username: {username}
+                Username: {craeteAccountObject.username}
                 <br />
-                Email: {email}
+                Email: {craeteAccountObject.email}
                 <br />
-                Password: {password}
+                Password: {craeteAccountObject.password}
                 <br />
-                Nationality: {nationality}
+                Nationality: {craeteAccountObject.nationality}
                 <br />
-                First Name: {firstName}
+                First Name: {craeteAccountObject.firstName}
                 <br />
-                Last Name: {lastName}
+                Last Name: {craeteAccountObject.lastName}
                 <br />
-                Phone No: {phoneNo}
+                Phone No: {craeteAccountObject.phoneNo}
                 <br />
-                Gender: {gender == 1 ? "Male" : "Female"}
+                Gender: {craeteAccountObject.gender}
                 <br />
-                Date of Birth: {dob}
+                Date of Birth: {craeteAccountObject.dob}
                 <br />
-                Agree to Terms: {agreeToTerms ? "Yes" : "No"}
+                Agree to Terms: {craeteAccountObject.agreeToTerms ? "Yes" : "No"}
                 <hr />
-                Create account status: {createAccountStatus ? "Success" : "Failure"}
+                Create Account Status: {createAccountStatus ? "Success" : "Failed"}
             </div>
         </div>
     );

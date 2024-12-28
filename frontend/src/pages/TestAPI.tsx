@@ -49,23 +49,18 @@ const TestAPI: React.FC = () => {
         useState<boolean>(false);
     const [createAccountStatus, setCreateAccountStatus] =
         useState<boolean>(false);
-    const [createAccountUsername, setCreateAccountUsername] =
-        useState<string>("");
-    const [createAccountEmail, setCreateAccountEmail] = useState<string>("");
-    const [createAccountPassword, setCreateAccountPassword] =
-        useState<string>("");
-    const [createAccountNationality, setCreateAccountNationality] =
-        useState<string>("");
-    const [createAccountFirstName, setCreateAccountFirstName] =
-        useState<string>("");
-    const [createAccountLastName, setCreateAccountLastName] =
-        useState<string>("");
-    const [createAccountPhoneNo, setCreateAccountPhoneNo] =
-        useState<string>("");
-    const [createAccountGender, setCreateAccountGender] = useState<Number>(0);
-    const [createAccountDOB, setCreateAccountDOB] = useState<string>("");
-    const [createAccountAgreeToTerms, setCreateAccountAgreeToTerms] =
-        useState<boolean>(false);
+    const [craeteAccountObject, setCreateAccountObject] = useState<UserInterface>({
+        username: "",
+        email: "",
+        password: "",
+        nationality: "",
+        firstName: "",
+        lastName: "",
+        phoneNo: "",
+        gender: 0,
+        dob: "",
+        agreeToTerms: false,
+    });
 
     // View all shipping addresses of current user
     const [showShippingAddresses, setShowShippingAddresses] =
@@ -277,20 +272,22 @@ const TestAPI: React.FC = () => {
         firstName: string,
         lastName: string,
         phoneNo: string,
-        gender: Number,
+        gender: number,
         dob: string,
         agreeToTerms: boolean
     ) => {
-        setCreateAccountUsername(username);
-        setCreateAccountEmail(email);
-        setCreateAccountPassword(password);
-        setCreateAccountNationality(nationality);
-        setCreateAccountFirstName(firstName);
-        setCreateAccountLastName(lastName);
-        setCreateAccountPhoneNo(phoneNo);
-        setCreateAccountGender(gender);
-        setCreateAccountDOB(dob);
-        setCreateAccountAgreeToTerms(agreeToTerms);
+        setCreateAccountObject({
+            username,
+            email,
+            password,
+            nationality,
+            firstName,
+            lastName,
+            phoneNo,
+            gender,
+            dob,
+            agreeToTerms,
+        });
 
         await handleApiCall(
             "http://localhost:9090/api/users/create",
@@ -786,16 +783,7 @@ const TestAPI: React.FC = () => {
                 )}
                 {showUsersCreateAccount && (
                     <UsersCreateServlet
-                        username={createAccountUsername}
-                        email={createAccountEmail}
-                        password={createAccountPassword}
-                        nationality={createAccountNationality}
-                        firstName={createAccountFirstName}
-                        lastName={createAccountLastName}
-                        phoneNo={createAccountPhoneNo}
-                        gender={createAccountGender}
-                        dob={createAccountDOB}
-                        agreeToTerms={createAccountAgreeToTerms}
+                        craeteAccountObject={craeteAccountObject}
                         createAccountStatus={createAccountStatus}
                     />
                 )}
