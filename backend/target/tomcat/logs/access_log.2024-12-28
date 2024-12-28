@@ -101,3 +101,7 @@
 127.0.0.1 - - [28/Dec/2024:13:13:29 +0800] "POST /api/users/create HTTP/1.1" 200 65 http-bio-9090-exec-3 7
 0:0:0:0:0:0:0:1 - - [28/Dec/2024:13:13:37 +0800] "OPTIONS /api/users/create HTTP/1.1" 200 - http-bio-9090-exec-5 1
 0:0:0:0:0:0:0:1 - - [28/Dec/2024:13:13:37 +0800] "POST /api/users/create HTTP/1.1" 200 31 http-bio-9090-exec-6 2
+0:0:0:0:0:0:0:1 - - [28/Dec/2024:13:19:19 +0800] "GET /api/users/billingAddresses?email= HTTP/1.1" 200 53 http-bio-9090-exec-1 24
+0:0:0:0:0:0:0:1 - - [28/Dec/2024:13:19:21 +0800] "OPTIONS /api/users/login HTTP/1.1" 200 - http-bio-9090-exec-2 1
+0:0:0:0:0:0:0:1 - - [28/Dec/2024:13:19:21 +0800] "POST /api/users/login HTTP/1.1" 200 238 http-bio-9090-exec-4 4
+0:0:0:0:0:0:0:1 - - [28/Dec/2024:13:19:22 +0800] "GET /api/users/billingAddresses?email=jdoe@example.com HTTP/1.1" 200 75 http-bio-9090-exec-3 2

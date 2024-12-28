@@ -15,7 +15,7 @@ after clicking login button
 ## Register
 ### Create account
 #### /api/users/create
-#### UsersCreateServlet
+#### UsersCreateServlet.java
 - parse username, email, password, nationality, firstName, lastname, phoneNo, gender, dob, agreeToTerms
 - return true if account is created
 - return err if server is disconnected; missing information; wrong format; existing username; existing email
@@ -25,6 +25,8 @@ after clicking login button
 
 ## Profile
 ### View all shipping addresses
+#### /api/users/shippingAddresses
+#### UsersShippingAddressesServlet.java
 after user clicking the Shipping Address option
 - parse email(from sys)
 - return list [shipping address]
@@ -32,6 +34,8 @@ after user clicking the Shipping Address option
 - return err if session expired; server disconnected
 - frontend needs to handle cases where the user does not have any shipping addresses
 ### View all billing addresses
+#### /api/users/billingAddresses
+#### UsersBillingAddressesServlet.java
 after user clicking the Billing Address option
 - parse email(from sys)
 - return list [billing address]
@@ -39,6 +43,8 @@ after user clicking the Billing Address option
 - return err if session expired; server disconnected
 - frontend needs to handle cases where the user does not have any billing addresses
 ### View all payment details
+#### /api/users/paymentDetails
+#### UsersPaymentDetailsServlet.java
 after user clicking the Payment Details option
 - parse email(from sys)
 - return list [maps {payment id, payment method, card number (last 4 digits if payment method is credit_card / debit_card)}]

@@ -60,12 +60,17 @@ const TestAPI: React.FC = () => {
     const [currentUserShippingAddresses, setCurrentUserShippingAddresses] =
         useState<string[]>([]);
 
+    // View all billing addresses of current user
+    const [showBillingAddresses, setShowBillingAddresses] = useState<boolean>(false);
+    const [currentUserBillingAddresses, setCurrentUserBillingAddresses] = useState<string[]>([]);
+
     const setToDefault = () => {
         setShowUsers(false);
         setShowProducts(false);
         setShowUserLoginStatus(false);
         setShowUsersCreateAccount(false);
         setShowShippingAddresses(false);
+        setShowBillingAddresses(false);
     };
 
     const fetchUserData = async () => {
@@ -258,6 +263,46 @@ const TestAPI: React.FC = () => {
         }
     };
 
+    const viewCurrentUserBillingAddresses = async () => {
+        try {
+            const response = await fetch(
+                "http://localhost:9090/api/users/billingAddresses?email=" +
+                    userEmail
+            );
+            let result;
+            if (response.ok) {
+                result = await response.json();
+                if (result.status === "Success") {
+                    setCurrentUserBillingAddresses(
+                        JSON.parse(result.billingAddresses)
+                    );
+                    setError(null);
+                } else {
+                    setError(
+                        "\n Error viewing billing addresses: " + result.message
+                    );
+                }
+            } else {
+                console.error(
+                    "HTTP error",
+                    response.status,
+                    response.statusText
+                );
+                setError(
+                    "\n Error viewing billing addresses: " +
+                        response.statusText
+                );
+            }
+
+            setToDefault();
+            setShowBillingAddresses(true);
+        } catch (err) {
+            setError(
+                "\n Error viewing billing addresses: " + (err as Error).message
+            );
+        }
+    };
+
     return (
         <div>
             <h1>Test API Page</h1>
@@ -273,6 +318,9 @@ const TestAPI: React.FC = () => {
             <button onClick={createUserAccount}>Create Account</button>
             <button onClick={viewCurrentUserShippingAddresses}>
                 View Shipping Addresses
+            </button>
+            <button onClick={viewCurrentUserBillingAddresses}>
+                View Billing Addresses
             </button>
             <div>
                 <p style={{ color: "red" }}>{error}</p>
@@ -310,6 +358,18 @@ const TestAPI: React.FC = () => {
                         <h2>Shipping Addresses</h2>
                         <ul>
                             {currentUserShippingAddresses.map(
+                                (address, index) => (
+                                    <li key={index}>{address}</li>
+                                )
+                            )}
+                        </ul>
+                    </div>
+                )}
+                {showBillingAddresses && (
+                    <div>
+                        <h2>Billing Addresses</h2>
+                        <ul>
+                            {currentUserBillingAddresses.map(
                                 (address, index) => (
                                     <li key={index}>{address}</li>
                                 )
