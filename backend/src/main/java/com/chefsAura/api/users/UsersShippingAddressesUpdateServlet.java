@@ -54,15 +54,23 @@ public class UsersShippingAddressesUpdateServlet extends HttpServlet {
             User user = UserCollection.getUserByEmail(email);
 
             if (user != null) {
-                user.updateShippingAddress(index, updateShippingAddress);
-                List<String> shippingAddresses = user.getShippingAddresses();
+                try {
+                    user.updateShippingAddress(index, updateShippingAddress);
+                    List<String> shippingAddresses = user.getShippingAddresses();
 
-                // Convert the list to a JSON array
-                JsonArray jsonShippingAddresses = gson.toJsonTree(shippingAddresses).getAsJsonArray();
+                    // Convert the list to a JSON array
+                    JsonArray jsonShippingAddresses = gson.toJsonTree(shippingAddresses).getAsJsonArray();
 
-                // Create JSON response
-                jsonResponse.addProperty("status", "Success");
-                jsonResponse.addProperty("shippingAddresses", jsonShippingAddresses.toString());
+                    // Create JSON response
+                    jsonResponse.addProperty("status", "Success");
+                    jsonResponse.addProperty("shippingAddresses", jsonShippingAddresses.toString());
+                } catch (IndexOutOfBoundsException e) {
+                    jsonResponse.addProperty("status", "Error");
+                    jsonResponse.addProperty("message", "Index out of bounds");
+                } catch (Exception e) {
+                    jsonResponse.addProperty("status", "Error");
+                    jsonResponse.addProperty("message", e.getMessage());
+                }
 
             } else {
                 jsonResponse.addProperty("status", "Error");

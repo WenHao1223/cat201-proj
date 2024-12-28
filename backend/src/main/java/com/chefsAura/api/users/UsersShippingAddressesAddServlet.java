@@ -53,16 +53,20 @@ public class UsersShippingAddressesAddServlet extends HttpServlet {
             User user = UserCollection.getUserByEmail(email);
 
             if (user != null) {
-                user.addShippingAddress(newShippingAddress);
-                List<String> shippingAddresses = user.getShippingAddresses();
+                try {
+                    user.addShippingAddress(newShippingAddress);
+                    List<String> shippingAddresses = user.getShippingAddresses();
 
-                // Convert the list to a JSON array
-                JsonArray jsonShippingAddresses = gson.toJsonTree(shippingAddresses).getAsJsonArray();
+                    // Convert the list to a JSON array
+                    JsonArray jsonShippingAddresses = gson.toJsonTree(shippingAddresses).getAsJsonArray();
 
-                // Create JSON response
-                jsonResponse.addProperty("status", "Success");
-                jsonResponse.addProperty("shippingAddresses", jsonShippingAddresses.toString());
-
+                    // Create JSON response
+                    jsonResponse.addProperty("status", "Success");
+                    jsonResponse.addProperty("shippingAddresses", jsonShippingAddresses.toString());
+                } catch (Exception e) {
+                    jsonResponse.addProperty("status", "Error");
+                    jsonResponse.addProperty("message", e.getMessage());
+                }
             } else {
                 jsonResponse.addProperty("status", "Error");
                 jsonResponse.addProperty("message", "User not found");

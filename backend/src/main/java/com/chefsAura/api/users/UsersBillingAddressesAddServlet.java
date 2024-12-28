@@ -53,16 +53,20 @@ public class UsersBillingAddressesAddServlet extends HttpServlet {
             User user = UserCollection.getUserByEmail(email);
 
             if (user != null) {
-                user.addBillingAddress(newBillingAddress);
-                List<String> billingAddresses = user.getBillingAddresses();
+                try {
+                    user.addBillingAddress(newBillingAddress);
+                    List<String> billingAddresses = user.getBillingAddresses();
 
-                // Convert the list to a JSON array
-                JsonArray jsonBillingAddresses = gson.toJsonTree(billingAddresses).getAsJsonArray();
+                    // Convert the list to a JSON array
+                    JsonArray jsonBillingAddresses = gson.toJsonTree(billingAddresses).getAsJsonArray();
 
-                // Create JSON response
-                jsonResponse.addProperty("status", "Success");
-                jsonResponse.addProperty("billingAddresses", jsonBillingAddresses.toString());
-
+                    // Create JSON response
+                    jsonResponse.addProperty("status", "Success");
+                    jsonResponse.addProperty("billingAddresses", jsonBillingAddresses.toString());
+                } catch (Exception e) {
+                    jsonResponse.addProperty("status", "Error");
+                    jsonResponse.addProperty("message", "Failed to add billing address");
+                }
             } else {
                 jsonResponse.addProperty("status", "Error");
                 jsonResponse.addProperty("message", "User not found");

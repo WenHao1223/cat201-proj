@@ -144,12 +144,24 @@ public class User {
 
     // add shipping address
     public void addShippingAddress(String newShippingAddress) {
+        for (String shippingAddress : this.shippingAddresses) {
+            if (shippingAddress.equals(newShippingAddress)) {
+                System.err.println("Shipping address already exists");
+                throw new IllegalArgumentException("Shipping address already exists");
+            }
+        }
         this.shippingAddresses.add(newShippingAddress);
         System.out.println("Shipping address added successfully");
     }
 
     // update shipping address (by index)
     public void updateShippingAddress(int index, String newShippingAddress) {
+        for (String shippingAddress : this.shippingAddresses) {
+            if (shippingAddress.equals(newShippingAddress)) {
+                System.err.println("Shipping address already exists");
+                throw new IllegalArgumentException("Shipping address already exists");
+            }
+        }
         this.shippingAddresses.set(index, newShippingAddress);
         System.out.println("Shipping address updated successfully");
     }
@@ -162,12 +174,24 @@ public class User {
 
     // add billing address
     public void addBillingAddress(String newshippingAddress) {
+        for (String billingAddress : this.billingAddresses) {
+            if (billingAddress.equals(newshippingAddress)) {
+                System.err.println("Billing address already exists");
+                throw new IllegalArgumentException("Billing address already exists");
+            }
+        }
         this.billingAddresses.add(newshippingAddress);
         System.out.println("Billing address added successfully");
     }
 
     // update billing address (by index)
     public void updateBillingAddress(int index, String newBillingAddress) {
+        for (String billingAddress : this.billingAddresses) {
+            if (billingAddress.equals(newBillingAddress)) {
+                System.err.println("Billing address already exists");
+                throw new IllegalArgumentException("Billing address already exists");
+            }
+        }
         this.billingAddresses.set(index, newBillingAddress);
         System.out.println("Billing address updated successfully");
     }
