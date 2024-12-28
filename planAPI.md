@@ -110,6 +110,8 @@ username, nationality, firstName, lastName, phoneNo, gender, dob
 - return err if session expired; server disconnected; user not found
 - mask sensitive information like card numbers
 ### Remove payment details
+#### /api/users/paymentDetails/remove
+#### UsersPaymentDetailsRemoveServlet.java
 - parse email (from sys), paymentID
 - return true if payment details are removed
 - return err if paymentID is not found; session expired; server disconnected; user not found

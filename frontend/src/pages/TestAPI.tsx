@@ -23,6 +23,7 @@ import UsersBillingAddressesAddServlet from "@components/TestAPI/UsersBillingAdd
 import UsersBillingAddressesUpdateServlet from "@components/TestAPI/UsersBillingAddressesUpdateServlet";
 import UsersBillingAddressesRemoveServlet from "@components/TestAPI/UsersBillingAddressesRemoveServlet";
 import UsersPaymentDetailsAddServlet from "@components/TestAPI/UsersPaymentDetailsAddServlet";
+import UsersPaymentDetailsRemoveServlet from "@components/TestAPI/UsersPaymentDetailsRemoveServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -160,6 +161,11 @@ const TestAPI: React.FC = () => {
             cvv: "",
         });
 
+    // Remove payment detail (by payment ID)
+    const [showRemovePaymentDetail, setShowRemovePaymentDetail] = useState<boolean>(false);
+    const [removePaymentDetailStatus, setRemovePaymentDetailStatus] = useState<boolean>(false);
+    const [removePaymentDetailIndex, setRemovePaymentDetailIndex] = useState<number>(-1);
+
     // Reset all states to default
     const setToDefault = () => {
         setShowUsers(false);
@@ -178,6 +184,7 @@ const TestAPI: React.FC = () => {
         setShowUpdateBillingAddress(false);
         setShowRemoveBillingAddress(false);
         setShowAddPaymentDetail(false);
+        setShowRemovePaymentDetail(false);
     };
 
     const handleApiCall = async (
@@ -649,6 +656,34 @@ const TestAPI: React.FC = () => {
         );
     };
 
+    const removePaymentDetailMethod = async (paymentID: number) => {
+        setRemovePaymentDetailIndex(paymentID);
+        await handleApiCall(
+            "http://localhost:9090/api/users/paymentDetails/remove",
+            "DELETE",
+            {
+                email: userEmail,
+                paymentID,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setRemovePaymentDetailStatus(true);
+                    const parsedPaymentDetails = result.paymentDetails.map(
+                        (paymentDetail: string) => JSON.parse(paymentDetail)
+                    );
+                    setCurrentUserPaymentDetails(parsedPaymentDetails);
+                } else {
+                    setError(
+                        "\n Error removing payment detail: " + result.message
+                    );
+                }
+                setToDefault();
+                setShowRemovePaymentDetail(true);
+            },
+            (error) => setError("\n Error removing payment detail: " + error)
+        );
+    };
+
     return (
         <div>
             <h1>Test API Page</h1>
@@ -764,6 +799,13 @@ const TestAPI: React.FC = () => {
             >
                 Add Payment Details
             </button>
+            <button
+                onClick={() =>
+                    removePaymentDetailMethod(1)
+                }
+            >
+                Remove Payment Details
+            </button>
 
             <div>
                 {error && <p style={{ color: "red" }}>{error}</p>}
@@ -863,6 +905,13 @@ const TestAPI: React.FC = () => {
                     <UsersPaymentDetailsAddServlet
                         newPaymentDetails={newPaymentDetails}
                         addPaymentDetailStatus={addNewPaymentDetailStatus}
+                        paymentDetails={currentUserPaymentDetails}
+                    />
+                )}
+                {showRemovePaymentDetail && (
+                    <UsersPaymentDetailsRemoveServlet
+                        removePaymentDetailIndex={removePaymentDetailIndex}
+                        removePaymentDetailStatus={removePaymentDetailStatus}
                         paymentDetails={currentUserPaymentDetails}
                     />
                 )}

@@ -142,3 +142,14 @@
 0:0:0:0:0:0:0:1 - - [29/Dec/2024:02:27:21 +0800] "OPTIONS /api/users/paymentDetails/add HTTP/1.1" 200 - http-bio-9090-exec-2 2
 0:0:0:0:0:0:0:1 - - [29/Dec/2024:02:27:21 +0800] "PUT /api/users/paymentDetails/add HTTP/1.1" 200 305 http-bio-9090-exec-4 6
 0:0:0:0:0:0:0:1 - - [29/Dec/2024:02:27:23 +0800] "PUT /api/users/paymentDetails/add HTTP/1.1" 200 63 http-bio-9090-exec-6 4
+0:0:0:0:0:0:0:1 - - [29/Dec/2024:02:39:10 +0800] "OPTIONS /api/users/login HTTP/1.1" 200 - http-bio-9090-exec-1 20
+0:0:0:0:0:0:0:1 - - [29/Dec/2024:02:39:10 +0800] "POST /api/users/login HTTP/1.1" 200 238 http-bio-9090-exec-3 7
+0:0:0:0:0:0:0:1 - - [29/Dec/2024:02:39:14 +0800] "OPTIONS /api/users/paymentDetails?email=jdoe@example.com HTTP/1.1" 200 - http-bio-9090-exec-2 2
+0:0:0:0:0:0:0:1 - - [29/Dec/2024:02:39:14 +0800] "GET /api/users/paymentDetails?email=jdoe@example.com HTTP/1.1" 200 218 http-bio-9090-exec-4 3
+0:0:0:0:0:0:0:1 - - [29/Dec/2024:02:39:16 +0800] "OPTIONS /api/users/paymentDetails/remove HTTP/1.1" 200 - http-bio-9090-exec-5 2
+0:0:0:0:0:0:0:1 - - [29/Dec/2024:02:39:16 +0800] "DELETE /api/users/paymentDetails/remove HTTP/1.1" 405 1071 http-bio-9090-exec-6 2
+0:0:0:0:0:0:0:1 - - [29/Dec/2024:02:39:56 +0800] "OPTIONS /api/users/login HTTP/1.1" 200 - http-bio-9090-exec-1 24
+0:0:0:0:0:0:0:1 - - [29/Dec/2024:02:39:56 +0800] "POST /api/users/login HTTP/1.1" 200 238 http-bio-9090-exec-3 6
+0:0:0:0:0:0:0:1 - - [29/Dec/2024:02:39:58 +0800] "OPTIONS /api/users/paymentDetails/remove HTTP/1.1" 200 - http-bio-9090-exec-2 1
+0:0:0:0:0:0:0:1 - - [29/Dec/2024:02:39:58 +0800] "DELETE /api/users/paymentDetails/remove HTTP/1.1" 200 128 http-bio-9090-exec-4 4
+0:0:0:0:0:0:0:1 - - [29/Dec/2024:02:40:02 +0800] "DELETE /api/users/paymentDetails/remove HTTP/1.1" 200 58 http-bio-9090-exec-6 3

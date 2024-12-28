@@ -227,6 +227,7 @@ public class User {
         }
         // return error
         System.err.println("Payment details not found");
+        throw new IllegalArgumentException("Payment details not found");
     }
 
     // add product to cart
