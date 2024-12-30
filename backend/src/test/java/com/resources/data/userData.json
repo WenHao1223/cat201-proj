@@ -35,7 +35,13 @@
         ],
         "carts": [
             {
-                "productID": "K001",
+                "productID": "B001",
+                "quantity": 1,
+                "sizeIndex": 0,
+                "colorIndex": 0
+            },
+            {
+                "productID": "B002",
                 "quantity": 1,
                 "sizeIndex": 0,
                 "colorIndex": 0
@@ -51,7 +57,7 @@
                 "orderStatus": "Delivered",
                 "cartProducts": [
                     {
-                        "productID": "K001",
+                        "productID": "B002",
                         "quantity": 1,
                         "sizeIndex": 0,
                         "colorIndex": 0
@@ -95,7 +101,7 @@
         ],
         "carts": [
             {
-                "productID": "B001",
+                "productID": "B003",
                 "quantity": 2,
                 "sizeIndex": 0,
                 "colorIndex": 0
@@ -148,7 +154,7 @@
         ],
         "carts": [
             {
-                "productID": "U001",
+                "productID": "PM001",
                 "quantity": 3,
                 "sizeIndex": 0,
                 "colorIndex": 0
@@ -201,7 +207,7 @@
         ],
         "carts": [
             {
-                "productID": "U002",
+                "productID": "PM002",
                 "quantity": 1,
                 "sizeIndex": 0,
                 "colorIndex": 0
@@ -254,7 +260,7 @@
         ],
         "carts": [
             {
-                "productID": "M001",
+                "productID": "PM003",
                 "quantity": 1,
                 "sizeIndex": 0,
                 "colorIndex": 0
@@ -307,7 +313,7 @@
         ],
         "carts": [
             {
-                "productID": "U003",
+                "productID": "PM006",
                 "quantity": 2,
                 "sizeIndex": 0,
                 "colorIndex": 0
@@ -323,7 +329,7 @@
                 "orderStatus": "Delivered",
                 "cartProducts": [
                     {
-                        "productID": "U003",
+                        "productID": "PM004",
                         "quantity": 2,
                         "sizeIndex": 0,
                         "colorIndex": 0
@@ -360,7 +366,7 @@
         ],
         "carts": [
             {
-                "productID": "U004",
+                "productID": "PM005",
                 "quantity": 1,
                 "sizeIndex": 0,
                 "colorIndex": 0
@@ -376,7 +382,7 @@
                 "orderStatus": "Ordered",
                 "cartProducts": [
                     {
-                        "productID": "U004",
+                        "productID": "PM005",
                         "quantity": 1,
                         "sizeIndex": 0,
                         "colorIndex": 0
@@ -413,7 +419,7 @@
         ],
         "carts": [
             {
-                "productID": "U005",
+                "productID": "PM002",
                 "quantity": 1,
                 "sizeIndex": 0,
                 "colorIndex": 0
@@ -429,7 +435,7 @@
                 "orderStatus": "Delivered",
                 "cartProducts": [
                     {
-                        "productID": "U005",
+                        "productID": "PM003",
                         "quantity": 1,
                         "sizeIndex": 0,
                         "colorIndex": 0
