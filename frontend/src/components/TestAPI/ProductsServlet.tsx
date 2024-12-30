@@ -1,8 +1,8 @@
 import React from "react";
-import { Product } from "@interfaces/API/ProductInterface";
+import { ProductInterface } from "@interfaces/API/ProductInterface";
 
 interface ProductsServletProps {
-    products: Product[];
+    products: ProductInterface[];
 }
 
 const ProductsServlet: React.FC<ProductsServletProps> = ({ products }) => {
@@ -26,25 +26,27 @@ const ProductsServlet: React.FC<ProductsServletProps> = ({ products }) => {
                     <p>Brand: {product.brand}</p>
                     <h3>Sizes</h3>
                     <ul>
-                        {product.sizes.map((size, index) => (
+                        {product.sizes.map((size: string, index: any) => (
                             <li key={index}>{size}</li>
                         ))}
                     </ul>
                     <h3>Colors</h3>
                     <ul>
-                        {product.colors.map((color, index) => (
+                        {product.colors.map((color: string, index: any) => (
                             <li key={index}>{color}</li>
                         ))}
                     </ul>
                     <h3>Quantities</h3>
                     <ul>
-                        {product.quantities.map((quantity, index) => (
-                            <li key={index}>
-                                {quantity.map((q, i) => (
-                                    <span key={i}>{q} </span>
-                                ))}
-                            </li>
-                        ))}
+                        {product.quantities.map(
+                            (quantity: number[], index: any) => (
+                                <li key={index}>
+                                    {quantity.map((q, i) => (
+                                        <span key={i}>{q} </span>
+                                    ))}
+                                </li>
+                            )
+                        )}
                     </ul>
                 </div>
             ))}
