@@ -126,9 +126,10 @@ username, nationality, firstName, lastName, phoneNo, gender, dob
 
 ## Product Details
 ### View specific product
-after clicking specific product from homepage
-
-if possible should update quantity in real time
+#### /api/products/<productID>
+#### SpecificProductServlet.java
+- after clicking specific product from homepage
+- if possible should update quantity in real time
 - parse productID (from sys)
 - return maps {productID, name, desccripton, price, category, brand, list [sizes], list [colors], list [quantities]}
 - return null if no products are found

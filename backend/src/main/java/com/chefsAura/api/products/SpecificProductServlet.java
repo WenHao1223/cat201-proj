@@ -12,24 +12,22 @@ import javax.servlet.http.HttpServletResponse;
 import com.chefsAura.models.Inventory;
 import com.google.gson.Gson;
 
-@WebServlet("/api/products")
-public class ProductsServlet extends HttpServlet {
+@WebServlet("/api/products/*")
+public class SpecificProductServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        System.out.println("ProductsServlet initialized.");
+        System.out.println("SpecificProductServlet initialized.");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getPathInfo() != null) {
-            return;
-        }
-        
         // Convert object to JSON using Gson
         Gson gson = new Gson();
-        String jsonResponse = gson.toJson(Inventory.getAllProducts());
+        System.out.println("SpecificProductServlet GET request received with parameters: " + request.getPathInfo().substring(1));
+        String jsonResponse = gson.toJson(Inventory.getProduct(
+                request.getPathInfo().substring(1)));
 
         // Write the response
         PrintWriter out = response.getWriter();

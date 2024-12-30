@@ -24,6 +24,7 @@ import UsersBillingAddressesUpdateServlet from "@components/TestAPI/UsersBilling
 import UsersBillingAddressesRemoveServlet from "@components/TestAPI/UsersBillingAddressesRemoveServlet";
 import UsersPaymentDetailsAddServlet from "@components/TestAPI/UsersPaymentDetailsAddServlet";
 import UsersPaymentDetailsRemoveServlet from "@components/TestAPI/UsersPaymentDetailsRemoveServlet";
+import SpecificProductServlet from "@components/TestAPI/SpecificProductServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -166,6 +167,10 @@ const TestAPI: React.FC = () => {
     const [removePaymentDetailStatus, setRemovePaymentDetailStatus] = useState<boolean>(false);
     const [removePaymentDetailIndex, setRemovePaymentDetailIndex] = useState<number>(-1);
 
+    // View specific product
+    const [showSpecificProduct, setShowSpecificProduct] = useState<boolean>(false);
+    const [specificProduct, setSpecificProduct] = useState<Product | null>(null);
+
     // Reset all states to default
     const setToDefault = () => {
         setShowUsers(false);
@@ -185,6 +190,7 @@ const TestAPI: React.FC = () => {
         setShowRemoveBillingAddress(false);
         setShowAddPaymentDetail(false);
         setShowRemovePaymentDetail(false);
+        setShowSpecificProduct(false);
     };
 
     const handleApiCall = async (
@@ -684,6 +690,20 @@ const TestAPI: React.FC = () => {
         );
     };
 
+    const viewSpecificProductMethod = async (productID: String) => {
+        await handleApiCall(
+            `http://localhost:9090/api/products/${productID}`,
+            "GET",
+            null,
+            async (result) => {
+                setSpecificProduct(result);
+                setToDefault();
+                setShowSpecificProduct(true);
+            },
+            (error) => setError("\n Error viewing specific product: " + error)
+        );
+    }
+
     return (
         <div>
             <h1>Test API Page</h1>
@@ -806,6 +826,13 @@ const TestAPI: React.FC = () => {
             >
                 Remove Payment Details
             </button>
+            <button
+                onClick={() =>
+                    viewSpecificProductMethod("B001")
+                }
+            >
+                View Specific Product
+            </button>
 
             <div>
                 {error && <p style={{ color: "red" }}>{error}</p>}
@@ -913,6 +940,11 @@ const TestAPI: React.FC = () => {
                         removePaymentDetailIndex={removePaymentDetailIndex}
                         removePaymentDetailStatus={removePaymentDetailStatus}
                         paymentDetails={currentUserPaymentDetails}
+                    />
+                )}
+                {showSpecificProduct && specificProduct && (    
+                    <SpecificProductServlet
+                        product={specificProduct}
                     />
                 )}
             </div>

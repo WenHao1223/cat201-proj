@@ -37,7 +37,7 @@ public class Inventory {
             }
         }
         System.err.println("Product not found");
-        return null;
+        throw new IllegalArgumentException("Product not found");
     }
 
     public static void addQuantity(String productID, int sizeIndex, int colorIndex, int quantity) {
