@@ -35,7 +35,7 @@ public class CartServlet extends HttpServlet {
 
         JsonObject jsonResponse = new JsonObject();
 
-        if (email != "") {
+        if (!email.isEmpty()) {
             User user = UserCollection.getUserByEmail(email);
             if (user != null) {
                 List<Cart> carts = user.getCarts();
@@ -70,7 +70,7 @@ public class CartServlet extends HttpServlet {
 
                 // Create JSON response
                 jsonResponse.addProperty("status", "Success");
-                jsonResponse.add("cart", jsonCart);
+                jsonResponse.add("carts", jsonCart);
             } else {
                 jsonResponse.addProperty("status", "Error");
                 jsonResponse.addProperty("message", "User not found");

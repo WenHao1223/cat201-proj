@@ -136,8 +136,8 @@ username, nationality, firstName, lastName, phoneNo, gender, dob
 - return err if product is not found; server disconnected
 - frontend should able to handle if no products are found
 ### Add product to cart
-#### /api/products/add
-#### 
+#### /api/users/cart/add
+#### CartAddServlet.java
 - parse userID (from sys), productID (from sys), quantity, size index, color index
 - return true if item is added to cart
 - return err if user is not found; product is not found; insufficient quantity; index out of range; server disconnected
@@ -146,6 +146,7 @@ username, nationality, firstName, lastName, phoneNo, gender, dob
 Can do a save button in Cart page
 #### View cart
 #### /api/users/cart
+#### CartServket.java
 - parse userID (from sys)
 - return list [product [name, price], quantity, size, color
 - return err if user is not found; product is not found; index out of range; server disconnected]

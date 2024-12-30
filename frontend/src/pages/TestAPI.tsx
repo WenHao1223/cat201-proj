@@ -28,6 +28,7 @@ import UsersPaymentDetailsAddServlet from "@components/TestAPI/UsersPaymentDetai
 import UsersPaymentDetailsRemoveServlet from "@components/TestAPI/UsersPaymentDetailsRemoveServlet";
 import SpecificProductServlet from "@components/TestAPI/SpecificProductServlet";
 import CartServlet from "@components/TestAPI/CartServlet";
+import CartAddServlet from "@components/TestAPI/CartAddServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -178,6 +179,10 @@ const TestAPI: React.FC = () => {
     const [showCarts, setShowCarts] = useState<boolean>(false);
     const [carts, setCarts] = useState<CartGeneralInterface[] | null>(null);
 
+    // Add item to cart
+    const [showAddToCart, setShowAddToCart] = useState<boolean>(false);
+    const [addToCartStatus, setAddToCartStatus] = useState<boolean>(false);
+
     // Reset all states to default
     const setToDefault = () => {
         setShowUsers(false);
@@ -199,6 +204,7 @@ const TestAPI: React.FC = () => {
         setShowRemovePaymentDetail(false);
         setShowSpecificProduct(false);
         setShowCarts(false);
+        setShowAddToCart(false);
     };
 
     const handleApiCall = async (
@@ -719,8 +725,7 @@ const TestAPI: React.FC = () => {
             null,
             async (result) => {
                 if ((await result.status) == "Success") {
-                    console.log(result.cart);
-                    setCarts(result.cart.map((cart: string) => JSON.parse(cart)));
+                    setCarts(result.carts.map((cart: string) => JSON.parse(cart)));
                 } else {
                     setError("\n Error viewing cart: " + result.message);
                 }
@@ -728,6 +733,31 @@ const TestAPI: React.FC = () => {
                 setShowCarts(true);
             },
             (error) => setError("\n Error viewing cart: " + error)
+        );
+    }
+
+    const addToCart = async (productID: string, quantity: number, sizeIndex: number, colorIndex: number) => {
+        await handleApiCall(
+            `http://localhost:9090/api/users/cart/add`,
+            "PUT",
+            {
+                email: userEmail,
+                productID,
+                quantity,
+                sizeIndex,
+                colorIndex
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setAddToCartStatus(true);
+                    setCarts(result.carts.map((cart: string) => JSON.parse(cart)));
+                } else {
+                    setError("\n Error adding to cart: " + result.message);
+                }
+                setToDefault();
+                setShowAddToCart(true);
+            },
+            (error) => setError("\n Error adding to cart: " + error)
         );
     }
 
@@ -867,6 +897,13 @@ const TestAPI: React.FC = () => {
             >
                 View Cart
             </button>
+            <button
+                onClick={() =>
+                    addToCart("B001", 1, 0, 0)
+                }
+            >
+                Add to Cart
+            </button>
 
             <div>
                 {error && <p style={{ color: "red" }}>{error}</p>}
@@ -984,6 +1021,12 @@ const TestAPI: React.FC = () => {
                 {showCarts && carts && (
                     <CartServlet
                         carts={carts}
+                    />
+                )}
+                {showAddToCart && carts && (
+                    <CartAddServlet
+                        carts={carts}
+                        addToCartStatus={addToCartStatus}
                     />
                 )}
             </div>
