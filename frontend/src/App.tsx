@@ -9,6 +9,14 @@ const App: React.FC = () => {
     return (
         <Router>
             <div>
+                <div>
+                    <Link to="/testapi">
+                        <button>Go to Test API Page</button>
+                    </Link>
+                    <Link to="/Main">
+                        <button>Go to Main</button>
+                    </Link>
+                </div>
                 <Routes>
                     <Route path="/testapi" element={<TestAPI />} />
                     <Route path="/Login" element={<Login />} />

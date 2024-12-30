@@ -1,12 +1,33 @@
 import React from "react";
 
-const SamplePage2: React.FC = () => {
+const Register: React.FC = () => {
     return (
-        <div>
-            <h1>Sample Page 2</h1>
-            <p>This is the content of Sample Page 2.</p>
+        <div className="container">
+            <div className="register-form">
+                <div className="title">Register</div>
+                <form action="#">
+                    <div className="input-boxes">
+                        <div className="input-box">
+                            <i className="fas fa-user"></i>
+                            <input type="text" placeholder="Enter your name" required />
+                        </div>
+                        <div className="input-box">
+                            <i className="fas fa-envelope"></i>
+                            <input type="text" placeholder="Enter your email" required />
+                        </div>
+                        <div className="input-box">
+                            <i className="fas fa-lock"></i>
+                            <input type="password" placeholder="Enter your password" required />
+                        </div>
+                        <div className="button input-box">
+                            <input type="submit" value="Submit" />
+                        </div>
+                        <div className="text sign-up-text">Already have an account? <a href="/login">Login now</a></div>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };
 
-export default SamplePage2;
+export default Register;
