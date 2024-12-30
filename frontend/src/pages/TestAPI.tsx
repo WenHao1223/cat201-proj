@@ -5,8 +5,10 @@ import {
     UserGeneralDetailsInterface,
     PaymentGeneralInterface,
     PaymentInterface,
+    CartInterface,
+    CartGeneralInterface,
 } from "@interfaces/API/UserInterface";
-import { Product } from "@interfaces/API/ProductInterface";
+import { ProductInterface } from "@interfaces/API/ProductInterface";
 
 import UsersServlet from "@components/TestAPI/UsersServlet";
 import ProductsServlet from "@components/TestAPI/ProductsServlet";
@@ -25,6 +27,7 @@ import UsersBillingAddressesRemoveServlet from "@components/TestAPI/UsersBilling
 import UsersPaymentDetailsAddServlet from "@components/TestAPI/UsersPaymentDetailsAddServlet";
 import UsersPaymentDetailsRemoveServlet from "@components/TestAPI/UsersPaymentDetailsRemoveServlet";
 import SpecificProductServlet from "@components/TestAPI/SpecificProductServlet";
+import CartServlet from "@components/TestAPI/CartServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -35,7 +38,7 @@ const TestAPI: React.FC = () => {
 
     // Fetch product data
     const [showProducts, setShowProducts] = useState<boolean>(false);
-    const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<ProductInterface[]>([]);
 
     // Validate user login
     const [showUserLoginStatus, setShowUserLoginStatus] =
@@ -169,7 +172,11 @@ const TestAPI: React.FC = () => {
 
     // View specific product
     const [showSpecificProduct, setShowSpecificProduct] = useState<boolean>(false);
-    const [specificProduct, setSpecificProduct] = useState<Product | null>(null);
+    const [specificProduct, setSpecificProduct] = useState<ProductInterface | null>(null);
+
+    // View cart
+    const [showCarts, setShowCarts] = useState<boolean>(false);
+    const [carts, setCarts] = useState<CartGeneralInterface[] | null>(null);
 
     // Reset all states to default
     const setToDefault = () => {
@@ -191,6 +198,7 @@ const TestAPI: React.FC = () => {
         setShowAddPaymentDetail(false);
         setShowRemovePaymentDetail(false);
         setShowSpecificProduct(false);
+        setShowCarts(false);
     };
 
     const handleApiCall = async (
@@ -704,6 +712,25 @@ const TestAPI: React.FC = () => {
         );
     }
 
+    const viewCart = async () => {
+        await handleApiCall(
+            `http://localhost:9090/api/users/cart?email=${userEmail}`,
+            "GET",
+            null,
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    console.log(result.cart);
+                    setCarts(result.cart.map((cart: string) => JSON.parse(cart)));
+                } else {
+                    setError("\n Error viewing cart: " + result.message);
+                }
+                setToDefault();
+                setShowCarts(true);
+            },
+            (error) => setError("\n Error viewing cart: " + error)
+        );
+    }
+
     return (
         <div>
             <h1>Test API Page</h1>
@@ -833,6 +860,13 @@ const TestAPI: React.FC = () => {
             >
                 View Specific Product
             </button>
+            <button
+                onClick={() =>
+                    viewCart()
+                }
+            >
+                View Cart
+            </button>
 
             <div>
                 {error && <p style={{ color: "red" }}>{error}</p>}
@@ -945,6 +979,11 @@ const TestAPI: React.FC = () => {
                 {showSpecificProduct && specificProduct && (    
                     <SpecificProductServlet
                         product={specificProduct}
+                    />
+                )}
+                {showCarts && carts && (
+                    <CartServlet
+                        carts={carts}
                     />
                 )}
             </div>

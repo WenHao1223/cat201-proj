@@ -1,3 +1,5 @@
+// UserInterface.tsx
+
 export interface UserInterface {
     username: string;
     email: string;
@@ -46,6 +48,17 @@ export interface CartInterface {
     quantity: number;
     sizeIndex: number;
     colorIndex: number;
+}
+
+export interface CartGeneralInterface {
+    productID: string;
+    name: string;
+    price: number;
+    category: string;
+    brand: string;
+    quantity: number;
+    size: string;
+    color: string;
 }
 
 export interface OrderInterface {
