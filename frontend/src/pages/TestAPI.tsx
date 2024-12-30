@@ -29,6 +29,7 @@ import UsersPaymentDetailsRemoveServlet from "@components/TestAPI/UsersPaymentDe
 import SpecificProductServlet from "@components/TestAPI/SpecificProductServlet";
 import CartServlet from "@components/TestAPI/CartServlet";
 import CartAddServlet from "@components/TestAPI/CartAddServlet";
+import CartRemoveServlet from "@components/TestAPI/CartRemoveServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -183,6 +184,10 @@ const TestAPI: React.FC = () => {
     const [showAddToCart, setShowAddToCart] = useState<boolean>(false);
     const [addToCartStatus, setAddToCartStatus] = useState<boolean>(false);
 
+    // Remove item from cart
+    const [showRemoveFromCart, setShowRemoveFromCart] = useState<boolean>(false);
+    const [removeFromCartStatus, setRemoveFromCartStatus] = useState<boolean>(false);
+
     // Reset all states to default
     const setToDefault = () => {
         setShowUsers(false);
@@ -205,6 +210,7 @@ const TestAPI: React.FC = () => {
         setShowSpecificProduct(false);
         setShowCarts(false);
         setShowAddToCart(false);
+        setShowRemoveFromCart(false);
     };
 
     const handleApiCall = async (
@@ -761,6 +767,30 @@ const TestAPI: React.FC = () => {
         );
     }
 
+    const removeFromCart = async (productID: string, sizeIndex: number, colorIndex: number) => {
+        await handleApiCall(
+            `http://localhost:9090/api/users/cart/remove`,
+            "DELETE",
+            {
+                email: userEmail,
+                productID,
+                sizeIndex,
+                colorIndex
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setRemoveFromCartStatus(true);
+                    setCarts(result.carts.map((cart: string) => JSON.parse(cart)));
+                } else {
+                    setError("\n Error removing from cart: " + result.message);
+                }
+                setToDefault();
+                setShowRemoveFromCart(true);
+            },
+            (error) => setError("\n Error removing from cart: " + error)
+        );
+    }
+
     return (
         <div>
             <h1>Test API Page</h1>
@@ -904,6 +934,13 @@ const TestAPI: React.FC = () => {
             >
                 Add to Cart
             </button>
+            <button
+                onClick={() =>
+                    removeFromCart("B001", 0, 0)
+                }
+            >
+                Remove from Cart
+            </button>
 
             <div>
                 {error && <p style={{ color: "red" }}>{error}</p>}
@@ -1027,6 +1064,12 @@ const TestAPI: React.FC = () => {
                     <CartAddServlet
                         carts={carts}
                         addToCartStatus={addToCartStatus}
+                    />
+                )}
+                {showRemoveFromCart && carts && (
+                    <CartRemoveServlet
+                        carts={carts}
+                        removeFromCartStatus={removeFromCartStatus}
                     />
                 )}
             </div>

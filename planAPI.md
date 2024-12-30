@@ -151,6 +151,8 @@ Can do a save button in Cart page
 - return list [product [name, price], quantity, size, color
 - return err if user is not found; product is not found; index out of range; server disconnected]
 ### Remove product from cart
+#### /api/users/cart/remove
+#### CartRemoveServlet.java
 - parse userID (from sys), productID (from sys), size index, color index
 - return true if item is removed from cart
 - return err if user is not found; product is not found; index out of range; server disconnected
