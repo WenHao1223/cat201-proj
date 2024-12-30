@@ -92,3 +92,17 @@
 0:0:0:0:0:0:0:1 - - [31/Dec/2024:02:30:31 +0800] "GET /api/users/cart?email=jdoe@example.com HTTP/1.1" 200 687 http-bio-9090-exec-6 2
 0:0:0:0:0:0:0:1 - - [31/Dec/2024:02:30:34 +0800] "OPTIONS /api/users/cart/add HTTP/1.1" 200 - http-bio-9090-exec-7 1
 0:0:0:0:0:0:0:1 - - [31/Dec/2024:02:30:34 +0800] "PUT /api/users/cart/add HTTP/1.1" 200 893 http-bio-9090-exec-8 4
+127.0.0.1 - - [31/Dec/2024:02:40:10 +0800] "OPTIONS /api/products/B001 HTTP/1.1" 200 - http-bio-9090-exec-2 25
+0:0:0:0:0:0:0:1 - - [31/Dec/2024:02:40:10 +0800] "OPTIONS /api/users/cart?email= HTTP/1.1" 200 - http-bio-9090-exec-1 25
+0:0:0:0:0:0:0:1 - - [31/Dec/2024:02:40:10 +0800] "OPTIONS /api/users/cart?email= HTTP/1.1" 200 - http-bio-9090-exec-3 25
+0:0:0:0:0:0:0:1 - - [31/Dec/2024:02:40:10 +0800] "GET /api/products/B001 HTTP/1.1" 200 722 http-bio-9090-exec-8 5
+0:0:0:0:0:0:0:1 - - [31/Dec/2024:02:40:10 +0800] "GET /api/users/cart?email= HTTP/1.1" 200 62 http-bio-9090-exec-9 6
+0:0:0:0:0:0:0:1 - - [31/Dec/2024:02:40:10 +0800] "GET /api/users/cart?email= HTTP/1.1" 200 62 http-bio-9090-exec-10 1
+0:0:0:0:0:0:0:1 - - [31/Dec/2024:02:40:11 +0800] "OPTIONS /api/users/login HTTP/1.1" 200 - http-bio-9090-exec-5 1
+0:0:0:0:0:0:0:1 - - [31/Dec/2024:02:40:11 +0800] "POST /api/users/login HTTP/1.1" 200 238 http-bio-9090-exec-10 2
+0:0:0:0:0:0:0:1 - - [31/Dec/2024:02:40:11 +0800] "OPTIONS /api/users/cart?email=jdoe@example.com HTTP/1.1" 200 - http-bio-9090-exec-5 1
+0:0:0:0:0:0:0:1 - - [31/Dec/2024:02:40:11 +0800] "GET /api/users/cart?email=jdoe@example.com HTTP/1.1" 200 471 http-bio-9090-exec-10 1
+0:0:0:0:0:0:0:1 - - [31/Dec/2024:02:40:17 +0800] "OPTIONS /api/users/cart/remove HTTP/1.1" 200 - http-bio-9090-exec-5 1
+0:0:0:0:0:0:0:1 - - [31/Dec/2024:02:40:17 +0800] "DELETE /api/users/cart/remove HTTP/1.1" 200 245 http-bio-9090-exec-10 4
+0:0:0:0:0:0:0:1 - - [31/Dec/2024:02:40:24 +0800] "OPTIONS /api/users/cart?email=jdoe@example.com HTTP/1.1" 200 - http-bio-9090-exec-5 0
+0:0:0:0:0:0:0:1 - - [31/Dec/2024:02:40:24 +0800] "GET /api/users/cart?email=jdoe@example.com HTTP/1.1" 200 254 http-bio-9090-exec-10 1

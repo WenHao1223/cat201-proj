@@ -235,13 +235,13 @@ public class User {
         // check if product is valid
         if (Inventory.getProduct(newCart.getProductID()) == null) {
             System.err.println("Product not found");
-            return;
+            throw new IllegalArgumentException("Product not found");
         }
         // check if quantity is available
         if (Inventory.getProduct(newCart.getProductID()).getQuantities().get(newCart.getSizeIndex())
                 .get(newCart.getColorIndex()) == 0) {
             System.err.println("Quantity not available");
-            return;
+            throw new IllegalArgumentException("Quantity not available");
         }
         this.carts.add(newCart);
         System.out.println("Product added to cart successfully");
@@ -259,6 +259,7 @@ public class User {
         }
         // return error
         System.err.println("Product not found in cart");
+        throw new IllegalArgumentException("Product not found in cart");
     }
 
     // update product quantity in cart
