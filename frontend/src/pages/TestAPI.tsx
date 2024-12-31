@@ -273,7 +273,7 @@ const TestAPI: React.FC = () => {
         onError: (error: string) => void
     ) => {
         try {
-            const response = await fetch(url, {
+            const response = await fetch("http://localhost:9090/api/" + url, {
                 method: method,
                 headers: {
                     "Content-Type": "application/json",
@@ -302,7 +302,7 @@ const TestAPI: React.FC = () => {
 
     const fetchUserData = async () => {
         await handleApiCall(
-            "http://localhost:9090/api/users",
+            "users",
             "GET",
             null,
             (result) => {
@@ -316,7 +316,7 @@ const TestAPI: React.FC = () => {
 
     const fetchProductData = async () => {
         await handleApiCall(
-            "http://localhost:9090/api/products",
+            "products",
             "GET",
             null,
             (result) => {
@@ -332,7 +332,7 @@ const TestAPI: React.FC = () => {
         setUserEmail(email);
         setUserPassword(password);
         await handleApiCall(
-            "http://localhost:9090/api/users/login",
+            "users/login",
             "POST",
             { email, password },
             async (result) => {
@@ -375,7 +375,7 @@ const TestAPI: React.FC = () => {
         });
 
         await handleApiCall(
-            "http://localhost:9090/api/users/create",
+            "users/create",
             "POST",
             {
                 username,
@@ -404,7 +404,7 @@ const TestAPI: React.FC = () => {
 
     const viewCurrentUserShippingAddressesMethod = async () => {
         await handleApiCall(
-            `http://localhost:9090/api/users/shippingAddresses?email=${userEmail}`,
+            `users/shippingAddresses?email=${userEmail}`,
             "GET",
             null,
             async (result) => {
@@ -426,7 +426,7 @@ const TestAPI: React.FC = () => {
 
     const viewCurrentUserBillingAddressesMethod = async () => {
         await handleApiCall(
-            `http://localhost:9090/api/users/billingAddresses?email=${userEmail}`,
+            `users/billingAddresses?email=${userEmail}`,
             "GET",
             null,
             async (result) => {
@@ -448,7 +448,7 @@ const TestAPI: React.FC = () => {
 
     const viewCurrentUserPaymentDetailsMethod = async () => {
         await handleApiCall(
-            `http://localhost:9090/api/users/paymentDetails?email=${userEmail}`,
+            `users/paymentDetails?email=${userEmail}`,
             "GET",
             null,
             async (result) => {
@@ -473,7 +473,7 @@ const TestAPI: React.FC = () => {
         setEditField(field);
         setEditValue(value);
         await handleApiCall(
-            "http://localhost:9090/api/users/editProfile",
+            "users/editProfile",
             "PUT",
             {
                 email: userEmail,
@@ -501,7 +501,7 @@ const TestAPI: React.FC = () => {
         setChangePasswordCurrentPassword(currentPassword);
         setChangePasswordNewPassword(newPassword);
         await handleApiCall(
-            "http://localhost:9090/api/users/changePassword",
+            "users/changePassword",
             "PUT",
             {
                 email: userEmail,
@@ -524,7 +524,7 @@ const TestAPI: React.FC = () => {
     const addShippingAddressMethod = async (newShippingAddress: string) => {
         setNewShippingAddress(newShippingAddress);
         await handleApiCall(
-            "http://localhost:9090/api/users/shippingAddresses/add",
+            "users/shippingAddresses/add",
             "PUT",
             {
                 email: userEmail,
@@ -555,7 +555,7 @@ const TestAPI: React.FC = () => {
         setUpdateShippingAddressIndex(index);
         setUpdateShippingAddress(newShippingAddress);
         await handleApiCall(
-            "http://localhost:9090/api/users/shippingAddresses/update",
+            "users/shippingAddresses/update",
             "PUT",
             {
                 email: userEmail,
@@ -583,7 +583,7 @@ const TestAPI: React.FC = () => {
     const removeShippingAddressMethod = async (removedAddress: string) => {
         setRemoveShippingAddress(removedAddress);
         await handleApiCall(
-            "http://localhost:9090/api/users/shippingAddresses/remove",
+            "users/shippingAddresses/remove",
             "DELETE",
             {
                 email: userEmail,
@@ -610,7 +610,7 @@ const TestAPI: React.FC = () => {
     const addBillingAddressMethod = async (newBillingAddress: string) => {
         setNewBillingAddress(newBillingAddress);
         await handleApiCall(
-            "http://localhost:9090/api/users/billingAddresses/add",
+            "users/billingAddresses/add",
             "PUT",
             {
                 email: userEmail,
@@ -641,7 +641,7 @@ const TestAPI: React.FC = () => {
         setUpdateBillingAddressIndex(index);
         setUpdateBillingAddress(newBillingAddress);
         await handleApiCall(
-            "http://localhost:9090/api/users/billingAddresses/update",
+            "users/billingAddresses/update",
             "PUT",
             {
                 email: userEmail,
@@ -669,7 +669,7 @@ const TestAPI: React.FC = () => {
     const removeBillingAddressMethod = async (removedAddress: string) => {
         setRemoveBillingAddress(removedAddress);
         await handleApiCall(
-            "http://localhost:9090/api/users/billingAddresses/remove",
+            "users/billingAddresses/remove",
             "DELETE",
             {
                 email: userEmail,
@@ -706,7 +706,7 @@ const TestAPI: React.FC = () => {
             cvv: cvv || "",
         });
         await handleApiCall(
-            "http://localhost:9090/api/users/paymentDetails/add",
+            "users/paymentDetails/add",
             "PUT",
             {
                 email: userEmail,
@@ -737,7 +737,7 @@ const TestAPI: React.FC = () => {
     const removePaymentDetailMethod = async (paymentID: number) => {
         setRemovePaymentDetailIndex(paymentID);
         await handleApiCall(
-            "http://localhost:9090/api/users/paymentDetails/remove",
+            "users/paymentDetails/remove",
             "DELETE",
             {
                 email: userEmail,
@@ -764,7 +764,7 @@ const TestAPI: React.FC = () => {
 
     const viewSpecificProductMethod = async (productID: String) => {
         await handleApiCall(
-            `http://localhost:9090/api/products/${productID}`,
+            `products/${productID}`,
             "GET",
             null,
             async (result) => {
@@ -778,7 +778,7 @@ const TestAPI: React.FC = () => {
 
     const viewCart = async () => {
         await handleApiCall(
-            `http://localhost:9090/api/users/cart?email=${userEmail}`,
+            `users/cart?email=${userEmail}`,
             "GET",
             null,
             async (result) => {
@@ -803,7 +803,7 @@ const TestAPI: React.FC = () => {
         colorIndex: number
     ) => {
         await handleApiCall(
-            `http://localhost:9090/api/users/cart/add`,
+            `users/cart/add`,
             "PUT",
             {
                 email: userEmail,
@@ -834,7 +834,7 @@ const TestAPI: React.FC = () => {
         colorIndex: number
     ) => {
         await handleApiCall(
-            `http://localhost:9090/api/users/cart/remove`,
+            `users/cart/remove`,
             "DELETE",
             {
                 email: userEmail,
@@ -871,7 +871,7 @@ const TestAPI: React.FC = () => {
             colorIndex,
         });
         await handleApiCall(
-            `http://localhost:9090/api/users/cart/update`,
+            `users/cart/update`,
             "PUT",
             {
                 email: userEmail,
@@ -898,7 +898,7 @@ const TestAPI: React.FC = () => {
 
     const viewOrders = async () => {
         await handleApiCall(
-            `http://localhost:9090/api/users/orders?email=${userEmail}`,
+            `users/orders?email=${userEmail}`,
             "GET",
             null,
             async (result) => {
@@ -918,7 +918,7 @@ const TestAPI: React.FC = () => {
 
     const viewSpecificOrder = async (orderID: number) => {
         await handleApiCall(
-            `http://localhost:9090/api/users/orders/${orderID}?email=${userEmail}`,
+            `users/orders/${orderID}?email=${userEmail}`,
             "GET",
             null,
             async (result) => {
@@ -947,7 +947,7 @@ const TestAPI: React.FC = () => {
             paymentID,
         });
         await handleApiCall(
-            `http://localhost:9090/api/users/orders/add`,
+            `users/orders/add`,
             "PUT",
             {
                 email: userEmail,
@@ -974,7 +974,7 @@ const TestAPI: React.FC = () => {
 
     const cancelOrder = async (orderID: number) => {
         await handleApiCall(
-            `http://localhost:9090/api/users/orders/cancel`,
+            `users/orders/cancel`,
             "DELETE",
             {
                 email: userEmail,
