@@ -347,15 +347,23 @@ public class User {
             if (order.getOrderID() == orderID) {
                 if (order.getOrderStatus() == OrderStatusEnum.DELIVERED) {
                     System.err.println("Order already delivered");
-                    return;
+                    throw  new IllegalArgumentException("Order already delivered");
                 }
                 order.setOrderStatus(OrderStatusEnum.CANCELLED);
+
+                // add quantity back to inventory
+                for (Cart cart : order.getCartProducts()) {
+                    Inventory.getProduct(cart.getProductID()).addQuantity(cart.getSizeIndex(), cart.getColorIndex(),
+                            cart.getQuantity());
+                }
+
                 System.out.println("Order cancelled successfully");
                 return;
             }
         }
         // return error
         System.err.println("Order not found");
+        throw new IllegalArgumentException("Order not found");
     }
 
     // validate password

@@ -182,6 +182,8 @@ Can do a save button in Cart page
 - return err if user is not found; incorrect format; index out of range; shipping / billing address not found; payment id not found; session expired; server disconnected
 - remove product if quantity is 0
 ### Cancel order
+#### /api/users/orders/cancel
+#### OrdersCancelServlet.java
 - parse userID (from sys), orderID
 - return true if order is cancelled
 - return err if user is not found; order is not found; session expired; server disconnected

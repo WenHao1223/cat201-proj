@@ -36,6 +36,7 @@ import CartUpdateServlet from "@components/TestAPI/CartUpdateServlet";
 import OrdersServlet from "@components/TestAPI/OrdersServlet";
 import OrdersAddServlet from "@components/TestAPI/OrdersAddServlet";
 import SpecificOrderServlet from "@components/TestAPI/SpecificOrderServlet";
+import OrdersCancelServlet from "@components/TestAPI/OrdersCancelServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -226,6 +227,14 @@ const TestAPI: React.FC = () => {
     const [newOrder, setNewOrder] = useState<OrderInterface | null>(null);
     const [addToOrderStatus, setAddToOrderStatus] = useState<boolean>(false);
 
+    // Cancel order
+    const [showCancelOrder, setShowCancelOrder] = useState<boolean>(false);
+    const [orderToCancel, setOrderToCancel] = useState<OrderInterface | null>(
+        null
+    );
+    const [orderToCancelStatus, setOrderToCancelStatus] =
+        useState<boolean>(false);
+
     // Reset all states to default
     const setToDefault = () => {
         setShowUsers(false);
@@ -253,6 +262,7 @@ const TestAPI: React.FC = () => {
         setShowOrders(false);
         setShowSpecificOrder(false);
         setShowAddToOrder(false);
+        setShowCancelOrder(false);
     };
 
     const handleApiCall = async (
@@ -915,7 +925,9 @@ const TestAPI: React.FC = () => {
                 if ((await result.status) == "Success") {
                     setSpecificOrder(JSON.parse(result.order));
                 } else {
-                    setError("\n Error viewing specific order: " + result.message);
+                    setError(
+                        "\n Error viewing specific order: " + result.message
+                    );
                 }
                 setToDefault();
                 setShowSpecificOrder(true);
@@ -945,7 +957,6 @@ const TestAPI: React.FC = () => {
             },
             async (result) => {
                 if ((await result.status) == "Success") {
-                    console.log(JSON.parse(result.newOrder));
                     setAddToOrderStatus(true);
                     setOrders(
                         result.orders.map((order: string) => JSON.parse(order))
@@ -958,6 +969,32 @@ const TestAPI: React.FC = () => {
                 setShowAddToOrder(true);
             },
             (error) => setError("\n Error adding to order: " + error)
+        );
+    };
+
+    const cancelOrder = async (orderID: number) => {
+        await handleApiCall(
+            `http://localhost:9090/api/users/orders/cancel`,
+            "DELETE",
+            {
+                email: userEmail,
+                orderID,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    console.log(result);
+                    setOrders(
+                        result.orders.map((order: string) => JSON.parse(order))
+                    );
+                    setOrderToCancel(result.cancelledOrder);
+                    setOrderToCancelStatus(true);
+                } else {
+                    setError("\n Error cancelling order: " + result.message);
+                }
+                setToDefault();
+                setShowCancelOrder(true);
+            },
+            (error) => setError("\n Error cancelling order: " + error)
         );
     };
 
@@ -1107,6 +1144,7 @@ const TestAPI: React.FC = () => {
             >
                 Add to Order
             </button>
+            <button onClick={() => cancelOrder(1)}>Cancel Order</button>
 
             <div>
                 {error && <p style={{ color: "red" }}>{error}</p>}
@@ -1250,6 +1288,13 @@ const TestAPI: React.FC = () => {
                         orders={orders}
                         newOrder={newOrder}
                         addToOrderStatus={addToOrderStatus}
+                    />
+                )}
+                {showCancelOrder && orders && orderToCancel && (
+                    <OrdersCancelServlet
+                        orders={orders}
+                        orderToCancel={orderToCancel}
+                        orderToCancelStatus={orderToCancelStatus}
                     />
                 )}
             </div>

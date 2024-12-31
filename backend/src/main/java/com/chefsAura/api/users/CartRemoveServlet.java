@@ -46,7 +46,7 @@ public class CartRemoveServlet extends HttpServlet {
         Gson gson = new Gson();
         JsonObject jsonObject = gson.fromJson(sb.toString(), JsonObject.class);
         System.out.println(
-                "CartRemoveServlet PUT request received with parameters: " + jsonObject.toString());
+                "CartRemoveServlet DELETE request received with parameters: " + jsonObject.toString());
         String email = jsonObject.get("email").getAsString();
         String productID = jsonObject.get("productID").getAsString();
         int sizeIndex = jsonObject.get("sizeIndex").getAsInt();

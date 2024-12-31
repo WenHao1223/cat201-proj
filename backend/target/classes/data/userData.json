@@ -54,7 +54,7 @@
         "billingAddress": "123 Main St, Kuala Lumpur",
         "paymentID": 1,
         "orderDate": "2023-10-01",
-        "orderStatus": "Delivered",
+        "orderStatus": "Ordered",
         "cartProducts": [
           {
             "productID": "B002",
