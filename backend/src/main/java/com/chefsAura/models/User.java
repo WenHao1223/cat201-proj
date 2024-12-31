@@ -403,8 +403,8 @@ public class User {
     }
 
     // get gender
-    public short getGender() {
-        return this.gender;
+    public String getGender() {
+        return this.gender == 1 ? "Male" : this.gender == 2 ? "Female" : "Error";
     }
 
     // get date of birth

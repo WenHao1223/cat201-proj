@@ -39,12 +39,7 @@ const UsersEditProfileServlet: react.FC<UsersEditProfileServletProps> = ({
                     <p>First Name: {currentUserGeneralDetails.firstName}</p>
                     <p>Last Name: {currentUserGeneralDetails.lastName}</p>
                     <p>Phone No: {currentUserGeneralDetails.phoneNo}</p>
-                    <p>
-                        Gender:{" "}
-                        {currentUserGeneralDetails.gender === 1
-                            ? "Male"
-                            : "Female"}
-                    </p>
+                    <p>Gender: {currentUserGeneralDetails.gender}</p>
                     <p>Date of Birth: {currentUserGeneralDetails.dob}</p>
                     <p>Nationality: {currentUserGeneralDetails.nationality}</p>
                 </div>

@@ -24,7 +24,7 @@ const UsersServlet: React.FC<UsersServletProps> = ({ users }) => {
                     <p>First Name: {user.firstName}</p>
                     <p>Last Name: {user.lastName}</p>
                     <p>Phone No: {user.phoneNo}</p>
-                    <p>Gender: {user.gender === 1 ? "Male" : "Female"}</p>
+                    <p>Gender: {user.gender}</p>
                     <p>Date of Birth: {user.dob}</p>
                     <p>Nationality: {user.nationality}</p>
                     <p>Agree to Terms: {user.agreeToTerms ? "Yes" : "No"}</p>
@@ -101,8 +101,10 @@ const UsersServlet: React.FC<UsersServletProps> = ({ users }) => {
                                                         {product.productID},
                                                         Quantity:{" "}
                                                         {product.quantity},
-                                                        Size: {product.sizeIndex},
-                                                        Color: {product.colorIndex}
+                                                        Size:{" "}
+                                                        {product.sizeIndex},
+                                                        Color:{" "}
+                                                        {product.colorIndex}
                                                     </li>
                                                 )
                                             )}
