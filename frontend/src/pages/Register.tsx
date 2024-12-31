@@ -14,6 +14,7 @@ const Register: React.FC = () => {
     return (
         <div className="register-page">
             <div className="container">
+            <div className="header">Chef's Aura</div>
                 <div className="form-container">
                     <div className="image-container">
                     <img
@@ -49,16 +50,16 @@ const Register: React.FC = () => {
                             </div>
                             <div className="flex-container">
                                 <div className="input-box">
-                                    <select value={nationality} onChange={handleNationalityChange} required>
-                                        <option value="" disabled hidden>Select Nationality</option>
-                                        <option value="Malaysian">Malaysian</option>
-                                        <option value="Japanese">Japanese</option>
-                                        <option value="Indian">Indian</option>
-                                        <option value="Nepalese">Nepalese</option>
-                                        <option value="Chinese">Chinese</option>
-                                        <option value="Russian">Russian</option>
-                                        <option value="Other">Other</option>
-                                    </select>
+                                <select value={nationality} onChange={handleNationalityChange} required className="scrollable-select">
+                                    <option value="" disabled hidden>Select Nationality</option>
+                                    <option value="Malaysian">Malaysian</option>
+                                    <option value="Japanese">Japanese</option>
+                                    <option value="Indian">Indian</option>
+                                    <option value="Nepalese">Nepalese</option>
+                                    <option value="Chinese">Chinese</option>
+                                    <option value="Russian">Russian</option>
+                                    <option value="Other">Other</option>
+                                </select>
                                 </div>
                                 {isOtherSelected && (
                                     <div className="input-box">
