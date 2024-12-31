@@ -104,4 +104,13 @@ public class Order {
     public List<Cart> getCartProducts() {
         return cartProducts;
     }
+
+    // get order total
+    public double getOrderTotal() {
+        double total = 0;
+        for (Cart cart : cartProducts) {
+            total += Inventory.getProduct(cart.getProductID()).getPrice() * cart.getQuantity();
+        }
+        return total;
+    }
 }

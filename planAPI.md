@@ -148,7 +148,7 @@ Can do a save button in Cart page
 #### /api/users/cart
 #### CartServket.java
 - parse userID (from sys)
-- return list [product [name, price], quantity, size, color
+- return list [product [name, price], quantity, size, color]
 - return err if user is not found; product is not found; index out of range; server disconnected]
 ### Remove product from cart
 #### /api/users/cart/remove
@@ -164,10 +164,17 @@ Can do a save button in Cart page
 - return err if user is not found; product is not found; insufficient quantity, index out of range; server disconnected
 
 ## Payment
-### Add cart items to order
+#### View order
+#### /api/users/order
+#### OrdersServlet.java
+- parse userID (from sys)
+- return list [orderID, shippingAddress, billingAddress, payment (link to paymentMethod, cardNumber), orderDate, orderStatus, cart [product [name, price], quantity, size, color]]
+- return err if user is not found; incorrect format; index out of range; shipping / billing address not found; payment id not found; session expired; server disconnected
+### Order cart items
 - parse userID (from sys), shippingAddress, billingAddress, paymentID
 - return true if items are added to order
 - return err if user is not found; incorrect format; index out of range; shipping / billing address not found; payment id not found; session expired; server disconnected
+- remove product if quantity is 0
 ### Cancel order
 - parse userID (from sys), orderID
 - return true if order is cancelled

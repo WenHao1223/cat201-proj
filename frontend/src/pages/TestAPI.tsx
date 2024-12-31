@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
     UserInterface,
@@ -7,6 +7,7 @@ import {
     PaymentInterface,
     CartInterface,
     CartGeneralInterface,
+    OrderInterface,
 } from "@interfaces/API/UserInterface";
 import { ProductInterface } from "@interfaces/API/ProductInterface";
 
@@ -31,6 +32,7 @@ import CartServlet from "@components/TestAPI/CartServlet";
 import CartAddServlet from "@components/TestAPI/CartAddServlet";
 import CartRemoveServlet from "@components/TestAPI/CartRemoveServlet";
 import CartUpdateServlet from "@components/TestAPI/CartUpdateServlet";
+import OrdersServlet from "@components/TestAPI/OrdersServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -194,6 +196,10 @@ const TestAPI: React.FC = () => {
     const [updateCartStatus, setUpdateCartStatus] = useState<boolean>(false);
     const [updateCartInfo, setUpdateCartInfo] = useState<CartInterface | null>(null);
 
+    // View orders
+    const [showOrders, setShowOrders] = useState<boolean>(false);
+    const [orders, setOrders] = useState<OrderInterface[]>([]);
+
     // Reset all states to default
     const setToDefault = () => {
         setShowUsers(false);
@@ -218,6 +224,7 @@ const TestAPI: React.FC = () => {
         setShowAddToCart(false);
         setShowRemoveFromCart(false);
         setShowUpdateCart(false);
+        setShowOrders(false);
     };
 
     const handleApiCall = async (
@@ -829,6 +836,25 @@ const TestAPI: React.FC = () => {
         );
     }
 
+    const viewOrders = async () => {
+        await handleApiCall(
+            `http://localhost:9090/api/users/orders?email=${userEmail}`,
+            "GET",
+            null,
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setOrders(result.orders.map((order: string) => JSON.parse(order)));
+                    console.log(result.orders.map((order: string) => JSON.parse(order)));
+                } else {
+                    setError("\n Error viewing orders: " + result.message);
+                }
+                setToDefault();
+                setShowOrders(true);
+            },
+            (error) => setError("\n Error viewing orders: " + error)
+        );
+    }
+
     return (
         <div>
             <h1>Test API Page</h1>
@@ -986,6 +1012,13 @@ const TestAPI: React.FC = () => {
             >
                 Update Cart
             </button>
+            <button
+                onClick={() =>
+                    viewOrders()
+                }
+            >
+                View Orders
+            </button>
 
             <div>
                 {error && <p style={{ color: "red" }}>{error}</p>}
@@ -1122,6 +1155,11 @@ const TestAPI: React.FC = () => {
                         carts={carts}
                         updateCartInfo={updateCartInfo}
                         updateCartStatus={updateCartStatus}
+                    />
+                )}
+                {showOrders && orders.length > 0 && (
+                    <OrdersServlet
+                        orders={orders}
                     />
                 )}
             </div>

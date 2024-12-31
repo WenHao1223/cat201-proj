@@ -1,5 +1,6 @@
-import { CartGeneralInterface } from "@interfaces/API/UserInterface";
 import react from "react";
+
+import { CartGeneralInterface } from "@interfaces/API/UserInterface";
 
 interface CartServletProps {
     carts: CartGeneralInterface[];

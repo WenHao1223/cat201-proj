@@ -65,8 +65,8 @@ export interface OrderInterface {
     orderID: number;
     shippingAddress: string;
     billingAddress: string;
-    paymentID: number;
+    payment: PaymentGeneralInterface;
     orderDate: string;
     orderStatus: string;
-    cartProducts?: CartInterface[];
+    cartProducts: CartGeneralInterface[];
 }

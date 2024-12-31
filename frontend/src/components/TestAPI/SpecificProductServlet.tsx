@@ -1,8 +1,8 @@
 import React from "react";
-import { Product } from "@interfaces/API/ProductInterface";
+import { ProductInterface } from "@interfaces/API/ProductInterface";
 
 interface ProductsServletProps {
-    product: Product;
+    product: ProductInterface;
 }
 
 const ProductsServlet: React.FC<ProductsServletProps> = ({ product }) => {
