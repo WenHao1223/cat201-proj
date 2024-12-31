@@ -165,12 +165,16 @@ Can do a save button in Cart page
 
 ## Payment
 #### View order
-#### /api/users/order
+#### /api/users/orders
 #### OrdersServlet.java
 - parse userID (from sys)
 - return list [orderID, shippingAddress, billingAddress, payment (link to paymentMethod, cardNumber), orderDate, orderStatus, cart [product [name, price], quantity, size, color]]
 - return err if user is not found; incorrect format; index out of range; shipping / billing address not found; payment id not found; session expired; server disconnected
+#### View specific order
+
 ### Order cart items
+#### /api/users/orders/
+#### OrdersAddServlet.java
 - parse userID (from sys), shippingAddress, billingAddress, paymentID
 - return true if items are added to order
 - return err if user is not found; incorrect format; index out of range; shipping / billing address not found; payment id not found; session expired; server disconnected

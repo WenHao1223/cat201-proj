@@ -8,6 +8,7 @@ import {
     CartInterface,
     CartGeneralInterface,
     OrderInterface,
+    PlaceOrderInterface,
 } from "@interfaces/API/UserInterface";
 import { ProductInterface } from "@interfaces/API/ProductInterface";
 
@@ -33,6 +34,7 @@ import CartAddServlet from "@components/TestAPI/CartAddServlet";
 import CartRemoveServlet from "@components/TestAPI/CartRemoveServlet";
 import CartUpdateServlet from "@components/TestAPI/CartUpdateServlet";
 import OrdersServlet from "@components/TestAPI/OrdersServlet";
+import OrdersAddServlet from "@components/TestAPI/OrdersAddServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -59,18 +61,19 @@ const TestAPI: React.FC = () => {
         useState<boolean>(false);
     const [createAccountStatus, setCreateAccountStatus] =
         useState<boolean>(false);
-    const [craeteAccountObject, setCreateAccountObject] = useState<UserInterface>({
-        username: "",
-        email: "",
-        password: "",
-        nationality: "",
-        firstName: "",
-        lastName: "",
-        phoneNo: "",
-        gender: 0,
-        dob: "",
-        agreeToTerms: false,
-    });
+    const [craeteAccountObject, setCreateAccountObject] =
+        useState<UserInterface>({
+            username: "",
+            email: "",
+            password: "",
+            nationality: "",
+            firstName: "",
+            lastName: "",
+            phoneNo: "",
+            gender: 0,
+            dob: "",
+            agreeToTerms: false,
+        });
 
     // View all shipping addresses of current user
     const [showShippingAddresses, setShowShippingAddresses] =
@@ -171,13 +174,18 @@ const TestAPI: React.FC = () => {
         });
 
     // Remove payment detail (by payment ID)
-    const [showRemovePaymentDetail, setShowRemovePaymentDetail] = useState<boolean>(false);
-    const [removePaymentDetailStatus, setRemovePaymentDetailStatus] = useState<boolean>(false);
-    const [removePaymentDetailIndex, setRemovePaymentDetailIndex] = useState<number>(-1);
+    const [showRemovePaymentDetail, setShowRemovePaymentDetail] =
+        useState<boolean>(false);
+    const [removePaymentDetailStatus, setRemovePaymentDetailStatus] =
+        useState<boolean>(false);
+    const [removePaymentDetailIndex, setRemovePaymentDetailIndex] =
+        useState<number>(-1);
 
     // View specific product
-    const [showSpecificProduct, setShowSpecificProduct] = useState<boolean>(false);
-    const [specificProduct, setSpecificProduct] = useState<ProductInterface | null>(null);
+    const [showSpecificProduct, setShowSpecificProduct] =
+        useState<boolean>(false);
+    const [specificProduct, setSpecificProduct] =
+        useState<ProductInterface | null>(null);
 
     // View cart
     const [showCarts, setShowCarts] = useState<boolean>(false);
@@ -188,17 +196,28 @@ const TestAPI: React.FC = () => {
     const [addToCartStatus, setAddToCartStatus] = useState<boolean>(false);
 
     // Remove item from cart
-    const [showRemoveFromCart, setShowRemoveFromCart] = useState<boolean>(false);
-    const [removeFromCartStatus, setRemoveFromCartStatus] = useState<boolean>(false);
+    const [showRemoveFromCart, setShowRemoveFromCart] =
+        useState<boolean>(false);
+    const [removeFromCartStatus, setRemoveFromCartStatus] =
+        useState<boolean>(false);
 
     // Update quantity of item in cart
     const [showUpdateCart, setShowUpdateCart] = useState<boolean>(false);
     const [updateCartStatus, setUpdateCartStatus] = useState<boolean>(false);
-    const [updateCartInfo, setUpdateCartInfo] = useState<CartInterface | null>(null);
+    const [updateCartInfo, setUpdateCartInfo] = useState<CartInterface | null>(
+        null
+    );
 
     // View orders
     const [showOrders, setShowOrders] = useState<boolean>(false);
-    const [orders, setOrders] = useState<OrderInterface[]>([]);
+    const [orders, setOrders] = useState<OrderInterface[] | null>(null);
+
+    // Order cart items
+    const [showAddToOrder, setShowAddToOrder] = useState<boolean>(false);
+    const [newOrderDetails, setNewOrderDetails] =
+        useState<PlaceOrderInterface | null>(null);
+    const [newOrder, setNewOrder] = useState<OrderInterface | null>(null);
+    const [addToOrderStatus, setAddToOrderStatus] = useState<boolean>(false);
 
     // Reset all states to default
     const setToDefault = () => {
@@ -225,6 +244,7 @@ const TestAPI: React.FC = () => {
         setShowRemoveFromCart(false);
         setShowUpdateCart(false);
         setShowOrders(false);
+        setShowAddToOrder(false);
     };
 
     const handleApiCall = async (
@@ -736,7 +756,7 @@ const TestAPI: React.FC = () => {
             },
             (error) => setError("\n Error viewing specific product: " + error)
         );
-    }
+    };
 
     const viewCart = async () => {
         await handleApiCall(
@@ -745,7 +765,9 @@ const TestAPI: React.FC = () => {
             null,
             async (result) => {
                 if ((await result.status) == "Success") {
-                    setCarts(result.carts.map((cart: string) => JSON.parse(cart)));
+                    setCarts(
+                        result.carts.map((cart: string) => JSON.parse(cart))
+                    );
                 } else {
                     setError("\n Error viewing cart: " + result.message);
                 }
@@ -754,9 +776,14 @@ const TestAPI: React.FC = () => {
             },
             (error) => setError("\n Error viewing cart: " + error)
         );
-    }
+    };
 
-    const addToCart = async (productID: string, quantity: number, sizeIndex: number, colorIndex: number) => {
+    const addToCart = async (
+        productID: string,
+        quantity: number,
+        sizeIndex: number,
+        colorIndex: number
+    ) => {
         await handleApiCall(
             `http://localhost:9090/api/users/cart/add`,
             "PUT",
@@ -765,12 +792,14 @@ const TestAPI: React.FC = () => {
                 productID,
                 quantity,
                 sizeIndex,
-                colorIndex
+                colorIndex,
             },
             async (result) => {
                 if ((await result.status) == "Success") {
                     setAddToCartStatus(true);
-                    setCarts(result.carts.map((cart: string) => JSON.parse(cart)));
+                    setCarts(
+                        result.carts.map((cart: string) => JSON.parse(cart))
+                    );
                 } else {
                     setError("\n Error adding to cart: " + result.message);
                 }
@@ -779,9 +808,13 @@ const TestAPI: React.FC = () => {
             },
             (error) => setError("\n Error adding to cart: " + error)
         );
-    }
+    };
 
-    const removeFromCart = async (productID: string, sizeIndex: number, colorIndex: number) => {
+    const removeFromCart = async (
+        productID: string,
+        sizeIndex: number,
+        colorIndex: number
+    ) => {
         await handleApiCall(
             `http://localhost:9090/api/users/cart/remove`,
             "DELETE",
@@ -789,12 +822,14 @@ const TestAPI: React.FC = () => {
                 email: userEmail,
                 productID,
                 sizeIndex,
-                colorIndex
+                colorIndex,
             },
             async (result) => {
                 if ((await result.status) == "Success") {
                     setRemoveFromCartStatus(true);
-                    setCarts(result.carts.map((cart: string) => JSON.parse(cart)));
+                    setCarts(
+                        result.carts.map((cart: string) => JSON.parse(cart))
+                    );
                 } else {
                     setError("\n Error removing from cart: " + result.message);
                 }
@@ -803,14 +838,19 @@ const TestAPI: React.FC = () => {
             },
             (error) => setError("\n Error removing from cart: " + error)
         );
-    }
+    };
 
-    const updateCart = async (productID: string, quantity: number, sizeIndex: number, colorIndex: number) => {
+    const updateCart = async (
+        productID: string,
+        quantity: number,
+        sizeIndex: number,
+        colorIndex: number
+    ) => {
         setUpdateCartInfo({
             productID,
             quantity,
             sizeIndex,
-            colorIndex
+            colorIndex,
         });
         await handleApiCall(
             `http://localhost:9090/api/users/cart/update`,
@@ -820,12 +860,14 @@ const TestAPI: React.FC = () => {
                 productID,
                 quantity,
                 sizeIndex,
-                colorIndex
+                colorIndex,
             },
             async (result) => {
                 if ((await result.status) == "Success") {
                     setUpdateCartStatus(true);
-                    setCarts(result.carts.map((cart: string) => JSON.parse(cart)));
+                    setCarts(
+                        result.carts.map((cart: string) => JSON.parse(cart))
+                    );
                 } else {
                     setError("\n Error updating cart: " + result.message);
                 }
@@ -834,7 +876,7 @@ const TestAPI: React.FC = () => {
             },
             (error) => setError("\n Error updating cart: " + error)
         );
-    }
+    };
 
     const viewOrders = async () => {
         await handleApiCall(
@@ -843,8 +885,9 @@ const TestAPI: React.FC = () => {
             null,
             async (result) => {
                 if ((await result.status) == "Success") {
-                    setOrders(result.orders.map((order: string) => JSON.parse(order)));
-                    console.log(result.orders.map((order: string) => JSON.parse(order)));
+                    setOrders(
+                        result.orders.map((order: string) => JSON.parse(order))
+                    );
                 } else {
                     setError("\n Error viewing orders: " + result.message);
                 }
@@ -853,7 +896,44 @@ const TestAPI: React.FC = () => {
             },
             (error) => setError("\n Error viewing orders: " + error)
         );
-    }
+    };
+
+    const addToOrder = async (
+        shippingAddress: string,
+        billingAddress: string,
+        paymentID: number
+    ) => {
+        setNewOrderDetails({
+            shippingAddress,
+            billingAddress,
+            paymentID,
+        });
+        await handleApiCall(
+            `http://localhost:9090/api/users/orders/add`,
+            "PUT",
+            {
+                email: userEmail,
+                shippingAddress,
+                billingAddress,
+                paymentID,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    console.log(JSON.parse(result.newOrder))
+                    setAddToOrderStatus(true);
+                    setOrders(
+                        result.orders.map((order: string) => JSON.parse(order))
+                    );
+                    setNewOrder(JSON.parse(result.newOrder));
+                } else {
+                    setError("\n Error adding to order: " + result.message);
+                }
+                setToDefault();
+                setShowAddToOrder(true);
+            },
+            (error) => setError("\n Error adding to order: " + error)
+        );
+    };
 
     return (
         <div>
@@ -970,54 +1050,33 @@ const TestAPI: React.FC = () => {
             >
                 Add Payment Details
             </button>
-            <button
-                onClick={() =>
-                    removePaymentDetailMethod(1)
-                }
-            >
+            <button onClick={() => removePaymentDetailMethod(1)}>
                 Remove Payment Details
             </button>
-            <button
-                onClick={() =>
-                    viewSpecificProductMethod("B001")
-                }
-            >
+            <button onClick={() => viewSpecificProductMethod("B001")}>
                 View Specific Product
             </button>
-            <button
-                onClick={() =>
-                    viewCart()
-                }
-            >
-                View Cart
-            </button>
-            <button
-                onClick={() =>
-                    addToCart("B001", 1, 0, 0)
-                }
-            >
+            <button onClick={() => viewCart()}>View Cart</button>
+            <button onClick={() => addToCart("B001", 1, 0, 0)}>
                 Add to Cart
             </button>
-            <button
-                onClick={() =>
-                    removeFromCart("B001", 0, 0)
-                }
-            >
+            <button onClick={() => removeFromCart("B001", 0, 0)}>
                 Remove from Cart
             </button>
-            <button
-                onClick={() =>
-                    updateCart("B003", 34, 0, 0)
-                }
-            >
+            <button onClick={() => updateCart("B003", 34, 0, 0)}>
                 Update Cart
             </button>
+            <button onClick={() => viewOrders()}>View Orders</button>
             <button
                 onClick={() =>
-                    viewOrders()
+                    addToOrder(
+                        "123 Main St, Kuala Lumpur",
+                        "123 Main St, Kuala Lumpur",
+                        1
+                    )
                 }
             >
-                View Orders
+                Add to Order
             </button>
 
             <div>
@@ -1128,16 +1187,10 @@ const TestAPI: React.FC = () => {
                         paymentDetails={currentUserPaymentDetails}
                     />
                 )}
-                {showSpecificProduct && specificProduct && (    
-                    <SpecificProductServlet
-                        product={specificProduct}
-                    />
+                {showSpecificProduct && specificProduct && (
+                    <SpecificProductServlet product={specificProduct} />
                 )}
-                {showCarts && carts && (
-                    <CartServlet
-                        carts={carts}
-                    />
-                )}
+                {showCarts && carts && <CartServlet carts={carts} />}
                 {showAddToCart && carts && (
                     <CartAddServlet
                         carts={carts}
@@ -1157,9 +1210,14 @@ const TestAPI: React.FC = () => {
                         updateCartStatus={updateCartStatus}
                     />
                 )}
-                {showOrders && orders.length > 0 && (
-                    <OrdersServlet
+                {showOrders && orders && orders.length > 0 && (
+                    <OrdersServlet orders={orders} />
+                )}
+                {showAddToOrder && orders && newOrder && (
+                    <OrdersAddServlet
                         orders={orders}
+                        newOrder={newOrder}
+                        addToOrderStatus={addToOrderStatus}
                     />
                 )}
             </div>

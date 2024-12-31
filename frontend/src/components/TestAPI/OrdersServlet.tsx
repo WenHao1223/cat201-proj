@@ -45,6 +45,7 @@ const OrdersServlet: React.FC<OrdersServletProps> = ({ orders }) => {
                             <p>Color: {product.color}</p>
                         </div>
                     ))}
+                    <p>Order Total: RM {order.orderTotal}</p>
                 </div>
             ))}
         </div>

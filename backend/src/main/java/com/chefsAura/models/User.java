@@ -288,7 +288,47 @@ public class User {
     }
 
     // add order
-    public void addOrder(String shippingAddress, String billingAddress, int paymentID) {
+    public int addOrder(String shippingAddress, String billingAddress, int paymentID) {
+        // check if shipping address is valid
+        if (!this.shippingAddresses.contains(shippingAddress)) {
+            System.err.println("Shipping address not found");
+            throw new IllegalArgumentException("Shipping address not found");
+        }
+        // check if billing address is valid
+        if (!this.billingAddresses.contains(billingAddress)) {
+            System.err.println("Billing address not found");
+            throw new IllegalArgumentException("Billing address not found");
+        }
+        // check if payment details is valid
+        if (this.paymentDetails.stream().noneMatch(payment -> payment.getPaymentID() == paymentID)) {
+            System.err.println("Payment details not found");
+            throw new IllegalArgumentException("Payment details not found");
+        }
+        // check if cart is empty
+        if (this.carts.isEmpty()) {
+            System.err.println("Cart is empty");
+            throw new IllegalArgumentException("Cart is empty");
+        }
+        // check if product is valid
+        for (Cart cart : this.carts) {
+            if (Inventory.getProduct(cart.getProductID()) == null) {
+                System.err.println("Product not found");
+                throw new IllegalArgumentException("Product not found");
+            }
+            // check if quantity is available
+            if (Inventory.getProduct(cart.getProductID()).getQuantities().get(cart.getSizeIndex())
+                    .get(cart.getColorIndex()) < cart.getQuantity()) {
+                System.err.println("Quantity not available");
+                throw new IllegalArgumentException("Quantity not available");
+            }
+        }
+
+        // deduct quantity from inventory
+        for (Cart cart : this.carts) {
+            Inventory.getProduct(cart.getProductID()).removeQuantity(cart.getSizeIndex(), cart.getColorIndex(),
+                    cart.getQuantity());
+        }
+        
         Order newOrder = new Order(
                 shippingAddress,
                 billingAddress,
@@ -296,7 +336,9 @@ public class User {
                 OrderStatusEnum.ORDERED,
                 this.carts);
         this.orders.add(newOrder);
+        this.carts.clear();
         System.out.println("Order added successfully");
+        return newOrder.getOrderID();
     }
 
     // cancel order
@@ -385,5 +427,15 @@ public class User {
     // get orders
     public List<Order> getOrders() {
         return this.orders;
+    }
+
+    // get order by ID
+    public Order getOrderByID(int orderID) {
+        for (Order order : this.orders) {
+            if (order.getOrderID() == orderID) {
+                return order;
+            }
+        }
+        return null;
     }
 }
