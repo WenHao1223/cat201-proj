@@ -4,12 +4,10 @@ com\chefsAura\utils\ReadJson.class
 com\chefsAura\models\User.class
 com\chefsAura\utils\enums\PaymentMethodEnumDeserializer.class
 com\chefsAura\AppContextListener$1.class
-com\chefsAura\api\users\UsersShippingAddressesServlet.class
 com\chefsAura\api\products\ProductsServlet.class
 com\chefsAura\api\users\UsersCreateServlet.class
 com\chefsAura\utils\enums\OrderStatusEnumSerializer.class
 com\chefsAura\AppContextListener$2.class
-com\chefsAura\api\users\UsersPaymentDetailsServlet.class
 com\chefsAura\models\Order.class
 com\chefsAura\Main.class
 com\chefsAura\enums\PaymentMethodEnum.class
@@ -18,7 +16,6 @@ com\chefsAura\AppContextListener.class
 com\chefsAura\utils\enums\OrderStatusEnumDeserializer.class
 com\chefsAura\enums\OrderStatusEnum.class
 com\chefsAura\api\users\UsersGeneralDetails.class
-com\chefsAura\api\users\UsersBillingAddressesServlet.class
 com\chefsAura\models\Cart.class
 com\chefsAura\api\users\UsersLoginServlet.class
 com\chefsAura\models\UserCollection.class
