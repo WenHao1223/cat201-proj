@@ -436,6 +436,6 @@ public class User {
                 return order;
             }
         }
-        return null;
+        throw new IllegalArgumentException("Order not found");
     }
 }

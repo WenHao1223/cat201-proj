@@ -35,6 +35,7 @@ import CartRemoveServlet from "@components/TestAPI/CartRemoveServlet";
 import CartUpdateServlet from "@components/TestAPI/CartUpdateServlet";
 import OrdersServlet from "@components/TestAPI/OrdersServlet";
 import OrdersAddServlet from "@components/TestAPI/OrdersAddServlet";
+import SpecificOrderServlet from "@components/TestAPI/SpecificOrderServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -212,6 +213,12 @@ const TestAPI: React.FC = () => {
     const [showOrders, setShowOrders] = useState<boolean>(false);
     const [orders, setOrders] = useState<OrderInterface[] | null>(null);
 
+    // View specific order
+    const [showSpecificOrder, setShowSpecificOrder] = useState<boolean>(false);
+    const [specificOrder, setSpecificOrder] = useState<OrderInterface | null>(
+        null
+    );
+
     // Order cart items
     const [showAddToOrder, setShowAddToOrder] = useState<boolean>(false);
     const [newOrderDetails, setNewOrderDetails] =
@@ -244,6 +251,7 @@ const TestAPI: React.FC = () => {
         setShowRemoveFromCart(false);
         setShowUpdateCart(false);
         setShowOrders(false);
+        setShowSpecificOrder(false);
         setShowAddToOrder(false);
     };
 
@@ -898,6 +906,24 @@ const TestAPI: React.FC = () => {
         );
     };
 
+    const viewSpecificOrder = async (orderID: number) => {
+        await handleApiCall(
+            `http://localhost:9090/api/users/orders/${orderID}?email=${userEmail}`,
+            "GET",
+            null,
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setSpecificOrder(JSON.parse(result.order));
+                } else {
+                    setError("\n Error viewing specific order: " + result.message);
+                }
+                setToDefault();
+                setShowSpecificOrder(true);
+            },
+            (error) => setError("\n Error viewing specific order: " + error)
+        );
+    };
+
     const addToOrder = async (
         shippingAddress: string,
         billingAddress: string,
@@ -919,7 +945,7 @@ const TestAPI: React.FC = () => {
             },
             async (result) => {
                 if ((await result.status) == "Success") {
-                    console.log(JSON.parse(result.newOrder))
+                    console.log(JSON.parse(result.newOrder));
                     setAddToOrderStatus(true);
                     setOrders(
                         result.orders.map((order: string) => JSON.parse(order))
@@ -1067,6 +1093,9 @@ const TestAPI: React.FC = () => {
                 Update Cart
             </button>
             <button onClick={() => viewOrders()}>View Orders</button>
+            <button onClick={() => viewSpecificOrder(1)}>
+                View Specific Order
+            </button>
             <button
                 onClick={() =>
                     addToOrder(
@@ -1212,6 +1241,9 @@ const TestAPI: React.FC = () => {
                 )}
                 {showOrders && orders && orders.length > 0 && (
                     <OrdersServlet orders={orders} />
+                )}
+                {showSpecificOrder && specificOrder && (
+                    <SpecificOrderServlet order={specificOrder} />
                 )}
                 {showAddToOrder && orders && newOrder && (
                     <OrdersAddServlet
