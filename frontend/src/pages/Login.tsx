@@ -1,5 +1,5 @@
 import React from "react";
-import "./Auth.css";
+import "../App.css";
 
 const Login: React.FC = () => {
     return (

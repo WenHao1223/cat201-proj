@@ -4,6 +4,7 @@ import TestAPI from "./pages/TestAPI";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Main from "./pages/Main";
+import "./App.css";
 
 const App: React.FC = () => {
     return (
