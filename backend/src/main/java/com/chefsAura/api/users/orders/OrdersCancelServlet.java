@@ -78,7 +78,7 @@ public class OrdersCancelServlet extends HttpServlet {
                                 Payment payment = user.getPaymentDetails().get(order.getPaymentID());
                                 paymentJson.addProperty("paymentID", payment.getPaymentID());
                                 paymentJson.addProperty("paymentMethod", payment.getPaymentMethod().getMethod());
-                                paymentJson.addProperty("cardNumber", payment.getCardNumber());
+                                paymentJson.addProperty("cardNumber", payment.getLastFourDigits());
                                 cancelledOrderJson.add("payment", paymentJson);
                             } catch (IndexOutOfBoundsException e) {
                                 System.out.println("Payment index out of bounds");
@@ -161,7 +161,7 @@ public class OrdersCancelServlet extends HttpServlet {
                                     Payment payment = user.getPaymentDetails().get(orderItem.getPaymentID());
                                     paymentJson.addProperty("paymentID", payment.getPaymentID());
                                     paymentJson.addProperty("paymentMethod", payment.getPaymentMethod().getMethod());
-                                    paymentJson.addProperty("cardNumber", payment.getCardNumber());
+                                    paymentJson.addProperty("cardNumber", payment.getLastFourDigits());
                                     orderJson.add("payment", paymentJson);
                                 } catch (IndexOutOfBoundsException e) {
                                     System.out.println("Payment index out of bounds");

@@ -86,7 +86,7 @@ public class Main {
                     System.out.println("Payment ID: " + payment.getPaymentID());
                     String paymentMethod = payment.getPaymentMethod().toString();
                     System.out.println("Payment Method: " + PaymentMethodEnum.fromString(paymentMethod));
-                    System.out.println("Card Number: " + payment.getCardNumber());
+                    System.out.println("Card Number: " + payment.getLastFourDigits());
                     if (PaymentMethodEnum.fromString(paymentMethod) == PaymentMethodEnum.DEBIT_CARD ||
                             PaymentMethodEnum.fromString(paymentMethod) == PaymentMethodEnum.CREDIT_CARD) {
                         System.out.println("Expiry Date: " + payment.getExpiryDate());
@@ -102,7 +102,7 @@ public class Main {
                     System.out.println("Payment ID: " + payment.getPaymentID());
                     String paymentMethod = payment.getPaymentMethod().toString();
                     System.out.println("Payment Method: " + PaymentMethodEnum.fromString(paymentMethod));
-                    System.out.println("Card Number: " + payment.getCardNumber());
+                    System.out.println("Card Number: " + payment.getLastFourDigits());
                     if (PaymentMethodEnum.fromString(paymentMethod) == PaymentMethodEnum.DEBIT_CARD ||
                             PaymentMethodEnum.fromString(paymentMethod) == PaymentMethodEnum.CREDIT_CARD) {
                         System.out.println("Expiry Date: " + payment.getExpiryDate());

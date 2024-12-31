@@ -1105,7 +1105,7 @@ const TestAPI: React.FC = () => {
                 onClick={() =>
                     addPaymentDetailMethod(
                         "Visa",
-                        "1234 5678 9012 3456",
+                        "1234567890123456",
                         "12/24",
                         "123"
                     )

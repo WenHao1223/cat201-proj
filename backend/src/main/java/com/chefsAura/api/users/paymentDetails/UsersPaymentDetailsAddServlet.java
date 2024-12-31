@@ -70,7 +70,7 @@ public class UsersPaymentDetailsAddServlet extends HttpServlet {
                         JsonObject paymentJson = new JsonObject();
                         paymentJson.addProperty("paymentID", payment.getPaymentID());
                         paymentJson.addProperty("paymentMethod", payment.getPaymentMethod().toString());
-                        paymentJson.addProperty("cardNumber", payment.getCardNumber());
+                        paymentJson.addProperty("cardNumber", payment.getLastFourDigits());
                         jsonPaymentDetails.add(paymentJson.toString());
                     }
 
