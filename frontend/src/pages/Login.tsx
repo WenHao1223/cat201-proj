@@ -1,9 +1,10 @@
 import React from "react";
+import "./Auth.css";
 
 const Login: React.FC = () => {
     return (
         <div className="container">
-            <div className="login-form">
+            <div className="form">
                 <div className="title">Login</div>
                 <form action="#">
                     <div className="input-boxes">

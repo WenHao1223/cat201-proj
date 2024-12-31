@@ -1,9 +1,10 @@
 import React from "react";
+import "./Auth.css";
 
 const Register: React.FC = () => {
     return (
         <div className="container">
-            <div className="register-form">
+            <div className="form">
                 <div className="title">Register</div>
                 <form action="#">
                     <div className="input-boxes">
@@ -22,7 +23,6 @@ const Register: React.FC = () => {
                         <div className="button input-box">
                             <input type="submit" value="Submit" />
                         </div>
-                        <div className="text sign-up-text">Already have an account? <a href="/login">Login now</a></div>
                     </div>
                 </form>
             </div>
