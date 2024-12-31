@@ -101,8 +101,8 @@ const UsersServlet: React.FC<UsersServletProps> = ({ users }) => {
                                                         {product.productID},
                                                         Quantity:{" "}
                                                         {product.quantity},
-                                                        Size: {product.size},
-                                                        Color: {product.color}
+                                                        Size: {product.sizeIndex},
+                                                        Color: {product.colorIndex}
                                                     </li>
                                                 )
                                             )}

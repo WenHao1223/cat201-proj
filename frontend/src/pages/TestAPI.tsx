@@ -303,7 +303,7 @@ const TestAPI: React.FC = () => {
     const fetchUserData = async () => {
         await handleApiCall(
             "users",
-            "GET",
+            "POST",
             null,
             (result) => {
                 setUsers(result);
