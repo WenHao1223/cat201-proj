@@ -157,6 +157,8 @@ Can do a save button in Cart page
 - return true if item is removed from cart
 - return err if user is not found; product is not found; index out of range; server disconnected
 ### Update quantity
+#### /api/users/cart/update
+#### CartUpdateServlet.java
 - parse userID (from sys), productID (from sys), quantity, size index, color index
 - return true if quantity is updated
 - return err if user is not found; product is not found; insufficient quantity, index out of range; server disconnected

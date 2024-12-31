@@ -24,6 +24,7 @@ const CartServlet: React.FC<CartServletProps> = ({ carts }) => {
                     <p>Brand: {cart.brand}</p>
                     <p>Quantity: {cart.quantity}</p>
                     <p>Size: {cart.size}</p>
+                    <p>Color: {cart.color}</p>
                 </div>
             ))}
         </div>

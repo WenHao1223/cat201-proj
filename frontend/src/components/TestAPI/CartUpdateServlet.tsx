@@ -1,21 +1,26 @@
 import react from "react";
 
-import { CartGeneralInterface } from "@interfaces/API/UserInterface";
+import {
+    CartGeneralInterface,
+    CartInterface,
+} from "@interfaces/API/UserInterface";
 
-interface CartRemoveServletProps {
+interface CartUpdateServletProps {
     carts: CartGeneralInterface[];
-    removeFromCartStatus: boolean;
+    updateCartInfo: CartInterface;
+    updateCartStatus: boolean;
 }
 
-const CartRemoveServlet: React.FC<CartRemoveServletProps> = ({
+const CartUpdateServlet: React.FC<CartUpdateServletProps> = ({
     carts,
-    removeFromCartStatus,
+    updateCartInfo,
+    updateCartStatus,
 }) => {
     return (
         <div>
             <div>
-                <h2>Add to Cart</h2>
-                <h3>Added Product</h3>
+                <h2>Update Quantity of Item in Cart</h2>
+                <h3>Updated Product</h3>
                 <div
                     style={{
                         border: "1px solid #ccc",
@@ -23,14 +28,15 @@ const CartRemoveServlet: React.FC<CartRemoveServletProps> = ({
                         margin: "10px 10px 20px",
                     }}
                 >
-                    <p>Product ID: {carts[0].productID}</p>
-                    <p>Size: {carts[0].size}</p>
-                    <p>Color: {carts[0].color}</p>
+                    <p>Product ID: {updateCartInfo.productID}</p>
+                    <p>Add : {updateCartInfo.quantity}</p>
+                    <p>Size: {updateCartInfo.sizeIndex}</p>
+                    <p>Size: {updateCartInfo.colorIndex}</p>
                 </div>
                 <hr />
                 <p>
-                    Remove from cart status:{" "}
-                    {removeFromCartStatus ? "Success" : "Failure"}
+                    Add to cart status:{" "}
+                    {updateCartStatus ? "Success" : "Failure"}
                 </p>
             </div>
             <h1>Cart</h1>
@@ -56,4 +62,4 @@ const CartRemoveServlet: React.FC<CartRemoveServletProps> = ({
     );
 };
 
-export default CartRemoveServlet;
+export default CartUpdateServlet;

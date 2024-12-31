@@ -26,6 +26,7 @@ const CartAddServlet: React.FC<CartAddServletProps> = ({
                     <p>Product ID: {carts[0].productID}</p>
                     <p>Quantity: {carts[0].quantity}</p>
                     <p>Size: {carts[0].size}</p>
+                    <p>Color: {carts[0].color}</p>
                 </div>
                 <hr />
                 <p>
@@ -49,6 +50,7 @@ const CartAddServlet: React.FC<CartAddServletProps> = ({
                     <p>Brand: {cart.brand}</p>
                     <p>Quantity: {cart.quantity}</p>
                     <p>Size: {cart.size}</p>
+                    <p>Color: {cart.color}</p>
                 </div>
             ))}
         </div>

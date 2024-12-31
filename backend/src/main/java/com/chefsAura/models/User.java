@@ -263,17 +263,28 @@ public class User {
     }
 
     // update product quantity in cart
-    public void updateProductQuantityInCart(String productID, int sizeIndex, int colorIndex, int newQuantity) {
+    public void updateProductQuantityInCart(String productID, int sizeIndex, int colorIndex, int addedQuantity) {
         for (Cart cart : this.carts) {
             if (cart.getProductID().equals(productID) && cart.getSizeIndex() == sizeIndex
                     && cart.getColorIndex() == colorIndex) {
-                cart.setQuantity(newQuantity);
+                if (Inventory.getProduct(cart.getProductID()).getQuantities().get(cart.getSizeIndex())
+                        .get(cart.getColorIndex()) < cart.getQuantity() + addedQuantity) {
+                    System.err.println("Quantity not available");
+                    throw new IllegalArgumentException("Quantity not available");
+                }
+                if (cart.getQuantity() + addedQuantity < 0) {
+                    cart.setQuantity(0);
+                } else {
+                    cart.setQuantity(cart.getQuantity() + addedQuantity);
+                }
                 System.out.println("Product quantity updated successfully");
                 return;
             }
         }
+
         // return error
         System.err.println("Product not found in cart");
+        throw new IllegalArgumentException("Product not found in cart");
     }
 
     // add order

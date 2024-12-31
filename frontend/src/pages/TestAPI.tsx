@@ -30,6 +30,7 @@ import SpecificProductServlet from "@components/TestAPI/SpecificProductServlet";
 import CartServlet from "@components/TestAPI/CartServlet";
 import CartAddServlet from "@components/TestAPI/CartAddServlet";
 import CartRemoveServlet from "@components/TestAPI/CartRemoveServlet";
+import CartUpdateServlet from "@components/TestAPI/CartUpdateServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -188,6 +189,11 @@ const TestAPI: React.FC = () => {
     const [showRemoveFromCart, setShowRemoveFromCart] = useState<boolean>(false);
     const [removeFromCartStatus, setRemoveFromCartStatus] = useState<boolean>(false);
 
+    // Update quantity of item in cart
+    const [showUpdateCart, setShowUpdateCart] = useState<boolean>(false);
+    const [updateCartStatus, setUpdateCartStatus] = useState<boolean>(false);
+    const [updateCartInfo, setUpdateCartInfo] = useState<CartInterface | null>(null);
+
     // Reset all states to default
     const setToDefault = () => {
         setShowUsers(false);
@@ -211,6 +217,7 @@ const TestAPI: React.FC = () => {
         setShowCarts(false);
         setShowAddToCart(false);
         setShowRemoveFromCart(false);
+        setShowUpdateCart(false);
     };
 
     const handleApiCall = async (
@@ -791,6 +798,37 @@ const TestAPI: React.FC = () => {
         );
     }
 
+    const updateCart = async (productID: string, quantity: number, sizeIndex: number, colorIndex: number) => {
+        setUpdateCartInfo({
+            productID,
+            quantity,
+            sizeIndex,
+            colorIndex
+        });
+        await handleApiCall(
+            `http://localhost:9090/api/users/cart/update`,
+            "PUT",
+            {
+                email: userEmail,
+                productID,
+                quantity,
+                sizeIndex,
+                colorIndex
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setUpdateCartStatus(true);
+                    setCarts(result.carts.map((cart: string) => JSON.parse(cart)));
+                } else {
+                    setError("\n Error updating cart: " + result.message);
+                }
+                setToDefault();
+                setShowUpdateCart(true);
+            },
+            (error) => setError("\n Error updating cart: " + error)
+        );
+    }
+
     return (
         <div>
             <h1>Test API Page</h1>
@@ -941,6 +979,13 @@ const TestAPI: React.FC = () => {
             >
                 Remove from Cart
             </button>
+            <button
+                onClick={() =>
+                    updateCart("B003", 34, 0, 0)
+                }
+            >
+                Update Cart
+            </button>
 
             <div>
                 {error && <p style={{ color: "red" }}>{error}</p>}
@@ -1070,6 +1115,13 @@ const TestAPI: React.FC = () => {
                     <CartRemoveServlet
                         carts={carts}
                         removeFromCartStatus={removeFromCartStatus}
+                    />
+                )}
+                {showUpdateCart && carts && updateCartInfo && (
+                    <CartUpdateServlet
+                        carts={carts}
+                        updateCartInfo={updateCartInfo}
+                        updateCartStatus={updateCartStatus}
                     />
                 )}
             </div>
