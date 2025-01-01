@@ -23,6 +23,7 @@ const SamplePage1: React.FC = () => {
                 </div>
             </div>
             <box-icon name="rocket" color="white"></box-icon>
+            <i className="fa-solid fa-check"></i>
         </div>
     );
 };
