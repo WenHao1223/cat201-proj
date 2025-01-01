@@ -1,0 +1,316 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: white;
+    color: black; /* Ensure text color is black */
+}
+
+input, select, textarea {
+    background-color: white !important; /* Ensure background is white */
+    color: black !important; /* Ensure text color is black */
+}
+
+.btn-full-width {
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #fff;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+    border-color: #d39e00;
+    color: #fff;
+}
+
+.header {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.container {
+    position: relative;
+    max-width: 1200px;
+    width: 100%;
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.form-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.image-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-container img {
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+    max-width: 100%;
+    height: auto;
+}
+
+.form-content {
+    flex: 2;
+    padding: 20px;
+}
+
+.form-content header {
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form .input-box {
+    width: 100%;
+    margin-top: 10px; /* Reduced margin */
+}
+
+.form-outline {
+    position: relative;
+    margin-bottom: 10px; /* Reduced margin */
+}
+
+.form-outline input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
+
+.form-outline label {
+    position: absolute;
+    top: -0.75rem;
+    left: 1rem;
+    background: #fff;
+    padding: 0 0.25rem;
+    font-size: 0.875rem;
+    color: #495057;
+}
+
+.form :where(.input-box input, .input-box select) {
+    position: relative;
+    height: 50px;
+    width: 100%;
+    outline: none;
+    font-size: 1rem;
+    color: #707070;
+    margin-top: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0 15px;
+}
+
+.input-box input:focus,
+.input-box select:focus {
+    border-color: blue; /* Change border color to blue when focused */
+    box-shadow: 0 0 5px rgba(0, 0, 255, 0.5); /* Optional: Add a blue shadow */
+}
+
+.flex-container {
+    display: flex;
+    gap: 10px;
+}
+
+.gender-box {
+    margin-top: 20px;
+}
+
+.gender-box h3 {
+    color: #333;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 8px;
+}
+
+.gender-option {
+    display: flex;
+    align-items: center;
+    column-gap: 50px;
+    flex-wrap: wrap;
+}
+
+.gender {
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+}
+
+.gender input {
+    accent-color: rgb(130, 106, 251);
+}
+
+.gender label {
+    color: #707070;
+}
+
+.agree-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.agree-box input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+}
+
+.btn-light {
+    background-color: #f8f9fa;
+    color: #343a40;
+    border: 1px solid #ced4da;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: #343a40;
+    border: 1px solid #ffc107;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+    border-color: #d39e00;
+}
+
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
+    font-size: 1rem;
+    line-height: 2.15;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+}
+
+.card-registration .select-arrow {
+    top: 13px;
+}
+@media (max-width: 767.98px) {
+    .d-none.d-xl-block {
+        display: none !important;
+    }
+    .form-container {
+        flex-direction: column;
+    }
+    .image-container {
+        display: none;
+    }
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5);
+}
+
+input[type="date"]::-ms-clear {
+    display: none;
+}
+
+input[type="date"]::-ms-expand {
+    display: none;
+}
+
+input[type="radio"], input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+input[type="radio"] + label, input[type="checkbox"] + label {
+    position: relative;
+    padding-left: 25px;
+    cursor: pointer;
+    display: inline-block;
+    color: black;
+}
+
+input[type="radio"] + label::before, input[type="checkbox"] + label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid black;
+    background-color: white;
+    border-radius: 50%; /* For radio buttons */
+}
+
+input[type="checkbox"] + label::before {
+    border-radius: 4px; /* For checkbox buttons */
+}
+
+input[type="radio"]:checked + label::before, input[type="checkbox"]:checked + label::before {
+    background-color: blue; /* Color when checked */
+    border-color: blue;
+}
+
+input[type="radio"]:checked + label::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    border-radius: 50%; /* For radio buttons */
+}
+
+input[type="checkbox"]:checked + label::after {
+    content: '\2713';
+    position: absolute;
+    left: 3px;
+    top: -2px;
+    font-size: 16px;
+    line-height: 1;
+}
+
+input[type="checkbox"]:checked + label::after {
+    left: 4px;
+    top: 4px;
+    width: 12px;
+    height: 12px;
+    background-color: white;
+    border-radius: 2px; /* For checkbox buttons */
+}

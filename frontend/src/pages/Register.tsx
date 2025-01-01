@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../App.css";
+import "@styles/LoginRegister.css";
 
 const Register: React.FC = () => {
     const [nationality, setNationality] = useState("");
@@ -12,17 +12,17 @@ const Register: React.FC = () => {
     };
 
     return (
-        <div className="register-page">
+        <div className="register-page bg-white text-black">
             <div className="container">
-            <div className="header">Chef's Aura</div>
+                <div className="header">Chef's Aura</div>
                 <div className="form-container">
                     <div className="image-container">
-                    <img
-                        src="https://www.color-meanings.com/wp-content/uploads/bright-kitchen-stainless-steel-appliances.jpeg"
-                        alt="Sample photo"
-                        className="img-fluid"
-                        style={{ width: "600px", height: "500px", borderRadius: "15px" }}
-                    />
+                        <img
+                            src="https://www.color-meanings.com/wp-content/uploads/bright-kitchen-stainless-steel-appliances.jpeg"
+                            alt="Sample photo"
+                            className="img-fluid"
+                            style={{ width: "600px", height: "500px", borderRadius: "15px" }}
+                        />
                     </div>
                     <div className="form-content">
                         <header style={{ textAlign: "center" }}>Sign Up</header>
@@ -50,16 +50,16 @@ const Register: React.FC = () => {
                             </div>
                             <div className="flex-container">
                                 <div className="input-box">
-                                <select value={nationality} onChange={handleNationalityChange} required className="scrollable-select">
-                                    <option value="" disabled hidden>Select Nationality</option>
-                                    <option value="Malaysian">Malaysian</option>
-                                    <option value="Japanese">Japanese</option>
-                                    <option value="Indian">Indian</option>
-                                    <option value="Nepalese">Nepalese</option>
-                                    <option value="Chinese">Chinese</option>
-                                    <option value="Russian">Russian</option>
-                                    <option value="Other">Other</option>
-                                </select>
+                                    <select value={nationality} onChange={handleNationalityChange} required className="scrollable-select">
+                                        <option value="" disabled hidden>Select Nationality</option>
+                                        <option value="Malaysian">Malaysian</option>
+                                        <option value="Japanese">Japanese</option>
+                                        <option value="Indian">Indian</option>
+                                        <option value="Nepalese">Nepalese</option>
+                                        <option value="Chinese">Chinese</option>
+                                        <option value="Russian">Russian</option>
+                                        <option value="Other">Other</option>
+                                    </select>
                                 </div>
                                 {isOtherSelected && (
                                     <div className="input-box">
