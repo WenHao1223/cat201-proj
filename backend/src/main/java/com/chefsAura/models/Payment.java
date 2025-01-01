@@ -69,6 +69,24 @@ public class Payment {
         return cardNumber;
     }
 
+    // get last 4 digits of card number
+    public String getLastFourDigits() {
+        StringBuilder masked = new StringBuilder();
+        int length = cardNumber.length();
+        if (this.paymentMethod == PaymentMethodEnum.PAYPAL) {
+            return cardNumber.substring(0, 2) + "x".repeat(length - 8) + cardNumber.substring(length - 6);
+        } else {
+            for (int i = 0; i < length - 4; i++) {
+                if (i > 0 && i % 4 == 0) {
+                    masked.append(" ");
+                }
+                masked.append("x");
+            }
+            String lastFourDigits = cardNumber.substring(length - 4);
+            return masked.append(" ").append(lastFourDigits).toString();
+        }
+    }
+
     // get expiry date
     public String getExpiryDate() {
         return expiryDate;

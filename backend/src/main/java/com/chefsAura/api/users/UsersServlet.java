@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 
 @WebServlet("/api/users")
 public class UsersServlet extends HttpServlet {
+
     @Override
     public void init() throws ServletException {
         super.init();
@@ -22,8 +23,10 @@ public class UsersServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+
         // Convert object to JSON using Gson
         Gson gson = new Gson();
         String jsonResponse = gson.toJson(UserCollection.getAllUsers());

@@ -39,6 +39,12 @@
         "quantity": 1,
         "sizeIndex": 0,
         "colorIndex": 0
+      },
+      {
+        "productID": "B002",
+        "quantity": 1,
+        "sizeIndex": 0,
+        "colorIndex": 0
       }
     ],
     "orders": [
@@ -48,10 +54,10 @@
         "billingAddress": "123 Main St, Kuala Lumpur",
         "paymentID": 1,
         "orderDate": "2023-10-01",
-        "orderStatus": "Delivered",
+        "orderStatus": "Ordered",
         "cartProducts": [
           {
-            "productID": "B001",
+            "productID": "B002",
             "quantity": 1,
             "sizeIndex": 0,
             "colorIndex": 0
@@ -95,7 +101,7 @@
     ],
     "carts": [
       {
-        "productID": "B002",
+        "productID": "B003",
         "quantity": 2,
         "sizeIndex": 0,
         "colorIndex": 0
@@ -111,7 +117,7 @@
         "orderStatus": "Ordered",
         "cartProducts": [
           {
-            "productID": "B002",
+            "productID": "B001",
             "quantity": 2,
             "sizeIndex": 0,
             "colorIndex": 0
@@ -148,7 +154,7 @@
     ],
     "carts": [
       {
-        "productID": "B003",
+        "productID": "PM001",
         "quantity": 3,
         "sizeIndex": 0,
         "colorIndex": 0
@@ -164,7 +170,7 @@
         "orderStatus": "Delivered",
         "cartProducts": [
           {
-            "productID": "B003",
+            "productID": "U001",
             "quantity": 3,
             "sizeIndex": 0,
             "colorIndex": 0
@@ -201,7 +207,7 @@
     ],
     "carts": [
       {
-        "productID": "B004",
+        "productID": "PM002",
         "quantity": 1,
         "sizeIndex": 0,
         "colorIndex": 0
@@ -217,7 +223,7 @@
         "orderStatus": "Delivered",
         "cartProducts": [
           {
-            "productID": "B004",
+            "productID": "U002",
             "quantity": 1,
             "sizeIndex": 0,
             "colorIndex": 0
@@ -254,7 +260,7 @@
     ],
     "carts": [
       {
-        "productID": "PM001",
+        "productID": "PM003",
         "quantity": 1,
         "sizeIndex": 0,
         "colorIndex": 0
@@ -270,7 +276,7 @@
         "orderStatus": "Cancelled",
         "cartProducts": [
           {
-            "productID": "PM001",
+            "productID": "M001",
             "quantity": 1,
             "sizeIndex": 0,
             "colorIndex": 0
@@ -307,7 +313,7 @@
     ],
     "carts": [
       {
-        "productID": "PM002",
+        "productID": "PM006",
         "quantity": 2,
         "sizeIndex": 0,
         "colorIndex": 0
@@ -323,7 +329,7 @@
         "orderStatus": "Delivered",
         "cartProducts": [
           {
-            "productID": "PM002",
+            "productID": "PM004",
             "quantity": 2,
             "sizeIndex": 0,
             "colorIndex": 0
@@ -360,7 +366,7 @@
     ],
     "carts": [
       {
-        "productID": "PM003",
+        "productID": "PM005",
         "quantity": 1,
         "sizeIndex": 0,
         "colorIndex": 0
@@ -376,7 +382,7 @@
         "orderStatus": "Ordered",
         "cartProducts": [
           {
-            "productID": "PM003",
+            "productID": "PM005",
             "quantity": 1,
             "sizeIndex": 0,
             "colorIndex": 0
@@ -413,7 +419,7 @@
     ],
     "carts": [
       {
-        "productID": "PM004",
+        "productID": "PM002",
         "quantity": 1,
         "sizeIndex": 0,
         "colorIndex": 0
@@ -429,7 +435,7 @@
         "orderStatus": "Delivered",
         "cartProducts": [
           {
-            "productID": "PM004",
+            "productID": "PM003",
             "quantity": 1,
             "sizeIndex": 0,
             "colorIndex": 0
@@ -490,7 +496,7 @@
     ],
     "carts": [
       {
-        "productID": "PM005",
+        "productID": "B002",
         "quantity": 1,
         "sizeIndex": 0,
         "colorIndex": 0
@@ -506,7 +512,7 @@
         "orderStatus": "Delivered",
         "cartProducts": [
           {
-            "productID": "PM005",
+            "productID": "B002",
             "quantity": 1,
             "sizeIndex": 0,
             "colorIndex": 0

@@ -1,6 +1,6 @@
 // ProductInterface.tsx
 
-export interface Product {
+export interface ProductInterface {
     productID: string;
     name: string;
     description: string;

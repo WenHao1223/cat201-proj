@@ -23,6 +23,10 @@ public class ProductsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (request.getPathInfo() != null) {
+            return;
+        }
+        
         // Convert object to JSON using Gson
         Gson gson = new Gson();
         String jsonResponse = gson.toJson(Inventory.getAllProducts());

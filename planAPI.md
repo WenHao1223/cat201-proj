@@ -126,36 +126,64 @@ username, nationality, firstName, lastName, phoneNo, gender, dob
 
 ## Product Details
 ### View specific product
-after clicking specific product from homepage
-
-if possible should update quantity in real time
+#### /api/products/<productID>
+#### SpecificProductServlet.java
+- after clicking specific product from homepage
+- if possible should update quantity in real time
 - parse productID (from sys)
 - return maps {productID, name, desccripton, price, category, brand, list [sizes], list [colors], list [quantities]}
 - return null if no products are found
 - return err if product is not found; server disconnected
 - frontend should able to handle if no products are found
 ### Add product to cart
+#### /api/users/cart/add
+#### CartAddServlet.java
 - parse userID (from sys), productID (from sys), quantity, size index, color index
 - return true if item is added to cart
 - return err if user is not found; product is not found; insufficient quantity; index out of range; server disconnected
 
 ## Cart
 Can do a save button in Cart page
+#### View cart
+#### /api/users/cart
+#### CartServket.java
+- parse userID (from sys)
+- return list [product [name, price], quantity, size, color]
+- return err if user is not found; product is not found; index out of range; server disconnected]
 ### Remove product from cart
+#### /api/users/cart/remove
+#### CartRemoveServlet.java
 - parse userID (from sys), productID (from sys), size index, color index
 - return true if item is removed from cart
 - return err if user is not found; product is not found; index out of range; server disconnected
 ### Update quantity
+#### /api/users/cart/update
+#### CartUpdateServlet.java
 - parse userID (from sys), productID (from sys), quantity, size index, color index
 - return true if quantity is updated
 - return err if user is not found; product is not found; insufficient quantity, index out of range; server disconnected
 
 ## Payment
-### Add cart items to order
+#### View order
+#### /api/users/orders
+#### OrdersServlet.java
+- parse userID (from sys)
+- return list [orderID, shippingAddress, billingAddress, payment (link to paymentMethod, cardNumber), orderDate, orderStatus, cart [product [name, price], quantity, size, color]]
+- return err if user is not found; incorrect format; index out of range; shipping / billing address not found; payment id not found; session expired; server disconnected
+#### View specific order
+- parse userID (from sys), productID
+- return orderID, shippingAddress, billingAddress, payment (link to paymentMethod, cardNumber), orderDate, orderStatus, cart [product [name, price], quantity, size, color]
+- return err if user is not found; order is not found; incorrect format; index out of range; shipping / billing address not found; payment id not found; session expired; server disconnected
+### Order cart items
+#### /api/users/orders/
+#### OrdersAddServlet.java
 - parse userID (from sys), shippingAddress, billingAddress, paymentID
 - return true if items are added to order
 - return err if user is not found; incorrect format; index out of range; shipping / billing address not found; payment id not found; session expired; server disconnected
+- remove product if quantity is 0
 ### Cancel order
+#### /api/users/orders/cancel
+#### OrdersCancelServlet.java
 - parse userID (from sys), orderID
 - return true if order is cancelled
 - return err if user is not found; order is not found; session expired; server disconnected
