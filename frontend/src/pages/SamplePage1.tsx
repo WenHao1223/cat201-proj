@@ -1,4 +1,5 @@
 import React from "react";
+import 'boxicons';
 
 const SamplePage1: React.FC = () => {
     return (
@@ -21,6 +22,7 @@ const SamplePage1: React.FC = () => {
                     </div>
                 </div>
             </div>
+            <box-icon name="rocket" color="white"></box-icon>
         </div>
     );
 };
