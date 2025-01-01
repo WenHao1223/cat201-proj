@@ -20,6 +20,9 @@ const Main: React.FC = () => {
                 <Link to="/cart">
                     <button>Go to Cart</button>
                 </Link>
+                <Link to="/checkout">
+                    <button>Go to Checkout</button>
+                </Link>
             </div>
         </div>
     );
