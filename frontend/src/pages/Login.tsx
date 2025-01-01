@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 
 import "@styles/LoginRegister.css";
+import handleApiCall from "@utils/handleApiCall";
 
-const Login: React.FC = () => {
+interface LoginProps {
+    setCurrentUserGeneralDetails: React.Dispatch<React.SetStateAction<any>>;
+}
+
+const Login: React.FC<LoginProps> = ({ setCurrentUserGeneralDetails }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const [error, setError] = useState("" as string | null);
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
@@ -16,11 +23,31 @@ const Login: React.FC = () => {
         setPassword(event.target.value);
     };
 
+    const validateUserLoginMethod = async (email: string, password: string) => {
+        await handleApiCall(
+            "users/login",
+            "POST",
+            { email, password },
+            async (result) => {
+                console.log(result);
+                if (await result.loginStatus) {
+                    console.log("Login successful");
+                    setError(null);
+                    setCurrentUserGeneralDetails(JSON.parse(result.user));
+                } else {
+                    setError("\n Invalid email or password");
+                }
+            },
+            (error) => setError("\n Error validating user login: " + error)
+        );
+    };
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         // Handle login logic here
         console.log("Email:", email);
         console.log("Password:", password);
+        validateUserLoginMethod(email, password);
     };
 
     return (
@@ -68,6 +95,9 @@ const Login: React.FC = () => {
                                     required
                                 />
                             </div>
+                            {error && (
+                                <div className="text-red-500 pt-4">{error}</div>
+                            )}
                             <div className="button-container">
                                 <button
                                     type="submit"
