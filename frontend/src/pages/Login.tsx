@@ -29,7 +29,7 @@ const Login: React.FC = () => {
                 <div className="form-container">
                     <div className="image-container" style={{ marginTop: "20px" }}>
                         <img
-                            src="https://www.color-meanings.com/wp-content/uploads/bright-kitchen-stainless-steel-appliances.jpeg"
+                            src="https://th.bing.com/th/id/OIP.RwtkstiEHa-_o2QIKYBy3QHaE8?w=238&h=188&c=7&r=0&o=5&dpr=1.1&pid=1.7"
                             alt="Sample photo"
                             className="img-fluid"
                             style={{ width: "400px", height: "200px", borderRadius: "15px" }}
@@ -58,9 +58,8 @@ const Login: React.FC = () => {
                                     required
                                 />
                             </div>
-                            <div className="text"><a href="#">Forgot password?</a></div>
-                            <div className="button input-box">
-                                <input type="submit" value="Submit" />
+                            <div className="button-container">
+                                <button type="submit" className="btn btn-full-width btn-warning ms-2">Submit form</button>
                             </div>
                             <div className="text sign-up-text">Don't have an account? <a href="/register">Signup now</a></div>
                         </form>

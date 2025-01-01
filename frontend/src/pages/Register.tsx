@@ -99,6 +99,7 @@ const Register: React.FC = () => {
                                 <button type="button" className="btn btn-light btn-lg">Reset all</button>
                                 <button type="submit" className="btn btn-warning btn-lg ms-2">Submit form</button>
                             </div>
+                            <div className="text sign-up-text">Already have an account? <a href="/login">Login here</a></div>
                         </form>
                     </div>
                 </div>
