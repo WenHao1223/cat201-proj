@@ -1,26 +1,27 @@
 import React, { useState } from "react";
 import "@styles/LoginRegister.css";
+import { getNames } from 'country-list';
 
 const Register: React.FC = () => {
-    const [nationality, setNationality] = useState("");
-    const [isOtherSelected, setIsOtherSelected] = useState(false);
+    const [nationality, setNationality] = useState<string>("");
 
-    const handleNationalityChange = (
-        event: React.ChangeEvent<HTMLSelectElement>
-    ) => {
-        const value = event.target.value;
-        setNationality(value);
-        setIsOtherSelected(value === "Other");
+    const handleNationalityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setNationality(event.target.value);
     };
 
-    const resetAll = () => {
-        setNationality("");
-        setIsOtherSelected(false);
+    const countryOptions = getNames().sort();
 
+    const resetAll = () => {
         const inputFields = document.querySelectorAll("input");
         inputFields.forEach((input) => {
             input.value = "";
         });
+
+        const selectField = document.querySelector("select");
+        if (selectField) {
+            (selectField as HTMLSelectElement).selectedIndex = 0;
+        }
+
         const checkboxField = document.querySelector("input[type='checkbox']");
         if (checkboxField) {
             (checkboxField as HTMLInputElement).checked = false;
@@ -106,42 +107,18 @@ const Register: React.FC = () => {
                                         className="scrollable-select"
                                     >
                                         <option value="" disabled hidden>
-                                            Select Nationality
+                                            -- Select Country --
                                         </option>
-                                        <option value="Malaysian">
-                                            Malaysian
-                                        </option>
-                                        <option value="Japanese">
-                                            Japanese
-                                        </option>
-                                        <option value="Indian">Indian</option>
-                                        <option value="Nepalese">
-                                            Nepalese
-                                        </option>
-                                        <option value="Chinese">Chinese</option>
-                                        <option value="Russian">Russian</option>
-                                        <option value="Other">Other</option>
+                                        {countryOptions.map((country) => (
+                                            <option
+                                                key={country}
+                                                value={country}
+                                            >
+                                                {country}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
-                                {isOtherSelected && (
-                                    <div className="input-box">
-                                        <input
-                                            type="text"
-                                            placeholder="Please specify your nationality"
-                                            required
-                                        />
-                                    </div>
-                                )}
-                                {!isOtherSelected && nationality && (
-                                    <div className="input-box">
-                                        <input
-                                            type="text"
-                                            value={nationality}
-                                            placeholder="Nationality"
-                                            readOnly
-                                        />
-                                    </div>
-                                )}
                                 <div className="input-box">
                                     <input
                                         type="date"
