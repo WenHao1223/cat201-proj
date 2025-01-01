@@ -33,7 +33,11 @@ public class Order {
         this.paymentID = paymentID;
         this.orderDate = orderDate;
         this.orderStatus = orderStatus;
-        this.cartProducts = cartProducts;
+        this.cartProducts = new java.util.ArrayList<Cart>();
+        for (Cart product : cartProducts) {
+            this.cartProducts.add(new Cart(
+                    product.productID, product.quantity, product.sizeIndex, product.colorIndex));
+        }
 
         if (orderID > largestOrderID) {
             largestOrderID = orderID;
@@ -49,7 +53,11 @@ public class Order {
         this.paymentID = paymentID;
         this.orderDate = java.time.LocalDate.now().toString();
         this.orderStatus = orderStatus;
-        this.cartProducts = cartProducts;
+        this.cartProducts = new java.util.ArrayList<Cart>();
+        for (Cart product : cartProducts) {
+            this.cartProducts.add(new Cart(
+                    product.productID, product.quantity, product.sizeIndex, product.colorIndex));
+        }
 
         largestOrderID++;
 
@@ -103,5 +111,14 @@ public class Order {
     // get products
     public List<Cart> getCartProducts() {
         return cartProducts;
+    }
+
+    // get order total
+    public double getOrderTotal() {
+        double total = 0;
+        for (Cart cart : cartProducts) {
+            total += Inventory.getProduct(cart.getProductID()).getPrice() * cart.getQuantity();
+        }
+        return total;
     }
 }

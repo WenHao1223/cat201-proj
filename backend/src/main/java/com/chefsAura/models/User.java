@@ -235,13 +235,13 @@ public class User {
         // check if product is valid
         if (Inventory.getProduct(newCart.getProductID()) == null) {
             System.err.println("Product not found");
-            return;
+            throw new IllegalArgumentException("Product not found");
         }
         // check if quantity is available
         if (Inventory.getProduct(newCart.getProductID()).getQuantities().get(newCart.getSizeIndex())
                 .get(newCart.getColorIndex()) == 0) {
             System.err.println("Quantity not available");
-            return;
+            throw new IllegalArgumentException("Quantity not available");
         }
         this.carts.add(newCart);
         System.out.println("Product added to cart successfully");
@@ -259,24 +259,76 @@ public class User {
         }
         // return error
         System.err.println("Product not found in cart");
+        throw new IllegalArgumentException("Product not found in cart");
     }
 
     // update product quantity in cart
-    public void updateProductQuantityInCart(String productID, int sizeIndex, int colorIndex, int newQuantity) {
+    public void updateProductQuantityInCart(String productID, int sizeIndex, int colorIndex, int addedQuantity) {
         for (Cart cart : this.carts) {
             if (cart.getProductID().equals(productID) && cart.getSizeIndex() == sizeIndex
                     && cart.getColorIndex() == colorIndex) {
-                cart.setQuantity(newQuantity);
+                if (Inventory.getProduct(cart.getProductID()).getQuantities().get(cart.getSizeIndex())
+                        .get(cart.getColorIndex()) < cart.getQuantity() + addedQuantity) {
+                    System.err.println("Quantity not available");
+                    throw new IllegalArgumentException("Quantity not available");
+                }
+                if (cart.getQuantity() + addedQuantity < 0) {
+                    cart.setQuantity(0);
+                } else {
+                    cart.setQuantity(cart.getQuantity() + addedQuantity);
+                }
                 System.out.println("Product quantity updated successfully");
                 return;
             }
         }
+
         // return error
         System.err.println("Product not found in cart");
+        throw new IllegalArgumentException("Product not found in cart");
     }
 
     // add order
-    public void addOrder(String shippingAddress, String billingAddress, int paymentID) {
+    public int addOrder(String shippingAddress, String billingAddress, int paymentID) {
+        // check if shipping address is valid
+        if (!this.shippingAddresses.contains(shippingAddress)) {
+            System.err.println("Shipping address not found");
+            throw new IllegalArgumentException("Shipping address not found");
+        }
+        // check if billing address is valid
+        if (!this.billingAddresses.contains(billingAddress)) {
+            System.err.println("Billing address not found");
+            throw new IllegalArgumentException("Billing address not found");
+        }
+        // check if payment details is valid
+        if (this.paymentDetails.stream().noneMatch(payment -> payment.getPaymentID() == paymentID)) {
+            System.err.println("Payment details not found");
+            throw new IllegalArgumentException("Payment details not found");
+        }
+        // check if cart is empty
+        if (this.carts.isEmpty()) {
+            System.err.println("Cart is empty");
+            throw new IllegalArgumentException("Cart is empty");
+        }
+        // check if product is valid
+        for (Cart cart : this.carts) {
+            if (Inventory.getProduct(cart.getProductID()) == null) {
+                System.err.println("Product not found");
+                throw new IllegalArgumentException("Product not found");
+            }
+            // check if quantity is available
+            if (Inventory.getProduct(cart.getProductID()).getQuantities().get(cart.getSizeIndex())
+                    .get(cart.getColorIndex()) < cart.getQuantity()) {
+                System.err.println("Quantity not available");
+                throw new IllegalArgumentException("Quantity not available");
+            }
+        }
+
+        // deduct quantity from inventory
+        for (Cart cart : this.carts) {
+            Inventory.getProduct(cart.getProductID()).removeQuantity(cart.getSizeIndex(), cart.getColorIndex(),
+                    cart.getQuantity());
+        }
+        
         Order newOrder = new Order(
                 shippingAddress,
                 billingAddress,
@@ -284,7 +336,9 @@ public class User {
                 OrderStatusEnum.ORDERED,
                 this.carts);
         this.orders.add(newOrder);
+        this.carts.clear();
         System.out.println("Order added successfully");
+        return newOrder.getOrderID();
     }
 
     // cancel order
@@ -293,15 +347,23 @@ public class User {
             if (order.getOrderID() == orderID) {
                 if (order.getOrderStatus() == OrderStatusEnum.DELIVERED) {
                     System.err.println("Order already delivered");
-                    return;
+                    throw  new IllegalArgumentException("Order already delivered");
                 }
                 order.setOrderStatus(OrderStatusEnum.CANCELLED);
+
+                // add quantity back to inventory
+                for (Cart cart : order.getCartProducts()) {
+                    Inventory.getProduct(cart.getProductID()).addQuantity(cart.getSizeIndex(), cart.getColorIndex(),
+                            cart.getQuantity());
+                }
+
                 System.out.println("Order cancelled successfully");
                 return;
             }
         }
         // return error
         System.err.println("Order not found");
+        throw new IllegalArgumentException("Order not found");
     }
 
     // validate password
@@ -341,8 +403,8 @@ public class User {
     }
 
     // get gender
-    public short getGender() {
-        return this.gender;
+    public String getGender() {
+        return this.gender == 1 ? "Male" : this.gender == 2 ? "Female" : "Error";
     }
 
     // get date of birth
@@ -373,5 +435,15 @@ public class User {
     // get orders
     public List<Order> getOrders() {
         return this.orders;
+    }
+
+    // get order by ID
+    public Order getOrderByID(int orderID) {
+        for (Order order : this.orders) {
+            if (order.getOrderID() == orderID) {
+                return order;
+            }
+        }
+        throw new IllegalArgumentException("Order not found");
     }
 }

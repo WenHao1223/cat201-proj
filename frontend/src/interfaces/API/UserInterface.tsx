@@ -1,3 +1,5 @@
+// UserInterface.tsx
+
 export interface UserInterface {
     username: string;
     email: string;
@@ -48,12 +50,33 @@ export interface CartInterface {
     colorIndex: number;
 }
 
+export interface CartGeneralInterface {
+    productID: string;
+    name: string;
+    price: number;
+    category: string;
+    brand: string;
+    quantity: number;
+    sizeIndex?: number;
+    colorIndex?: number;
+    size: string;
+    color: string;
+}
+
 export interface OrderInterface {
     orderID: number;
     shippingAddress: string;
     billingAddress: string;
-    paymentID: number;
+    payment: PaymentGeneralInterface;
+    paymentID?: number;
     orderDate: string;
     orderStatus: string;
-    cartProducts?: CartInterface[];
+    cartProducts: CartGeneralInterface[];
+    orderTotal: number;
+}
+
+export interface PlaceOrderInterface {
+    shippingAddress: string;
+    billingAddress: string;
+    paymentID: number;
 }

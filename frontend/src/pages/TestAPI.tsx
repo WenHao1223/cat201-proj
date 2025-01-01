@@ -1,29 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
     UserInterface,
     UserGeneralDetailsInterface,
     PaymentGeneralInterface,
     PaymentInterface,
+    CartInterface,
+    CartGeneralInterface,
+    OrderInterface,
+    PlaceOrderInterface,
 } from "@interfaces/API/UserInterface";
-import { Product } from "@interfaces/API/ProductInterface";
+import { ProductInterface } from "@interfaces/API/ProductInterface";
 
-import UsersServlet from "@components/TestAPI/UsersServlet";
-import ProductsServlet from "@components/TestAPI/ProductsServlet";
-import UsersLoginServlet from "@components/TestAPI/UsersLoginServlet";
-import UsersCreateServlet from "@components/TestAPI/UsersCreateServlet";
-import UsersShippingAddressesServlet from "@components/TestAPI/UsersShippingAddressesServlet";
-import UsersPaymentDetailsServlet from "@components/TestAPI/UsersPaymentDetailsServlet";
-import UsersEditProfileServlet from "@components/TestAPI/UsersEditProfileServlet";
-import UsersChangePasswordServlet from "@components/TestAPI/UsersChangePasswordServlet";
-import UsersShippingAddressesAddServlet from "@components/TestAPI/UsersShippingAddressesAddServlet";
-import UsersShippingAddressesUpdateServlet from "@components/TestAPI/UsersShippingAddressesUpdateServlet";
-import UsersShippingAddressesRemoveServlet from "@components/TestAPI/UsersShippingAddressesRemoveServlet";
-import UsersBillingAddressesAddServlet from "@components/TestAPI/UsersBillingAddressesAddServlet";
-import UsersBillingAddressesUpdateServlet from "@components/TestAPI/UsersBillingAddressesUpdateServlet";
-import UsersBillingAddressesRemoveServlet from "@components/TestAPI/UsersBillingAddressesRemoveServlet";
-import UsersPaymentDetailsAddServlet from "@components/TestAPI/UsersPaymentDetailsAddServlet";
-import UsersPaymentDetailsRemoveServlet from "@components/TestAPI/UsersPaymentDetailsRemoveServlet";
+import UsersServlet from "@components/TestAPI/users/UsersServlet";
+import ProductsServlet from "@components/TestAPI/products/ProductsServlet";
+import UsersLoginServlet from "@components/TestAPI/users/UsersLoginServlet";
+import UsersCreateServlet from "@components/TestAPI/users/UsersCreateServlet";
+import UsersShippingAddressesServlet from "@components/TestAPI/users/shippingAddress/UsersShippingAddressesServlet";
+import UsersPaymentDetailsServlet from "@components/TestAPI/users/paymentDetails/UsersPaymentDetailsServlet";
+import UsersEditProfileServlet from "@components/TestAPI/users/UsersEditProfileServlet";
+import UsersChangePasswordServlet from "@components/TestAPI/users/UsersChangePasswordServlet";
+import UsersShippingAddressesAddServlet from "@components/TestAPI/users/shippingAddress/UsersShippingAddressesAddServlet";
+import UsersShippingAddressesUpdateServlet from "@components/TestAPI/users/shippingAddress/UsersShippingAddressesUpdateServlet";
+import UsersShippingAddressesRemoveServlet from "@components/TestAPI/users/shippingAddress/UsersShippingAddressesRemoveServlet";
+import UsersBillingAddressesAddServlet from "@components/TestAPI/users/billingAddress/UsersBillingAddressesAddServlet";
+import UsersBillingAddressesUpdateServlet from "@components/TestAPI/users/billingAddress/UsersBillingAddressesUpdateServlet";
+import UsersBillingAddressesRemoveServlet from "@components/TestAPI/users/billingAddress/UsersBillingAddressesRemoveServlet";
+import UsersPaymentDetailsAddServlet from "@components/TestAPI/users/paymentDetails/UsersPaymentDetailsAddServlet";
+import UsersPaymentDetailsRemoveServlet from "@components/TestAPI/users/paymentDetails/UsersPaymentDetailsRemoveServlet";
+import SpecificProductServlet from "@components/TestAPI/products/SpecificProductServlet";
+import CartServlet from "@components/TestAPI/users/carts/CartServlet";
+import CartAddServlet from "@components/TestAPI/users/carts/CartAddServlet";
+import CartRemoveServlet from "@components/TestAPI/users/carts/CartRemoveServlet";
+import CartUpdateServlet from "@components/TestAPI/users/carts/CartUpdateServlet";
+import OrdersServlet from "@components/TestAPI/users/orders/OrdersServlet";
+import OrdersAddServlet from "@components/TestAPI/users/orders/OrdersAddServlet";
+import SpecificOrderServlet from "@components/TestAPI/users/orders/SpecificOrderServlet";
+import OrdersCancelServlet from "@components/TestAPI/users/orders/OrdersCancelServlet";
 
 const TestAPI: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -34,7 +47,7 @@ const TestAPI: React.FC = () => {
 
     // Fetch product data
     const [showProducts, setShowProducts] = useState<boolean>(false);
-    const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<ProductInterface[]>([]);
 
     // Validate user login
     const [showUserLoginStatus, setShowUserLoginStatus] =
@@ -50,18 +63,19 @@ const TestAPI: React.FC = () => {
         useState<boolean>(false);
     const [createAccountStatus, setCreateAccountStatus] =
         useState<boolean>(false);
-    const [craeteAccountObject, setCreateAccountObject] = useState<UserInterface>({
-        username: "",
-        email: "",
-        password: "",
-        nationality: "",
-        firstName: "",
-        lastName: "",
-        phoneNo: "",
-        gender: 0,
-        dob: "",
-        agreeToTerms: false,
-    });
+    const [craeteAccountObject, setCreateAccountObject] =
+        useState<UserInterface>({
+            username: "",
+            email: "",
+            password: "",
+            nationality: "",
+            firstName: "",
+            lastName: "",
+            phoneNo: "",
+            gender: 0,
+            dob: "",
+            agreeToTerms: false,
+        });
 
     // View all shipping addresses of current user
     const [showShippingAddresses, setShowShippingAddresses] =
@@ -162,9 +176,64 @@ const TestAPI: React.FC = () => {
         });
 
     // Remove payment detail (by payment ID)
-    const [showRemovePaymentDetail, setShowRemovePaymentDetail] = useState<boolean>(false);
-    const [removePaymentDetailStatus, setRemovePaymentDetailStatus] = useState<boolean>(false);
-    const [removePaymentDetailIndex, setRemovePaymentDetailIndex] = useState<number>(-1);
+    const [showRemovePaymentDetail, setShowRemovePaymentDetail] =
+        useState<boolean>(false);
+    const [removePaymentDetailStatus, setRemovePaymentDetailStatus] =
+        useState<boolean>(false);
+    const [removePaymentDetailIndex, setRemovePaymentDetailIndex] =
+        useState<number>(-1);
+
+    // View specific product
+    const [showSpecificProduct, setShowSpecificProduct] =
+        useState<boolean>(false);
+    const [specificProduct, setSpecificProduct] =
+        useState<ProductInterface | null>(null);
+
+    // View cart
+    const [showCarts, setShowCarts] = useState<boolean>(false);
+    const [carts, setCarts] = useState<CartGeneralInterface[] | null>(null);
+
+    // Add item to cart
+    const [showAddToCart, setShowAddToCart] = useState<boolean>(false);
+    const [addToCartStatus, setAddToCartStatus] = useState<boolean>(false);
+
+    // Remove item from cart
+    const [showRemoveFromCart, setShowRemoveFromCart] =
+        useState<boolean>(false);
+    const [removeFromCartStatus, setRemoveFromCartStatus] =
+        useState<boolean>(false);
+
+    // Update quantity of item in cart
+    const [showUpdateCart, setShowUpdateCart] = useState<boolean>(false);
+    const [updateCartStatus, setUpdateCartStatus] = useState<boolean>(false);
+    const [updateCartInfo, setUpdateCartInfo] = useState<CartInterface | null>(
+        null
+    );
+
+    // View orders
+    const [showOrders, setShowOrders] = useState<boolean>(false);
+    const [orders, setOrders] = useState<OrderInterface[] | null>(null);
+
+    // View specific order
+    const [showSpecificOrder, setShowSpecificOrder] = useState<boolean>(false);
+    const [specificOrder, setSpecificOrder] = useState<OrderInterface | null>(
+        null
+    );
+
+    // Order cart items
+    const [showAddToOrder, setShowAddToOrder] = useState<boolean>(false);
+    const [newOrderDetails, setNewOrderDetails] =
+        useState<PlaceOrderInterface | null>(null);
+    const [newOrder, setNewOrder] = useState<OrderInterface | null>(null);
+    const [addToOrderStatus, setAddToOrderStatus] = useState<boolean>(false);
+
+    // Cancel order
+    const [showCancelOrder, setShowCancelOrder] = useState<boolean>(false);
+    const [orderToCancel, setOrderToCancel] = useState<OrderInterface | null>(
+        null
+    );
+    const [orderToCancelStatus, setOrderToCancelStatus] =
+        useState<boolean>(false);
 
     // Reset all states to default
     const setToDefault = () => {
@@ -185,6 +254,15 @@ const TestAPI: React.FC = () => {
         setShowRemoveBillingAddress(false);
         setShowAddPaymentDetail(false);
         setShowRemovePaymentDetail(false);
+        setShowSpecificProduct(false);
+        setShowCarts(false);
+        setShowAddToCart(false);
+        setShowRemoveFromCart(false);
+        setShowUpdateCart(false);
+        setShowOrders(false);
+        setShowSpecificOrder(false);
+        setShowAddToOrder(false);
+        setShowCancelOrder(false);
     };
 
     const handleApiCall = async (
@@ -195,7 +273,7 @@ const TestAPI: React.FC = () => {
         onError: (error: string) => void
     ) => {
         try {
-            const response = await fetch(url, {
+            const response = await fetch("http://localhost:9090/api/" + url, {
                 method: method,
                 headers: {
                     "Content-Type": "application/json",
@@ -224,8 +302,8 @@ const TestAPI: React.FC = () => {
 
     const fetchUserData = async () => {
         await handleApiCall(
-            "http://localhost:9090/api/users",
-            "GET",
+            "users",
+            "POST",
             null,
             (result) => {
                 setUsers(result);
@@ -238,7 +316,7 @@ const TestAPI: React.FC = () => {
 
     const fetchProductData = async () => {
         await handleApiCall(
-            "http://localhost:9090/api/products",
+            "products",
             "GET",
             null,
             (result) => {
@@ -254,7 +332,7 @@ const TestAPI: React.FC = () => {
         setUserEmail(email);
         setUserPassword(password);
         await handleApiCall(
-            "http://localhost:9090/api/users/login",
+            "users/login",
             "POST",
             { email, password },
             async (result) => {
@@ -297,7 +375,7 @@ const TestAPI: React.FC = () => {
         });
 
         await handleApiCall(
-            "http://localhost:9090/api/users/create",
+            "users/create",
             "POST",
             {
                 username,
@@ -326,7 +404,7 @@ const TestAPI: React.FC = () => {
 
     const viewCurrentUserShippingAddressesMethod = async () => {
         await handleApiCall(
-            `http://localhost:9090/api/users/shippingAddresses?email=${userEmail}`,
+            `users/shippingAddresses?email=${userEmail}`,
             "GET",
             null,
             async (result) => {
@@ -348,7 +426,7 @@ const TestAPI: React.FC = () => {
 
     const viewCurrentUserBillingAddressesMethod = async () => {
         await handleApiCall(
-            `http://localhost:9090/api/users/billingAddresses?email=${userEmail}`,
+            `users/billingAddresses?email=${userEmail}`,
             "GET",
             null,
             async (result) => {
@@ -370,7 +448,7 @@ const TestAPI: React.FC = () => {
 
     const viewCurrentUserPaymentDetailsMethod = async () => {
         await handleApiCall(
-            `http://localhost:9090/api/users/paymentDetails?email=${userEmail}`,
+            `users/paymentDetails?email=${userEmail}`,
             "GET",
             null,
             async (result) => {
@@ -395,7 +473,7 @@ const TestAPI: React.FC = () => {
         setEditField(field);
         setEditValue(value);
         await handleApiCall(
-            "http://localhost:9090/api/users/editProfile",
+            "users/editProfile",
             "PUT",
             {
                 email: userEmail,
@@ -423,7 +501,7 @@ const TestAPI: React.FC = () => {
         setChangePasswordCurrentPassword(currentPassword);
         setChangePasswordNewPassword(newPassword);
         await handleApiCall(
-            "http://localhost:9090/api/users/changePassword",
+            "users/changePassword",
             "PUT",
             {
                 email: userEmail,
@@ -446,7 +524,7 @@ const TestAPI: React.FC = () => {
     const addShippingAddressMethod = async (newShippingAddress: string) => {
         setNewShippingAddress(newShippingAddress);
         await handleApiCall(
-            "http://localhost:9090/api/users/shippingAddresses/add",
+            "users/shippingAddresses/add",
             "PUT",
             {
                 email: userEmail,
@@ -477,7 +555,7 @@ const TestAPI: React.FC = () => {
         setUpdateShippingAddressIndex(index);
         setUpdateShippingAddress(newShippingAddress);
         await handleApiCall(
-            "http://localhost:9090/api/users/shippingAddresses/update",
+            "users/shippingAddresses/update",
             "PUT",
             {
                 email: userEmail,
@@ -505,7 +583,7 @@ const TestAPI: React.FC = () => {
     const removeShippingAddressMethod = async (removedAddress: string) => {
         setRemoveShippingAddress(removedAddress);
         await handleApiCall(
-            "http://localhost:9090/api/users/shippingAddresses/remove",
+            "users/shippingAddresses/remove",
             "DELETE",
             {
                 email: userEmail,
@@ -532,7 +610,7 @@ const TestAPI: React.FC = () => {
     const addBillingAddressMethod = async (newBillingAddress: string) => {
         setNewBillingAddress(newBillingAddress);
         await handleApiCall(
-            "http://localhost:9090/api/users/billingAddresses/add",
+            "users/billingAddresses/add",
             "PUT",
             {
                 email: userEmail,
@@ -563,7 +641,7 @@ const TestAPI: React.FC = () => {
         setUpdateBillingAddressIndex(index);
         setUpdateBillingAddress(newBillingAddress);
         await handleApiCall(
-            "http://localhost:9090/api/users/billingAddresses/update",
+            "users/billingAddresses/update",
             "PUT",
             {
                 email: userEmail,
@@ -591,7 +669,7 @@ const TestAPI: React.FC = () => {
     const removeBillingAddressMethod = async (removedAddress: string) => {
         setRemoveBillingAddress(removedAddress);
         await handleApiCall(
-            "http://localhost:9090/api/users/billingAddresses/remove",
+            "users/billingAddresses/remove",
             "DELETE",
             {
                 email: userEmail,
@@ -628,7 +706,7 @@ const TestAPI: React.FC = () => {
             cvv: cvv || "",
         });
         await handleApiCall(
-            "http://localhost:9090/api/users/paymentDetails/add",
+            "users/paymentDetails/add",
             "PUT",
             {
                 email: userEmail,
@@ -659,7 +737,7 @@ const TestAPI: React.FC = () => {
     const removePaymentDetailMethod = async (paymentID: number) => {
         setRemovePaymentDetailIndex(paymentID);
         await handleApiCall(
-            "http://localhost:9090/api/users/paymentDetails/remove",
+            "users/paymentDetails/remove",
             "DELETE",
             {
                 email: userEmail,
@@ -681,6 +759,242 @@ const TestAPI: React.FC = () => {
                 setShowRemovePaymentDetail(true);
             },
             (error) => setError("\n Error removing payment detail: " + error)
+        );
+    };
+
+    const viewSpecificProductMethod = async (productID: String) => {
+        await handleApiCall(
+            `products/${productID}`,
+            "GET",
+            null,
+            async (result) => {
+                setSpecificProduct(result);
+                setToDefault();
+                setShowSpecificProduct(true);
+            },
+            (error) => setError("\n Error viewing specific product: " + error)
+        );
+    };
+
+    const viewCart = async () => {
+        await handleApiCall(
+            `users/cart?email=${userEmail}`,
+            "GET",
+            null,
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setCarts(
+                        result.carts.map((cart: string) => JSON.parse(cart))
+                    );
+                } else {
+                    setError("\n Error viewing cart: " + result.message);
+                }
+                setToDefault();
+                setShowCarts(true);
+            },
+            (error) => setError("\n Error viewing cart: " + error)
+        );
+    };
+
+    const addToCart = async (
+        productID: string,
+        quantity: number,
+        sizeIndex: number,
+        colorIndex: number
+    ) => {
+        await handleApiCall(
+            `users/cart/add`,
+            "PUT",
+            {
+                email: userEmail,
+                productID,
+                quantity,
+                sizeIndex,
+                colorIndex,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setAddToCartStatus(true);
+                    setCarts(
+                        result.carts.map((cart: string) => JSON.parse(cart))
+                    );
+                } else {
+                    setError("\n Error adding to cart: " + result.message);
+                }
+                setToDefault();
+                setShowAddToCart(true);
+            },
+            (error) => setError("\n Error adding to cart: " + error)
+        );
+    };
+
+    const removeFromCart = async (
+        productID: string,
+        sizeIndex: number,
+        colorIndex: number
+    ) => {
+        await handleApiCall(
+            `users/cart/remove`,
+            "DELETE",
+            {
+                email: userEmail,
+                productID,
+                sizeIndex,
+                colorIndex,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setRemoveFromCartStatus(true);
+                    setCarts(
+                        result.carts.map((cart: string) => JSON.parse(cart))
+                    );
+                } else {
+                    setError("\n Error removing from cart: " + result.message);
+                }
+                setToDefault();
+                setShowRemoveFromCart(true);
+            },
+            (error) => setError("\n Error removing from cart: " + error)
+        );
+    };
+
+    const updateCart = async (
+        productID: string,
+        quantity: number,
+        sizeIndex: number,
+        colorIndex: number
+    ) => {
+        setUpdateCartInfo({
+            productID,
+            quantity,
+            sizeIndex,
+            colorIndex,
+        });
+        await handleApiCall(
+            `users/cart/update`,
+            "PUT",
+            {
+                email: userEmail,
+                productID,
+                quantity,
+                sizeIndex,
+                colorIndex,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setUpdateCartStatus(true);
+                    setCarts(
+                        result.carts.map((cart: string) => JSON.parse(cart))
+                    );
+                } else {
+                    setError("\n Error updating cart: " + result.message);
+                }
+                setToDefault();
+                setShowUpdateCart(true);
+            },
+            (error) => setError("\n Error updating cart: " + error)
+        );
+    };
+
+    const viewOrders = async () => {
+        await handleApiCall(
+            `users/orders?email=${userEmail}`,
+            "GET",
+            null,
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setOrders(
+                        result.orders.map((order: string) => JSON.parse(order))
+                    );
+                } else {
+                    setError("\n Error viewing orders: " + result.message);
+                }
+                setToDefault();
+                setShowOrders(true);
+            },
+            (error) => setError("\n Error viewing orders: " + error)
+        );
+    };
+
+    const viewSpecificOrder = async (orderID: number) => {
+        await handleApiCall(
+            `users/orders/${orderID}?email=${userEmail}`,
+            "GET",
+            null,
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setSpecificOrder(JSON.parse(result.order));
+                } else {
+                    setError(
+                        "\n Error viewing specific order: " + result.message
+                    );
+                }
+                setToDefault();
+                setShowSpecificOrder(true);
+            },
+            (error) => setError("\n Error viewing specific order: " + error)
+        );
+    };
+
+    const addToOrder = async (
+        shippingAddress: string,
+        billingAddress: string,
+        paymentID: number
+    ) => {
+        setNewOrderDetails({
+            shippingAddress,
+            billingAddress,
+            paymentID,
+        });
+        await handleApiCall(
+            `users/orders/add`,
+            "PUT",
+            {
+                email: userEmail,
+                shippingAddress,
+                billingAddress,
+                paymentID,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setAddToOrderStatus(true);
+                    setOrders(
+                        result.orders.map((order: string) => JSON.parse(order))
+                    );
+                    setNewOrder(JSON.parse(result.newOrder));
+                } else {
+                    setError("\n Error adding to order: " + result.message);
+                }
+                setToDefault();
+                setShowAddToOrder(true);
+            },
+            (error) => setError("\n Error adding to order: " + error)
+        );
+    };
+
+    const cancelOrder = async (orderID: number) => {
+        await handleApiCall(
+            `users/orders/cancel`,
+            "DELETE",
+            {
+                email: userEmail,
+                orderID,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    console.log(result);
+                    setOrders(
+                        result.orders.map((order: string) => JSON.parse(order))
+                    );
+                    setOrderToCancel(result.cancelledOrder);
+                    setOrderToCancelStatus(true);
+                } else {
+                    setError("\n Error cancelling order: " + result.message);
+                }
+                setToDefault();
+                setShowCancelOrder(true);
+            },
+            (error) => setError("\n Error cancelling order: " + error)
         );
     };
 
@@ -791,7 +1105,7 @@ const TestAPI: React.FC = () => {
                 onClick={() =>
                     addPaymentDetailMethod(
                         "Visa",
-                        "1234 5678 9012 3456",
+                        "1234567890123456",
                         "12/24",
                         "123"
                     )
@@ -799,13 +1113,38 @@ const TestAPI: React.FC = () => {
             >
                 Add Payment Details
             </button>
-            <button
-                onClick={() =>
-                    removePaymentDetailMethod(1)
-                }
-            >
+            <button onClick={() => removePaymentDetailMethod(1)}>
                 Remove Payment Details
             </button>
+            <button onClick={() => viewSpecificProductMethod("B001")}>
+                View Specific Product
+            </button>
+            <button onClick={() => viewCart()}>View Cart</button>
+            <button onClick={() => addToCart("B001", 1, 0, 0)}>
+                Add to Cart
+            </button>
+            <button onClick={() => removeFromCart("B001", 0, 0)}>
+                Remove from Cart
+            </button>
+            <button onClick={() => updateCart("B003", 34, 0, 0)}>
+                Update Cart
+            </button>
+            <button onClick={() => viewOrders()}>View Orders</button>
+            <button onClick={() => viewSpecificOrder(1)}>
+                View Specific Order
+            </button>
+            <button
+                onClick={() =>
+                    addToOrder(
+                        "123 Main St, Kuala Lumpur",
+                        "123 Main St, Kuala Lumpur",
+                        1
+                    )
+                }
+            >
+                Add to Order
+            </button>
+            <button onClick={() => cancelOrder(1)}>Cancel Order</button>
 
             <div>
                 {error && <p style={{ color: "red" }}>{error}</p>}
@@ -913,6 +1252,49 @@ const TestAPI: React.FC = () => {
                         removePaymentDetailIndex={removePaymentDetailIndex}
                         removePaymentDetailStatus={removePaymentDetailStatus}
                         paymentDetails={currentUserPaymentDetails}
+                    />
+                )}
+                {showSpecificProduct && specificProduct && (
+                    <SpecificProductServlet product={specificProduct} />
+                )}
+                {showCarts && carts && <CartServlet carts={carts} />}
+                {showAddToCart && carts && (
+                    <CartAddServlet
+                        carts={carts}
+                        addToCartStatus={addToCartStatus}
+                    />
+                )}
+                {showRemoveFromCart && carts && (
+                    <CartRemoveServlet
+                        carts={carts}
+                        removeFromCartStatus={removeFromCartStatus}
+                    />
+                )}
+                {showUpdateCart && carts && updateCartInfo && (
+                    <CartUpdateServlet
+                        carts={carts}
+                        updateCartInfo={updateCartInfo}
+                        updateCartStatus={updateCartStatus}
+                    />
+                )}
+                {showOrders && orders && orders.length > 0 && (
+                    <OrdersServlet orders={orders} />
+                )}
+                {showSpecificOrder && specificOrder && (
+                    <SpecificOrderServlet order={specificOrder} />
+                )}
+                {showAddToOrder && orders && newOrder && (
+                    <OrdersAddServlet
+                        orders={orders}
+                        newOrder={newOrder}
+                        addToOrderStatus={addToOrderStatus}
+                    />
+                )}
+                {showCancelOrder && orders && orderToCancel && (
+                    <OrdersCancelServlet
+                        orders={orders}
+                        orderToCancel={orderToCancel}
+                        orderToCancelStatus={orderToCancelStatus}
                     />
                 )}
             </div>
