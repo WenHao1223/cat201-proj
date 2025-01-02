@@ -1,10 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Main: React.FC = () => {
+interface MainProps {
+    isLogin: boolean;
+}
 
-    return (
-        <div>
+const Main: React.FC<MainProps> = ({ isLogin }) => {
+    if (isLogin) {
+        return (
+            <div>
+                <h1>Chef's Aura</h1>
+                <p>Welcome to Chef's Aura!</p>
+                <Link to="/testapi">
+                    <button>Go to Test API Page</button>
+                </Link>
+            </div>
+        );
+    } else {
+        return (
+            <div>
             <h1>Chef's Aura</h1>
             <p>Please choose an option below:</p>
             <div>
@@ -19,7 +33,8 @@ const Main: React.FC = () => {
                 </Link>
             </div>
         </div>
-    );
+        );
+    }
 };
 
 export default Main;

@@ -1,13 +1,20 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import "@styles/LoginRegister.css";
 import handleApiCall from "@utils/handleApiCall";
 
 interface LoginProps {
     setCurrentUserGeneralDetails: React.Dispatch<React.SetStateAction<any>>;
+    setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+    isLogin: boolean;
 }
 
-const Login: React.FC<LoginProps> = ({ setCurrentUserGeneralDetails }) => {
+const Login: React.FC<LoginProps> = ({
+    setCurrentUserGeneralDetails,
+    setIsLogin,
+    isLogin,
+}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -33,12 +40,17 @@ const Login: React.FC<LoginProps> = ({ setCurrentUserGeneralDetails }) => {
                 if (await result.loginStatus) {
                     console.log("Login successful");
                     setError(null);
+                    setIsLogin(true);
                     setCurrentUserGeneralDetails(JSON.parse(result.user));
                 } else {
                     setError("\n Invalid email or password");
+                    setIsLogin(false);
                 }
             },
-            (error) => setError("\n Error validating user login: " + error)
+            (error) => {
+                setError("\n Error validating user login: " + error);
+                setIsLogin(false);
+            }
         );
     };
 
@@ -108,7 +120,7 @@ const Login: React.FC<LoginProps> = ({ setCurrentUserGeneralDetails }) => {
                             </div>
                             <div className="text sign-up-text pt-4">
                                 Don't have an account?{" "}
-                                <a href="/register">Sign up now</a>
+                                <Link to="/register">Sign up now</Link>
                             </div>
                         </form>
                     </div>

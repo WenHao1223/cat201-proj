@@ -1,8 +1,16 @@
 import React, { useState } from "react";
-import "@styles/LoginRegister.css";
 import { getNames } from 'country-list';
+import { Link } from "react-router-dom";
 
-const Register: React.FC = () => {
+import "@styles/LoginRegister.css";
+
+interface RegisterProps {
+    isLogin: boolean;
+}
+
+const Register: React.FC<RegisterProps> = ({
+    isLogin,
+}) => {
     const [nationality, setNationality] = useState<string>("");
 
     const handleNationalityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -32,6 +40,39 @@ const Register: React.FC = () => {
             (radioField as HTMLInputElement).checked = false;
         }
     };
+
+    if (isLogin) {
+        return (
+            <div className="register-page bg-white text-black">
+                <div className="container">
+                    <div className="header">Chef's Aura</div>
+                    <div className="form-container">
+                        <div className="image-container">
+                            <img
+                                src="https://www.color-meanings.com/wp-content/uploads/bright-kitchen-stainless-steel-appliances.jpeg"
+                                alt="Sample photo"
+                                className="img-fluid"
+                                style={{
+                                    width: "600px",
+                                    height: "500px",
+                                    borderRadius: "15px",
+                                }}
+                            />
+                        </div>
+                        <div className="form-content">
+                            <header style={{ textAlign: "center" }}>
+                                You are already logged in
+                            </header>
+                            <div className="text sign-up-text">
+                                <p>You'd already signed in.</p>
+                                <Link to="/main">Go to main page</Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="register-page bg-white text-black">
@@ -183,7 +224,7 @@ const Register: React.FC = () => {
                             </div>
                             <div className="text sign-up-text">
                                 Already have an account?{" "}
-                                <a href="/login">Login here</a>
+                                <Link to="/login">Log in now</Link>
                             </div>
                         </form>
                     </div>
