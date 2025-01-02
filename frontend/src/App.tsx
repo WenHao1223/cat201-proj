@@ -15,7 +15,10 @@ const App: React.FC = () => {
     const [isLogin, setIsLogin] = useState(false);
 
     useEffect(() => {
-        console.log("Current user general details: ", currentUserGeneralDetails);
+        console.log(
+            "Current user general details: ",
+            currentUserGeneralDetails
+        );
     }, [currentUserGeneralDetails]);
     useEffect(() => {
         console.log("Is login: ", isLogin);
@@ -25,7 +28,21 @@ const App: React.FC = () => {
         <Router>
             <div>
                 <Routes>
-                    <Route path="/" element={<Main isLogin={isLogin} />} />
+                    <Route
+                        path="/"
+                        element={
+                            <Main
+                                currentUserGeneralDetails={
+                                    currentUserGeneralDetails
+                                }
+                                setCurrentUserGeneralDetails={
+                                    setCurrentUserGeneralDetails
+                                }
+                                isLogin={isLogin}
+                                setIsLogin={setIsLogin}
+                            />
+                        }
+                    />
                     <Route path="/testapi" element={<TestAPI />} />
                     <Route
                         path="/login"
@@ -34,8 +51,8 @@ const App: React.FC = () => {
                                 setCurrentUserGeneralDetails={
                                     setCurrentUserGeneralDetails
                                 }
-                                setIsLogin={setIsLogin}
                                 isLogin={isLogin}
+                                setIsLogin={setIsLogin}
                             />
                         }
                     />
@@ -43,7 +60,21 @@ const App: React.FC = () => {
                         path="/register"
                         element={<Register isLogin={isLogin} />}
                     />
-                    <Route path="/main" element={<Main isLogin={isLogin} />} />
+                    <Route
+                        path="/main"
+                        element={
+                            <Main
+                                currentUserGeneralDetails={
+                                    currentUserGeneralDetails
+                                }
+                                setCurrentUserGeneralDetails={
+                                    setCurrentUserGeneralDetails
+                                }
+                                isLogin={isLogin}
+                                setIsLogin={setIsLogin}
+                            />
+                        }
+                    />
                 </Routes>
             </div>
         </Router>

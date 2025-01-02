@@ -155,42 +155,15 @@ const Register: React.FC<RegisterProps> = ({ isLogin }) => {
     };
 
     if (isLogin) {
-        return (
-            <div className="register-page bg-white text-black">
-                <div className="container">
-                    <div className="header">Chef's Aura</div>
-                    <div className="form-container">
-                        <div className="image-container">
-                            <img
-                                src="https://www.color-meanings.com/wp-content/uploads/bright-kitchen-stainless-steel-appliances.jpeg"
-                                alt="Sample photo"
-                                className="img-fluid"
-                                style={{
-                                    width: "600px",
-                                    height: "500px",
-                                    borderRadius: "15px",
-                                }}
-                            />
-                        </div>
-                        <div className="form-content">
-                            <header style={{ textAlign: "center" }}>
-                                You are already logged in
-                            </header>
-                            <div className="text sign-up-text">
-                                <p>You'd already signed in.</p>
-                                <Link to="/main">Go to main page</Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
+        navigate("/main");
     }
 
     return (
         <div className="register-page bg-white text-black">
             <div className="container">
-                <div className="header">Chef's Aura</div>
+                <Link to="/">
+                    <div className="header">Chef's Aura</div>
+                </Link>
                 <div className="form-container">
                     <div className="image-container">
                         <img

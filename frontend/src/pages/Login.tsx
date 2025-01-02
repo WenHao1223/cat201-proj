@@ -1,20 +1,23 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import "@styles/LoginRegister.css";
 import handleApiCall from "@utils/handleApiCall";
+import Swal from "sweetalert2";
 
 interface LoginProps {
     setCurrentUserGeneralDetails: React.Dispatch<React.SetStateAction<any>>;
-    setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
     isLogin: boolean;
+    setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Login: React.FC<LoginProps> = ({
     setCurrentUserGeneralDetails,
-    setIsLogin,
     isLogin,
+    setIsLogin,
 }) => {
+    const navigate = useNavigate();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -42,6 +45,14 @@ const Login: React.FC<LoginProps> = ({
                     setError(null);
                     setIsLogin(true);
                     setCurrentUserGeneralDetails(JSON.parse(result.user));
+                    Swal.fire({
+                        title: "Login successful!",
+                        icon: "success",
+                        timer: 2000,
+                        showConfirmButton: false,
+                    }).then(() => {
+                        navigate("/main");
+                    });
                 } else {
                     setError("\n Invalid email or password");
                     setIsLogin(false);
@@ -62,12 +73,18 @@ const Login: React.FC<LoginProps> = ({
         validateUserLoginMethod(email, password);
     };
 
+    if (isLogin) {
+        navigate("/main");
+    }
+
     return (
         <div className="login-page">
             <div className="container">
-                <div className="header">
-                    <i className="fas fa-kitchen-set"></i> Chef's Aura
-                </div>
+                <Link to="/">
+                    <div className="header">
+                        <i className="fas fa-kitchen-set"></i> Chef's Aura
+                    </div>
+                </Link>
                 <div className="form-container">
                     <div
                         className="image-container"
