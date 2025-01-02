@@ -1,19 +1,40 @@
 import React, { useState } from "react";
-import { getNames } from 'country-list';
-import { Link } from "react-router-dom";
+import { getNames } from "country-list";
+import { useNavigate, Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 import "@styles/LoginRegister.css";
+import { UserInterface } from "@interfaces/API/UserInterface";
+import handleApiCall from "@utils/handleApiCall";
 
 interface RegisterProps {
     isLogin: boolean;
 }
 
-const Register: React.FC<RegisterProps> = ({
-    isLogin,
-}) => {
+const Register: React.FC<RegisterProps> = ({ isLogin }) => {
+    const navigate = useNavigate();
+    const [craeteAccountObject, setCreateAccountObject] =
+        useState<UserInterface>({
+            username: "",
+            email: "",
+            password: "",
+            nationality: "",
+            firstName: "",
+            lastName: "",
+            phoneNo: "",
+            gender: 0,
+            dob: "",
+            agreeToTerms: false,
+        });
+    const [createAccountStatus, setCreateAccountStatus] =
+        useState<boolean>(false);
+    const [error, setError] = useState("" as string | null);
+
     const [nationality, setNationality] = useState<string>("");
 
-    const handleNationalityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleNationalityChange = (
+        event: React.ChangeEvent<HTMLSelectElement>
+    ) => {
         setNationality(event.target.value);
     };
 
@@ -39,6 +60,98 @@ const Register: React.FC<RegisterProps> = ({
         if (radioField) {
             (radioField as HTMLInputElement).checked = false;
         }
+    };
+
+    const createUserAccountMethod = async (
+        username: string,
+        email: string,
+        password: string,
+        nationality: string,
+        firstName: string,
+        lastName: string,
+        phoneNo: string,
+        gender: number,
+        dob: string,
+        agreeToTerms: boolean
+    ) => {
+        setCreateAccountObject({
+            username,
+            email,
+            password,
+            nationality,
+            firstName,
+            lastName,
+            phoneNo,
+            gender,
+            dob,
+            agreeToTerms,
+        });
+
+        await handleApiCall(
+            "users/create",
+            "POST",
+            {
+                username,
+                email,
+                password,
+                nationality,
+                firstName,
+                lastName,
+                phoneNo,
+                gender,
+                dob,
+                agreeToTerms,
+            },
+            async (result) => {
+                if ((await result.status) === "Success") {
+                    setCreateAccountStatus(true);
+                    setError(null);
+                    Swal.fire({
+                        title: "Account created successfully",
+                        text: "You can now login to your account. Redirecting to login page...",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                        confirmButtonColor: "#3085d6",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                        showConfirmButton: true,
+                        showCancelButton: false,
+                        showCloseButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    }).then(() => {
+                        navigate("/login");
+                    });
+                } else {
+                    setError("\n Error creating account: " + result.message);
+                }
+            },
+            (error) => setError("\n Error creating account: " + error)
+        );
+    };
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        createUserAccountMethod(
+            (document.getElementById("username") as HTMLInputElement).value,
+            (document.getElementById("email") as HTMLInputElement).value,
+            (document.getElementById("password") as HTMLInputElement).value,
+            nationality,
+            (document.getElementById("firstName") as HTMLInputElement).value,
+            (document.getElementById("lastName") as HTMLInputElement).value,
+            (document.getElementById("phoneNo") as HTMLInputElement).value,
+            parseInt(
+                (
+                    document.querySelector(
+                        "input[name='gender']:checked"
+                    ) as HTMLInputElement
+                ).value
+            ),
+            (document.getElementById("dob") as HTMLInputElement).value,
+            (document.getElementById("agreeToTerms") as HTMLInputElement)
+                .checked
+        );
     };
 
     if (isLogin) {
@@ -93,7 +206,11 @@ const Register: React.FC<RegisterProps> = ({
                     </div>
                     <div className="form-content">
                         <header style={{ textAlign: "center" }}>Sign Up</header>
-                        <form action="#" className="form">
+                        <form
+                            action="#"
+                            className="form"
+                            onSubmit={handleSubmit}
+                        >
                             <div className="flex-container">
                                 <div className="input-box">
                                     <div className="form-outline">
@@ -121,6 +238,7 @@ const Register: React.FC<RegisterProps> = ({
                             <div className="input-box">
                                 <input
                                     type="text"
+                                    id="username"
                                     placeholder="Username"
                                     required
                                 />
@@ -128,6 +246,7 @@ const Register: React.FC<RegisterProps> = ({
                             <div className="input-box">
                                 <input
                                     type="email"
+                                    id="email"
                                     placeholder="Email Address"
                                     required
                                 />
@@ -135,6 +254,7 @@ const Register: React.FC<RegisterProps> = ({
                             <div className="input-box">
                                 <input
                                     type="password"
+                                    id="password"
                                     placeholder="Password"
                                     required
                                 />
@@ -163,6 +283,7 @@ const Register: React.FC<RegisterProps> = ({
                                 <div className="input-box">
                                     <input
                                         type="date"
+                                        id="dob"
                                         placeholder="Date of Birth"
                                         required
                                     />
@@ -171,6 +292,7 @@ const Register: React.FC<RegisterProps> = ({
                             <div className="input-box">
                                 <input
                                     type="tel"
+                                    id="phoneNo"
                                     placeholder="Phone Number"
                                     required
                                 />
@@ -183,7 +305,7 @@ const Register: React.FC<RegisterProps> = ({
                                             type="radio"
                                             id="check-male"
                                             name="gender"
-                                            value="0"
+                                            value="1"
                                             defaultChecked
                                         />
                                         <label htmlFor="check-male">Male</label>
@@ -193,7 +315,7 @@ const Register: React.FC<RegisterProps> = ({
                                             type="radio"
                                             id="check-female"
                                             name="gender"
-                                            value="1"
+                                            value="2"
                                         />
                                         <label htmlFor="check-female">
                                             Female
@@ -202,11 +324,18 @@ const Register: React.FC<RegisterProps> = ({
                                 </div>
                             </div>
                             <div className="input-box agree-box">
-                                <input type="checkbox" id="agree" required />
-                                <label htmlFor="agree">
+                                <input
+                                    type="checkbox"
+                                    id="agreeToTerms"
+                                    required
+                                />
+                                <label htmlFor="agreeToTerms">
                                     I agree to the terms and conditions
                                 </label>
                             </div>
+                            {error && (
+                                <div className="text-red-500 pt-4">{error}</div>
+                            )}
                             <div className="button-container">
                                 <button
                                     type="button"

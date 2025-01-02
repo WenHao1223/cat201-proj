@@ -31,3 +31,9 @@
 0:0:0:0:0:0:0:1 - - [02/Jan/2025:20:18:45 +0800] "POST /api/users/login HTTP/1.1" 200 245 http-bio-9090-exec-1 1
 0:0:0:0:0:0:0:1 - - [02/Jan/2025:20:19:52 +0800] "OPTIONS /api/users/login HTTP/1.1" 200 - http-bio-9090-exec-2 1
 0:0:0:0:0:0:0:1 - - [02/Jan/2025:20:19:52 +0800] "POST /api/users/login HTTP/1.1" 200 245 http-bio-9090-exec-5 3
+0:0:0:0:0:0:0:1 - - [02/Jan/2025:20:43:40 +0800] "OPTIONS /api/users/create HTTP/1.1" 200 - http-bio-9090-exec-1 25
+0:0:0:0:0:0:0:1 - - [02/Jan/2025:20:43:40 +0800] "POST /api/users/create HTTP/1.1" 200 89 http-bio-9090-exec-3 8
+0:0:0:0:0:0:0:1 - - [02/Jan/2025:20:43:50 +0800] "OPTIONS /api/users/create HTTP/1.1" 200 - http-bio-9090-exec-5 0
+0:0:0:0:0:0:0:1 - - [02/Jan/2025:20:43:50 +0800] "POST /api/users/create HTTP/1.1" 200 31 http-bio-9090-exec-7 3
+0:0:0:0:0:0:0:1 - - [02/Jan/2025:20:44:09 +0800] "OPTIONS /api/users/create HTTP/1.1" 200 - http-bio-9090-exec-9 1
+0:0:0:0:0:0:0:1 - - [02/Jan/2025:20:44:09 +0800] "POST /api/users/create HTTP/1.1" 200 93 http-bio-9090-exec-1 2

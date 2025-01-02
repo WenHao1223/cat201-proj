@@ -15,10 +15,10 @@ const App: React.FC = () => {
     const [isLogin, setIsLogin] = useState(false);
 
     useEffect(() => {
-        console.log("Current user general details: " + currentUserGeneralDetails);
+        console.log("Current user general details: ", currentUserGeneralDetails);
     }, [currentUserGeneralDetails]);
     useEffect(() => {
-        console.log("Is login: " + isLogin);
+        console.log("Is login: ", isLogin);
     }, [isLogin]);
 
     return (
