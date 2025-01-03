@@ -1001,16 +1001,16 @@ const TestAPI: React.FC = () => {
     return (
         <div>
             <h1>Test API Page</h1>
-            <button onClick={fetchUserData}>Fetch User Data</button>
-            <button onClick={fetchProductData}>Fetch Product Data</button>
-            <button
+            <button className="text-white" onClick={fetchUserData}>Fetch User Data</button>
+            <button className="text-white" onClick={fetchProductData}>Fetch Product Data</button>
+            <button className="text-white"
                 onClick={() =>
                     validateUserLoginMethod("jdoe@example.com", "password123")
                 }
             >
                 Validate User Login
             </button>
-            <button
+            <button className="text-white"
                 onClick={() =>
                     createUserAccountMethod(
                         "jdoe",
@@ -1028,28 +1028,28 @@ const TestAPI: React.FC = () => {
             >
                 Create Account
             </button>
-            <button onClick={viewCurrentUserShippingAddressesMethod}>
+            <button className="text-white" onClick={viewCurrentUserShippingAddressesMethod}>
                 View Shipping Addresses
             </button>
-            <button onClick={viewCurrentUserBillingAddressesMethod}>
+            <button className="text-white" onClick={viewCurrentUserBillingAddressesMethod}>
                 View Billing Addresses
             </button>
-            <button onClick={viewCurrentUserPaymentDetailsMethod}>
+            <button className="text-white" onClick={viewCurrentUserPaymentDetailsMethod}>
                 View Payment Details
             </button>
-            <button
+            <button className="text-white"
                 onClick={() => editProfileMethod("phoneNo", "+6011-5860 6808")}
             >
                 Edit Profile
             </button>
-            <button
+            <button className="text-white"
                 onClick={() =>
                     changePasswordMethod("password123", "password1234")
                 }
             >
                 Change Password
             </button>
-            <button
+            <button className="text-white"
                 onClick={() =>
                     addShippingAddressMethod(
                         "123, Test Street, Test City, Test State, Test Country, 12345"
@@ -1058,7 +1058,7 @@ const TestAPI: React.FC = () => {
             >
                 Add Shipping Address
             </button>
-            <button
+            <button className="text-white"
                 onClick={() =>
                     updateShippingAddressMethod(
                         0,
@@ -1068,14 +1068,14 @@ const TestAPI: React.FC = () => {
             >
                 Update Shipping Address
             </button>
-            <button
+            <button className="text-white"
                 onClick={() =>
                     removeShippingAddressMethod("234 Elm St, Kuala Lumpur")
                 }
             >
                 Remove Shipping Address
             </button>
-            <button
+            <button className="text-white"
                 onClick={() =>
                     addBillingAddressMethod(
                         "123, Test Street, Test City, Test State, Test Country, 12345"
@@ -1084,7 +1084,7 @@ const TestAPI: React.FC = () => {
             >
                 Add Billing Address
             </button>
-            <button
+            <button className="text-white"
                 onClick={() =>
                     updateBillingAddressMethod(
                         0,
@@ -1094,14 +1094,14 @@ const TestAPI: React.FC = () => {
             >
                 Update Billing Address
             </button>
-            <button
+            <button className="text-white"
                 onClick={() =>
                     removeBillingAddressMethod("123 Main St, Kuala Lumpur")
                 }
             >
                 Remove Billing Address
             </button>
-            <button
+            <button className="text-white"
                 onClick={() =>
                     addPaymentDetailMethod(
                         "Visa",
@@ -1113,27 +1113,27 @@ const TestAPI: React.FC = () => {
             >
                 Add Payment Details
             </button>
-            <button onClick={() => removePaymentDetailMethod(1)}>
+            <button className="text-white" onClick={() => removePaymentDetailMethod(1)}>
                 Remove Payment Details
             </button>
-            <button onClick={() => viewSpecificProductMethod("B001")}>
+            <button className="text-white" onClick={() => viewSpecificProductMethod("B001")}>
                 View Specific Product
             </button>
-            <button onClick={() => viewCart()}>View Cart</button>
-            <button onClick={() => addToCart("B001", 1, 0, 0)}>
+            <button className="text-white" onClick={() => viewCart()}>View Cart</button>
+            <button className="text-white" onClick={() => addToCart("B001", 1, 0, 0)}>
                 Add to Cart
             </button>
-            <button onClick={() => removeFromCart("B001", 0, 0)}>
+            <button className="text-white" onClick={() => removeFromCart("B001", 0, 0)}>
                 Remove from Cart
             </button>
-            <button onClick={() => updateCart("B003", 34, 0, 0)}>
+            <button className="text-white" onClick={() => updateCart("B003", 34, 0, 0)}>
                 Update Cart
             </button>
-            <button onClick={() => viewOrders()}>View Orders</button>
-            <button onClick={() => viewSpecificOrder(1)}>
+            <button className="text-white" onClick={() => viewOrders()}>View Orders</button>
+            <button className="text-white" onClick={() => viewSpecificOrder(1)}>
                 View Specific Order
             </button>
-            <button
+            <button className="text-white"
                 onClick={() =>
                     addToOrder(
                         "123 Main St, Kuala Lumpur",
@@ -1144,7 +1144,7 @@ const TestAPI: React.FC = () => {
             >
                 Add to Order
             </button>
-            <button onClick={() => cancelOrder(1)}>Cancel Order</button>
+            <button className="text-white" onClick={() => cancelOrder(1)}>Cancel Order</button>
 
             <div>
                 {error && <p style={{ color: "red" }}>{error}</p>}
