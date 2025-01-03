@@ -36,7 +36,7 @@
     "carts": [
       {
         "productID": "B001",
-        "quantity": 1,
+        "quantity": 3,
         "sizeIndex": 0,
         "colorIndex": 0
       },

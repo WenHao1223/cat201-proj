@@ -9,12 +9,16 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import "./App.css";
 
-import { UserGeneralDetailsInterface } from "@interfaces/API/UserInterface";
+import {
+    CartGeneralInterface,
+    UserGeneralDetailsInterface,
+} from "@interfaces/API/UserInterface";
 
 const App: React.FC = () => {
     const [currentUserGeneralDetails, setCurrentUserGeneralDetails] =
         useState<UserGeneralDetailsInterface | null>(null);
     const [isLogin, setIsLogin] = useState(false);
+    const [carts, setCarts] = useState<CartGeneralInterface[] | null>(null);
 
     useEffect(() => {
         const currentUserGeneralDetailsString = localStorage.getItem(
@@ -101,10 +105,16 @@ const App: React.FC = () => {
                         path="/cart"
                         element={
                             <Cart
+                                carts={carts}
+                                setCarts={setCarts}
                                 currentUserGeneralDetails={
-                                    currentUserGeneralDetails
+                                    currentUserGeneralDetails!
+                                }
+                                setCurrentUserGeneralDetails={
+                                    setCurrentUserGeneralDetails
                                 }
                                 isLogin={isLogin}
+                                setIsLogin={setIsLogin}
                             />
                         }
                     />
@@ -113,7 +123,7 @@ const App: React.FC = () => {
                         element={
                             <Checkout
                                 currentUserGeneralDetails={
-                                    currentUserGeneralDetails
+                                    currentUserGeneralDetails!
                                 }
                                 isLogin={isLogin}
                             />
