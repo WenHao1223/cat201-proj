@@ -13,10 +13,9 @@ import {
 } from "@interfaces/API/UserInterface";
 import Navbar from "@components/Navbar";
 
-import image1 from "../assets/image1.webp";
-import image2 from "../assets/image2.webp";
-import image3 from "../assets/image3.webp";
 import handleApiCall from "@utils/handleApiCall";
+
+import AsyncImage from "@components/AsyncImage";
 
 interface CartProps {
     carts: CartGeneralInterface[] | null;
@@ -47,6 +46,7 @@ const Cart: React.FC<CartProps> = ({
     }
 
     useEffect(() => {
+        console.log(1);
         if (currentUserGeneralDetails) {
             viewCart();
         }
@@ -58,7 +58,9 @@ const Cart: React.FC<CartProps> = ({
             "GET",
             null,
             async (result) => {
+                console.log(result);
                 if ((await result.status) == "Success") {
+                    console.log("result.carts", result.carts);
                     setCarts(
                         result.carts.map((cart: string) => JSON.parse(cart))
                     );
@@ -95,16 +97,18 @@ const Cart: React.FC<CartProps> = ({
                                 role="list"
                                 className="divide-y divide-gray-200 border-b border-t border-gray-200"
                             >
-                                {carts &&
+                                {carts ? (
                                     carts.map((product) => (
                                         <li
                                             key={product.productID}
                                             className="flex py-6 sm:py-10"
                                         >
                                             <div className="flex-shrink-0">
-                                                <img
+                                                <AsyncImage
                                                     alt={product.name}
-                                                    // src={product.imageSrc}
+                                                    productID={product.productID}
+                                                    color={product.color}
+                                                    number={0}
                                                     className="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48"
                                                 />
                                             </div>
@@ -156,7 +160,9 @@ const Cart: React.FC<CartProps> = ({
                                                         <select
                                                             id={`quantity-${product.productID}`}
                                                             name={`quantity-${product.productID}`}
-                                                            defaultValue={product.quantity}
+                                                            defaultValue={
+                                                                product.quantity
+                                                            }
                                                             className="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-300 sm:text-sm"
                                                         >
                                                             <option value={1}>
@@ -203,7 +209,18 @@ const Cart: React.FC<CartProps> = ({
                                                 </div>
                                             </div>
                                         </li>
-                                    ))}
+                                    ))
+                                ) : error ? (
+                                    <div>
+                                        <p className="text-red-500 p-4">
+                                            {error}
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <p className="p-4">No items in cart</p>
+                                    </div>
+                                )}
                             </ul>
                         </section>
 

@@ -34,6 +34,9 @@ const App: React.FC = () => {
         if (isLoginString) {
             setIsLogin(JSON.parse(isLoginString));
         }
+
+        // console.log("currentUserGeneralDetails", currentUserGeneralDetails);
+        // console.log("isLogin", isLogin);
     }, []);
 
     useEffect(() => {
@@ -49,6 +52,10 @@ const App: React.FC = () => {
             localStorage.setItem("isLogin", JSON.stringify(isLogin));
         }
     }, [isLogin]);
+
+    useEffect(() => {
+        console.log("carts", carts);
+    }, [carts]);
 
     return (
         <Router>
