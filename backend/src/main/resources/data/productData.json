@@ -198,5 +198,55 @@
         10
       ]
     ]
+  },
+  {
+    "productID": "FP001",
+    "name": "Caraway Mini Fry Pan",
+    "description": "This non-stick ceramic frying pan features a navy blue exterior, stainless steel handle, and heavy metal-free coating, offering excellent heat distribution, stovetop and oven versatility, and a sleek, minimalist design",
+    "price": 81.0,
+    "category": "Fry Pan",
+    "brand": "Caraway",
+    "sizes": [
+      "8 inch"
+    ],
+    "colors": [
+      "Navy",
+      "Sage",
+      "Perracotta",
+      "Grey",
+      "Cream"
+    ],
+    "quantities": [
+      [
+        25,
+        25,
+        25,
+        25,
+        25
+      ]
+    ]
+  },
+  {
+    "productID": "FP002",
+    "name": "GreenPan ™ Reserve Frying Pan with Lid",
+    "description": "The GreenPan Reserve frying pan offers a perfect blend of style, durability, and advanced cooking technology. With its sleek design, non-toxic ceramic coating, and versatile performance, it’s a premium choice for effortless and healthy cooking.",
+    "price": 99.95,
+    "category": "GreenPan",
+    "brand": "BrandB",
+    "sizes": [
+      "12 inch"
+    ],
+    "colors": [
+      "Julep",
+      "Cloud Cream",
+      "Twilight"
+    ],
+    "quantities": [
+      [
+        30,
+        35,
+        30
+      ]
+    ]
   }
 ]

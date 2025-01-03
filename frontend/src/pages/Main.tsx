@@ -1,7 +1,37 @@
+import { UserGeneralDetailsInterface } from "@interfaces/API/UserInterface";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
-const Main: React.FC = () => {
+interface MainProps {
+    currentUserGeneralDetails: UserGeneralDetailsInterface | null;
+    setCurrentUserGeneralDetails: React.Dispatch<
+        React.SetStateAction<UserGeneralDetailsInterface | null>
+    >;
+    isLogin: boolean;
+    setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Main: React.FC<MainProps> = ({
+    currentUserGeneralDetails,
+    setCurrentUserGeneralDetails,
+    isLogin,
+    setIsLogin,
+}) => {
+    const navigate = useNavigate();
+
+    const logout = () => {
+        setCurrentUserGeneralDetails(null);
+        setIsLogin(false);
+        Swal.fire({
+            title: "Logout successful!",
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false,
+        }).then(() => {
+            navigate("/login");
+        });
+    };
 
     return (
         <div>
@@ -9,24 +39,38 @@ const Main: React.FC = () => {
             <p>Please choose an option below:</p>
             <div>
                 <Link to="/testapi">
-                    <button>Go to Test API Page</button>
+                    <button className="text-white">Go to Test API Page</button>
                 </Link>
-                <Link to="/Login">
-                    <button>Go to Login</button>
-                </Link>
-                <Link to="/Register">
-                    <button>Go to Register</button>
-                </Link>
-                <Link to="/cart">
-                    <button>Go to Cart</button>
-                </Link>
-                <Link to="/checkout">
-                    <button>Go to Checkout</button>
-                </Link>
+                {!isLogin && (
+                    <>
+                        <Link to="/Login">
+                            <button className="text-white">Go to Login</button>
+                        </Link>
+                        <Link to="/Register">
+                            <button className="text-white">
+                                Go to Register
+                            </button>
+                        </Link>
+                    </>
+                )}
+                {isLogin && (
+                    <>
+                        <Link to="/cart">
+                            <button className="text-white">Go to Cart</button>
+                        </Link>
+                        <Link to="/checkout">
+                            <button className="text-white">
+                                Go to Checkout
+                            </button>
+                        </Link>
+                        <button className="text-white" onClick={logout}>
+                            Logout
+                        </button>
+                    </>
+                )}
             </div>
         </div>
     );
 };
 
 export default Main;
-
