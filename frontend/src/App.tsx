@@ -77,8 +77,28 @@ const App: React.FC = () => {
                             />
                         }
                     />
-                    <Route path="/cart" element={<Cart />} />
-                    <Route path="/checkout" element={<Checkout />} />
+                    <Route
+                        path="/cart"
+                        element={
+                            <Cart
+                                currentUserGeneralDetails={
+                                    currentUserGeneralDetails
+                                }
+                                isLogin={isLogin}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/checkout"
+                        element={
+                            <Checkout
+                                currentUserGeneralDetails={
+                                    currentUserGeneralDetails
+                                }
+                                isLogin={isLogin}
+                            />
+                        }
+                    />
                 </Routes>
             </div>
         </Router>
