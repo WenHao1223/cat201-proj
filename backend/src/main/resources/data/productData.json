@@ -1,462 +1,252 @@
 [
-	{
-		"productID": "B001",
-		"name": "KitchenAid ® Go ™ Cordless Hand Blender with Battery",
-		"description": "A black cordless immersion blender allows you to easily puree and blend anywhere. The powerful rechargeable lithium ion battery delivers optimal runtime, performance and portability for up to 30 minutes of blending. The clever pan guard protects cookware from the spinning stainless steel blades, and the blending arm twists off for easy clean up in the dishwasher. Dishwasher-safe for easy cleanup, the lidded blender jar stores your concoctions in the refrigerator or lets you take them to go.",
-		"price": 69.99,
-		"category": "Blender",
-		"brand": "Kitchen Aid",
-		"sizes": [
-			"15 inch"
-		],
-		"colors": [
-			"Black"
-		],
-		"quantities": [
-			[
-				20
-			]
-		]
-	},
-	{
-		"productID": "B002",
-		"name": "KitchenAid ® Go ™ Cordless Personal Blender 16-Oz",
-		"description": "A black personal blender whips up smoothies, protein shakes, sauces and frozen cocktails with one-touch operation. The powerful rechargeable lithium ion battery delivers optimal runtime, performance and portability. Featuring a blade specially designed to handle frozen ingredients with ease, the cordless blender includes a dishwasher-safe blending jar with travel lid so you can take your custom drinks on the go",
-		"price": 89.99,
-		"category": "Blender",
-		"brand": "Kitchen Aid",
-		"sizes": [
-			"12 inch"
-		],
-		"colors": [
-			"Black"
-		],
-		"quantities": [
-			[
-				30
-			]
-		]
-	},
-	{
-		"productID": "B003",
-		"name": "KitchenAid ® Steel Blender",
-		"description": "Equipped with a powerful motor and uniquely asymmetrical stainless steel blade, this blender gets perfectly smooth results out of even the toughest ingredients. Intelligent motor control senses the contents of the pitcher, maintaining the ideal speed to power through them effectively. The ingenious Soft Start feature prevents splatters by starting the motor gently, pulling ingredients into the blade and gradually increasing speed to the desired setting. Three presets crush ice, mix smoothies and blend festive frozen drinks.",
-		"price": 129.99,
-		"category": "Blender",
-		"brand": "Kitchen Aid",
-		"sizes": [
-			"15.8 inch"
-		],
-		"colors": [
-			"Black",
-			"Steel Blue"
-		],
-		"quantities": [
-			[
-				35,
-				35
-			]
-		]
-	},
-	{
-		"productID": "B004",
-		"name": "KitchenAid ® K150 Matte Black Blender with 2 Personal Blender Jars",
-		"description": "Equipped with a uniquely asymmetrical stainless steel blade and powerful motor, this modern matte black blender crushes ice in less than 10 seconds and gets impeccably smooth results out of even the toughest ingredients. The ingenious Soft Start feature prevents splatters by starting the motor gently, pulling ingredients into the blade and gradually increasing speed to the desired setting. Intelligent motor control senses the pitcher\u0027s contents, maintaining the ideal speed to power through them effectively. Two lidded personal blender jars store sauces in the refrigerator and take smoothies on the go.",
-		"price": 199.99,
-		"category": "Blender",
-		"brand": "Kitchen Aid",
-		"sizes": [
-			"15 inch"
-		],
-		"colors": [
-			"Black"
-		],
-		"quantities": [
-			[
-				15
-			]
-		]
-	},
-	{
-		"productID": "PM001",
-		"name": "KitchenAid ® 3.5-Cup Food Chopper",
-		"description": "Compact and convenient for everyday use, this two-speed food chopper in chic matte black chops and purees with one-touch operation. With a three-cup capacity and wet-ingredient opening on the lid, it\u0027s easy to whip up cheese dips, hummus, salsa and lots more.",
-		"price": 99.99,
-		"category": "Food Processor and Mixer",
-		"brand": "Kitchen Aid",
-		"sizes": [
-			"10 inch"
-		],
-		"colors": [
-			"Matte Black",
-			"Metallic Chrome"
-		],
-		"quantities": [
-			[
-				20,
-				15
-			]
-		]
-	},
-	{
-		"productID": "PM002",
-		"name": "KitchenAid ® 5 Cup Food Chopper",
-		"description": "Compact and convenient for everyday use, this two-speed food chopper in chic matte black chops and purees with one-touch operation. With a three-cup capacity and wet-ingredient opening on the lid, it\u0027s easy to whip up cheese dips, hummus, salsa and lots more.",
-		"price": 149.99,
-		"category": "Food Processor and Mixer",
-		"brand": "Kitchen Aid",
-		"sizes": [
-			"10 inch"
-		],
-		"colors": [
-			"Matte Black"
-		],
-		"quantities": [
-			[
-				15
-			]
-		]
-	},
-	{
-		"productID": "PM003",
-		"name": "KitchenAid ® 7 Cup Food Chopper",
-		"description": "Compact and convenient for everyday use, this two-speed food chopper in chic matte black chops and purees with one-touch operation. With a seven-cup capacity and wet-ingredient opening on the lid, it\u0027s easy to whip up cheese dips, hummus, salsa and lots more.",
-		"price": 199.99,
-		"category": "Food Processor and Mixer",
-		"brand": "Kitchen Aid",
-		"sizes": [
-			"15 inch"
-		],
-		"colors": [
-			"Black",
-			"Empire Red"
-		],
-		"quantities": [
-			[
-				10,
-				15
-			]
-		]
-	},
-	{
-		"productID": "PM004",
-		"name": "KitchenAid Go ™ Cordless 5-Cup Food Chopper with Battery",
-		"description": "Compact and convenient for everyday use, this black food processor chops and purees with one-touch operation. Designed with a powerful rechargeable lithium ion battery, the two-speed cordless food chopper delivers optimal runtime, performance and portability. The stainless steel multipurpose blade chops garlic, mixes dressings and purees beans for perfectly creamy dips, while the whisk accessory lets you whip, beat and stir. The blade and whisk store neatly inside the five-cup work bowl for space-saving storage.",
-		"price": 219.99,
-		"category": "Food Processor and Mixer",
-		"brand": "Kitchen Aid",
-		"sizes": [
-			"10.5 inch"
-		],
-		"colors": [
-			"Black"
-		],
-		"quantities": [
-			[
-				10
-			]
-		]
-	},
-	{
-		"productID": "PM005",
-		"name": "KitchenAid ® 7-Speed Hand Mixer",
-		"description": "From the stand mixer mavens at KitchenAid, this digital hand mixer features a durable and quiet DC motor, seven speeds for versatility and control, and soft start feature for delicate ingredients. Enduring, stylish design features a sleek silver finish and comfort-grip handle. Integrated sensor adjusts to the resistance of your mix for smooth, consistent results. Includes two stainless steel Turbo Beater II accessories and pro whisk. Swivel cord locks out of the way to either side.",
-		"price": 79.99,
-		"category": "Food Processor and Mixer",
-		"brand": "Kitchen Aid",
-		"sizes": [
-			"6 inch"
-		],
-		"colors": [
-			"Silver"
-		],
-		"quantities": [
-			[
-				15
-			]
-		]
-	},
-	{
-		"productID": "PM006",
-		"name": "KitchenAid® Artisan® Series 5-Quart Tilt-Head Stand Mixer.",
-		"description": "A favorite of home and professional chefs since 1919. From mixing cake batter and whipping cream to kneading bread dough and shredding chicken, you\u0027ll find endless uses for this heavy-duty mixer that\u0027s built to last. The Artisan Series tilt-head stand mixer features ten-speed control with settings from very slow stirring to high-speed beating. Its five-quart stainless bowl with ergonomic handle accommodates large batches of your favorite recipes, and the tilting head and easy-install pouring shield facilitate easy addition of ingredients",
-		"price": 249.99,
-		"category": "Food Processor and Mixer",
-		"brand": "Kitchen Aid",
-		"sizes": [
-			"14 inch"
-		],
-		"colors": [
-			"Empire Red",
-			"Matte Black",
-			"Matte Blue"
-		],
-		"quantities": [
-			[
-				25,
-				5,
-				10
-			]
-		]
-	},
-	{
-		"productID": "FP001",
-		"name": "Caraway Mini Fry Pan",
-		"description": "This non-stick ceramic frying pan features a navy blue exterior, stainless steel handle, and heavy metal-free coating, offering excellent heat distribution, stovetop and oven versatility, and a sleek, minimalist design",
-		"price": 81.0,
-		"category": "Fry Pan",
-		"brand": "Caraway",
-		"sizes": [
-			"8 inch"
-		],
-		"colors": [
-			"Navy",
-			"Sage",
-			"Perracotta",
-			"Grey",
-			"Cream"
-		],
-		"quantities": [
-			[
-				25,
-				25,
-				25,
-				25,
-				25
-			]
-		]
-	},
-	{
-		"productID": "FP002",
-		"name": "GreenPan ™ Reserve Frying Pan with Lid",
-		"description": "The GreenPan Reserve frying pan offers a perfect blend of style, durability, and advanced cooking technology. With its sleek design, non-toxic ceramic coating, and versatile performance, it’s a premium choice for effortless and healthy cooking.",
-		"price": 99.95,
-		"category": "GreenPan",
-		"brand": "BrandB",
-		"sizes": [
-			"12 inch"
-		],
-		"colors": [
-			"Julep",
-			"Cloud Cream",
-			"Twilight"
-		],
-		"quantities": [
-			[
-				30,
-				35,
-				30
-			]
-		]
-	},
-	{
-		"productID": "FP003",
-		"name": "All-Clad ® d3 Stainless Fry Pan with Lid",
-		"description": "The All-Clad frying pan offers superior heat performance with triple-ply construction and a durable, non-reactive stainless steel design. Versatile and dishwasher-safe, it’s perfect for any cooktop and everyday use.",
-		"price": 90.99,
-		"category": "Fry Pan",
-		"brand": "All-Clad",
-		"sizes": [
-			[
-				"10 inch",
-				"12 inch"
-			]
-		],
-		"colors": [
-			"Silver"
-		],
-		"quantities": [
-			[
-				20,
-				25
-			]
-		]
-	},
-	{
-		"productID": "FP004",
-		"name": "Crate & Barrel EvenCook Core ® Stainless Steel Fry Pan",
-		"description": "All-Clads triple-ply frying pan delivers exceptional heat distribution and durability with its aluminum core and stainless steel design. Versatile and dishwasher-safe, it’s ideal for everyday cooking on any cooktop.",
-		"price": 107.99,
-		"category": "Fry Pan",
-		"brand": "Crate & Barrel EvenCook Core",
-		"sizes": [
-			"8 inch",
-			"10 inch"
-		],
-		"colors": [
-			"Silver"
-		],
-		"quantities": [
-			[
-				15
-			],
-			[
-				20
-			]
-		]
-	},
-	{
-		"productID": "P001",
-		"name": "Le Creuset ® Enameled Stockpot",
-		"description": "Put professional-grade cookware to work with All-Clad’s triple-ply frying pan. Its thick aluminum core ensures even heat, while the stainless steel interior and exterior provide durability and style. Designed for versatile cooking, it’s compatible with all cooktops, oven-safe up to 500°F, and dishwasher-friendly.",
-		"price": 115.00,
-		"category": "Pot",
-		"brand": "Le Creuset",
-		"sizes": [
-			"8-Qt"
-		],
-		"colors": [
-			"Thyme",
-			"Chambray",
-			"White"
-		],
-		"quantities": [
-			[
-				30,
-				15,
-				20
-			]
-		]
-	},
-	{
-		"productID": "P002",
-		"name": "Crate & Barrel EvenCook Core ® Stainless Steel Multipot with Glass Straining Lid",
-		"description": "EThe Kitchen by Crate cookware offers precision and style with its five-ply copper core, ergonomic handles, and built-in strainer lid. Durable and versatile, it’s oven-safe to 600°F and compatible with all stovetops.",
-		"price": 195.95,
-		"category": "Pot",
-		"brand": "Crate & Barrel EvenCook Core",
-		"sizes": [
-			"6-Qt"
-		],
-		"colors": [
-			"Silver"
-		],
-		"quantities": [
-			[
-				45
-			]
-		]
-	},
-	{
-		"productID": "P003",
-		"name": "Cuisinart ® Chef's Classic ™ Stainless Steel Pasta Pot with Straining Cover",
-		"description": "Cuisinart's pasta pot combines convenience and performance with its straining lid, stainless steel design, and aluminum base for even heat. Oven-safe, induction-compatible, and dishwasher-friendly, it’s perfect for pasta, soups, and more.",
-		"price": 52.99,
-		"category": "Utensils",
-		"brand": "Cuisinart ® Chef's Classic",
-		"sizes": [
-			"6-Qt"
-		],
-		"colors": [
-			"Silver"
-		],
-		"quantities": [
-			[
-				40
-			]
-		]
-	},
-	{
-		"productID": "P004",
-		"name": "All-Clad Simply Strain Stainless Steel Multipot with Insert",
-		"description": "All-Clad’s 16-quart multipot offers versatility and durability with its stainless steel design, wide base, and strainer insert for quick draining. Perfect for stocks, seafood boils, and batch cooking, it’s oven-safe, induction-compatible, and dishwasher-friendly.",
-		"price": 149.99,
-		"category": "Pot",
-		"brand": "All-Clad",
-		"sizes": [
-			[
-				"8-Qt",
-				"12-Qt",
-				"16-Qt"
-			]
-		],
-		"colors": [
-			"Silver"
-		],
-		"quantities": [
-			[
-				15,
-				15,
-				15
-			]
-		]
-	},
-	{
-		"productID": "AF001",
-		"name": "Instant ® Vortex ™ Slim Air Fryer",
-		"description": "The Instant Pot Vortex air fryer offers 5-in-1 functionality—air fry, roast, bake, boil, and reheat—using EvenCrisp™ technology for crispy, tender results with less oil. It’s compact, easy to use, and dishwasher-safe, with a 4-lb chicken capacity and adjustable temperature up to 400°F.",
-		"price": 139.99,
-		"category": "Air Fryer",
-		"brand": "Instant",
-		"sizes": [
-			"6-Qt"
-		],
-		"colors": [
-			"Black"
-		],
-		"quantities": [
-			[
-				15
-			]
-		]
-	},
-	{
-		"productID": "AF002",
-		"name": "Chefman ExacTemp Multifunctional Digital Air Fryer",
-		"description": "The ExacTemp Air Fryer offers four cooking functions—air fry, bake, rotisserie, and dehydrate—with 28 presets for easy, foolproof meals. Features like the Hi-Fry button for extra crispiness, a temperature probe, and a variety of accessories make it versatile and user-friendly.",
-		"price": 119.99,
-		"category": "Air Fryer",
-		"brand": "Chefman",
-		"sizes": [
-			"14.76H x 14.45W x 12.8D"
-		],
-		"colors": [
-			"Black",
-			"White"
-		],
-		"quantities": [
-			[
-				15,
-				20
-			]
-		]
-	},
-	{
-		"productID": "AF003",
-		"name": "Philips 3000 Series Dual-Basket Air Fryer",
-		"description": "This two-in-one air fryer offers 12 cooking methods, including air frying, roasting, grilling, and toasting. With 8 presets and a time function to sync cooking, it makes preparing multiple dishes easy. Its 9L capacity, Shake Reminder, and dishwasher-safe parts provide convenience and versatility.",
-		"price": 199.95,
-		"category": "Air Fryer",
-		"brand": "Philips",
-		"sizes": [
-			"9L"
-		],
-		"colors": [
-			"Black"
-		],
-		"quantities": [
-			[
-				20
-			]
-		]
-	},
-	{
-		"productID": "AF004",
-		"name": "Instant Pot® Duo Crisp™ Pressure Cooker Basket Air Fryer with Ultimate Lid",
-		"description": "This 2-in-1 Instant Pot offers 13 functions, including pressure cooking, air frying, slow cooking, and more. With a sleek stainless steel design, it features EvenCrisp™ technology for crispy results and a user-friendly control panel. The 6.5-quart capacity and dishwasher-safe components make it a versatile and convenient addition to any kitchen.",
-		"price": 249.99,
-		"category": "Air Fryer",
-		"brand": "Instant Pot",
-		"sizes": [
-			"6.5-Qt"
-		],
-		"colors": [
-			"Black"
-		],
-		"quantities": [
-			[
-				10
-			]
-		]
-	}
+  {
+    "productID": "B001",
+    "name": "KitchenAid ® Go ™ Cordless Hand Blender with Battery",
+    "description": "A black cordless immersion blender allows you to easily puree and blend anywhere. The powerful rechargeable lithium ion battery delivers optimal runtime, performance and portability for up to 30 minutes of blending. The clever pan guard protects cookware from the spinning stainless steel blades, and the blending arm twists off for easy clean up in the dishwasher. Dishwasher-safe for easy cleanup, the lidded blender jar stores your concoctions in the refrigerator or lets you take them to go.",
+    "price": 69.99,
+    "category": "Blender",
+    "brand": "Kitchen Aid",
+    "sizes": [
+      "15 inch"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "quantities": [
+      [
+        20
+      ]
+    ]
+  },
+  {
+    "productID": "B002",
+    "name": "KitchenAid ® Go ™ Cordless Personal Blender 16-Oz",
+    "description": "A black personal blender whips up smoothies, protein shakes, sauces and frozen cocktails with one-touch operation. The powerful rechargeable lithium ion battery delivers optimal runtime, performance and portability. Featuring a blade specially designed to handle frozen ingredients with ease, the cordless blender includes a dishwasher-safe blending jar with travel lid so you can take your custom drinks on the go",
+    "price": 89.99,
+    "category": "Blender",
+    "brand": "Kitchen Aid",
+    "sizes": [
+      "12 inch"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "quantities": [
+      [
+        30
+      ]
+    ]
+  },
+  {
+    "productID": "B003",
+    "name": "KitchenAid ® Steel Blender",
+    "description": "Equipped with a powerful motor and uniquely asymmetrical stainless steel blade, this blender gets perfectly smooth results out of even the toughest ingredients. Intelligent motor control senses the contents of the pitcher, maintaining the ideal speed to power through them effectively. The ingenious Soft Start feature prevents splatters by starting the motor gently, pulling ingredients into the blade and gradually increasing speed to the desired setting. Three presets crush ice, mix smoothies and blend festive frozen drinks.",
+    "price": 129.99,
+    "category": "Blender",
+    "brand": "Kitchen Aid",
+    "sizes": [
+      "15.8 inch"
+    ],
+    "colors": [
+      "Black",
+      "Steel Blue"
+    ],
+    "quantities": [
+      [
+        35,
+        35
+      ]
+    ]
+  },
+  {
+    "productID": "B004",
+    "name": "KitchenAid ® K150 Matte Black Blender with 2 Personal Blender Jars",
+    "description": "Equipped with a uniquely asymmetrical stainless steel blade and powerful motor, this modern matte black blender crushes ice in less than 10 seconds and gets impeccably smooth results out of even the toughest ingredients. The ingenious Soft Start feature prevents splatters by starting the motor gently, pulling ingredients into the blade and gradually increasing speed to the desired setting. Intelligent motor control senses the pitcher\u0027s contents, maintaining the ideal speed to power through them effectively. Two lidded personal blender jars store sauces in the refrigerator and take smoothies on the go.",
+    "price": 199.99,
+    "category": "Blender",
+    "brand": "Kitchen Aid",
+    "sizes": [
+      "15 inch"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "quantities": [
+      [
+        15
+      ]
+    ]
+  },
+  {
+    "productID": "PM001",
+    "name": "KitchenAid ® 3.5-Cup Food Chopper",
+    "description": "Compact and convenient for everyday use, this two-speed food chopper in chic matte black chops and purees with one-touch operation. With a three-cup capacity and wet-ingredient opening on the lid, it\u0027s easy to whip up cheese dips, hummus, salsa and lots more.",
+    "price": 99.99,
+    "category": "Food Processor and Mixer",
+    "brand": "Kitchen Aid",
+    "sizes": [
+      "10 inch"
+    ],
+    "colors": [
+      "Matte Black",
+      "Metallic Chrome"
+    ],
+    "quantities": [
+      [
+        20,
+        15
+      ]
+    ]
+  },
+  {
+    "productID": "PM002",
+    "name": "KitchenAid ® 5 Cup Food Chopper",
+    "description": "Compact and convenient for everyday use, this two-speed food chopper in chic matte black chops and purees with one-touch operation. With a three-cup capacity and wet-ingredient opening on the lid, it\u0027s easy to whip up cheese dips, hummus, salsa and lots more.",
+    "price": 149.99,
+    "category": "Food Processor and Mixer",
+    "brand": "Kitchen Aid",
+    "sizes": [
+      "10 inch"
+    ],
+    "colors": [
+      "Matte Black"
+    ],
+    "quantities": [
+      [
+        15
+      ]
+    ]
+  },
+  {
+    "productID": "PM003",
+    "name": "KitchenAid ® 7 Cup Food Chopper",
+    "description": "Compact and convenient for everyday use, this two-speed food chopper in chic matte black chops and purees with one-touch operation. With a seven-cup capacity and wet-ingredient opening on the lid, it\u0027s easy to whip up cheese dips, hummus, salsa and lots more.",
+    "price": 199.99,
+    "category": "Food Processor and Mixer",
+    "brand": "Kitchen Aid",
+    "sizes": [
+      "15 inch"
+    ],
+    "colors": [
+      "Black",
+      "Empire Red"
+    ],
+    "quantities": [
+      [
+        10,
+        15
+      ]
+    ]
+  },
+  {
+    "productID": "PM004",
+    "name": "KitchenAid Go ™ Cordless 5-Cup Food Chopper with Battery",
+    "description": "Compact and convenient for everyday use, this black food processor chops and purees with one-touch operation. Designed with a powerful rechargeable lithium ion battery, the two-speed cordless food chopper delivers optimal runtime, performance and portability. The stainless steel multipurpose blade chops garlic, mixes dressings and purees beans for perfectly creamy dips, while the whisk accessory lets you whip, beat and stir. The blade and whisk store neatly inside the five-cup work bowl for space-saving storage.",
+    "price": 219.99,
+    "category": "Food Processor and Mixer",
+    "brand": "Kitchen Aid",
+    "sizes": [
+      "10.5 inch"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "quantities": [
+      [
+        10
+      ]
+    ]
+  },
+  {
+    "productID": "PM005",
+    "name": "KitchenAid ® 7-Speed Hand Mixer",
+    "description": "From the stand mixer mavens at KitchenAid, this digital hand mixer features a durable and quiet DC motor, seven speeds for versatility and control, and soft start feature for delicate ingredients. Enduring, stylish design features a sleek silver finish and comfort-grip handle. Integrated sensor adjusts to the resistance of your mix for smooth, consistent results. Includes two stainless steel Turbo Beater II accessories and pro whisk. Swivel cord locks out of the way to either side.",
+    "price": 79.99,
+    "category": "Food Processor and Mixer",
+    "brand": "Kitchen Aid",
+    "sizes": [
+      "6 inch"
+    ],
+    "colors": [
+      "Silver"
+    ],
+    "quantities": [
+      [
+        15
+      ]
+    ]
+  },
+  {
+    "productID": "PM006",
+    "name": "KitchenAid® Artisan® Series 5-Quart Tilt-Head Stand Mixer.",
+    "description": "A favorite of home and professional chefs since 1919. From mixing cake batter and whipping cream to kneading bread dough and shredding chicken, you\u0027ll find endless uses for this heavy-duty mixer that\u0027s built to last. The Artisan Series tilt-head stand mixer features ten-speed control with settings from very slow stirring to high-speed beating. Its five-quart stainless bowl with ergonomic handle accommodates large batches of your favorite recipes, and the tilting head and easy-install pouring shield facilitate easy addition of ingredients",
+    "price": 249.99,
+    "category": "Food Processor and Mixer",
+    "brand": "Kitchen Aid",
+    "sizes": [
+      "14 inch"
+    ],
+    "colors": [
+      "Empire Red",
+      "Matte Black",
+      "Matte Blue"
+    ],
+    "quantities": [
+      [
+        25,
+        5,
+        10
+      ]
+    ]
+  },
+  {
+    "productID": "FP001",
+    "name": "Caraway Mini Fry Pan",
+    "description": "This non-stick ceramic frying pan features a navy blue exterior, stainless steel handle, and heavy metal-free coating, offering excellent heat distribution, stovetop and oven versatility, and a sleek, minimalist design",
+    "price": 81.0,
+    "category": "Fry Pan",
+    "brand": "Caraway",
+    "sizes": [
+      "8 inch"
+    ],
+    "colors": [
+      "Navy",
+      "Sage",
+      "Perracotta",
+      "Grey",
+      "Cream"
+    ],
+    "quantities": [
+      [
+        25,
+        25,
+        25,
+        25,
+        25
+      ]
+    ]
+  },
+  {
+    "productID": "FP002",
+    "name": "GreenPan ™ Reserve Frying Pan with Lid",
+    "description": "The GreenPan Reserve frying pan offers a perfect blend of style, durability, and advanced cooking technology. With its sleek design, non-toxic ceramic coating, and versatile performance, it’s a premium choice for effortless and healthy cooking.",
+    "price": 99.95,
+    "category": "GreenPan",
+    "brand": "BrandB",
+    "sizes": [
+      "12 inch"
+    ],
+    "colors": [
+      "Julep",
+      "Cloud Cream",
+      "Twilight"
+    ],
+    "quantities": [
+      [
+        30,
+        35,
+        30
+      ]
+    ]
+  }
 ]
