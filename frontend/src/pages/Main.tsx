@@ -26,6 +26,8 @@ const Main: React.FC<MainProps> = ({
     const logout = () => {
         setCurrentUserGeneralDetails(null);
         setIsLogin(false);
+        localStorage.removeItem("currentUserGeneralDetails");
+        localStorage.removeItem("isLogin");
         Swal.fire({
             title: "Logout successful!",
             icon: "success",

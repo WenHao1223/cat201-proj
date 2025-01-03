@@ -17,13 +17,33 @@ const App: React.FC = () => {
     const [isLogin, setIsLogin] = useState(false);
 
     useEffect(() => {
-        console.log(
-            "Current user general details: ",
-            currentUserGeneralDetails
+        const currentUserGeneralDetailsString = localStorage.getItem(
+            "currentUserGeneralDetails"
         );
+        if (currentUserGeneralDetailsString) {
+            setCurrentUserGeneralDetails(
+                JSON.parse(currentUserGeneralDetailsString)
+            );
+        }
+
+        const isLoginString = localStorage.getItem("isLogin");
+        if (isLoginString) {
+            setIsLogin(JSON.parse(isLoginString));
+        }
+    }, []);
+
+    useEffect(() => {
+        if (currentUserGeneralDetails !== null) {
+            localStorage.setItem(
+                "currentUserGeneralDetails",
+                JSON.stringify(currentUserGeneralDetails)
+            );
+        }
     }, [currentUserGeneralDetails]);
     useEffect(() => {
-        console.log("Is login: ", isLogin);
+        if (isLogin !== false) {
+            localStorage.setItem("isLogin", JSON.stringify(isLogin));
+        }
     }, [isLogin]);
 
     return (

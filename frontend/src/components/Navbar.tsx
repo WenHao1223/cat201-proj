@@ -19,6 +19,8 @@ const Navbar: React.FC<NavbarProps> = ({
     const handleLogout = () => {
         setCurrentUserGeneralDetails(null);
         setIsLogin(false);
+        localStorage.removeItem("currentUserGeneralDetails");
+        localStorage.removeItem("isLogin");
         Swal.fire({
             title: "Logout successful!",
             icon: "success",
