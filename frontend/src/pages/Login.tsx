@@ -78,7 +78,7 @@ const Login: React.FC<LoginProps> = ({
     }
 
     return (
-        <div className="login-page">
+        <div className= "bg-white text-black min-h-screen flex items-center justify-center">
             <div className="container">
                 <Link to="/">
                     <div className="header">
@@ -93,7 +93,7 @@ const Login: React.FC<LoginProps> = ({
                         <img
                             src="https://th.bing.com/th/id/OIP.RwtkstiEHa-_o2QIKYBy3QHaE8?w=238&h=188&c=7&r=0&o=5&dpr=1.1&pid=1.7"
                             alt="Sample photo"
-                            className="img-fluid"
+                            className="img-fluid object-cover"
                             style={{
                                 width: "400px",
                                 height: "200px",

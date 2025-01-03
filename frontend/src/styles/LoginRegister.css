@@ -9,10 +9,8 @@
 
 body {
     min-height: 100vh;
-    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
     background: white;
     color: black; /* Ensure text color is black */
 }
@@ -52,7 +50,7 @@ input, select, textarea {
 
 .container {
     position: relative;
-    max-width: 1200px;
+    max-width: 1000px;
     width: 100%;
     background: #fff;
     padding: 25px;
@@ -99,7 +97,6 @@ input, select, textarea {
 
 .form-outline {
     position: relative;
-    margin-bottom: 10px; /* Reduced margin */
 }
 
 .form-outline input {

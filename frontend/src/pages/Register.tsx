@@ -159,7 +159,7 @@ const Register: React.FC<RegisterProps> = ({ isLogin }) => {
     }
 
     return (
-        <div className="register-page bg-white text-black">
+        <div className="bg-white text-black min-h-screen flex items-center justify-center">
             <div className="container">
                 <Link to="/">
                     <div className="header">Chef's Aura</div>
@@ -169,7 +169,7 @@ const Register: React.FC<RegisterProps> = ({ isLogin }) => {
                         <img
                             src="https://www.color-meanings.com/wp-content/uploads/bright-kitchen-stainless-steel-appliances.jpeg"
                             alt="Sample photo"
-                            className="img-fluid"
+                            className="img-fluid object-cover"
                             style={{
                                 width: "600px",
                                 height: "500px",
@@ -270,7 +270,7 @@ const Register: React.FC<RegisterProps> = ({ isLogin }) => {
                                     required
                                 />
                             </div>
-                            <div className="gender-box">
+                            <div className="gender-box pb-2">
                                 <h3>Gender</h3>
                                 <div className="gender-option">
                                     <div className="gender">
