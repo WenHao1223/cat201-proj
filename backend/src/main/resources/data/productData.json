@@ -411,11 +411,13 @@
 			"14.76H x 14.45W x 12.8D"
 		],
 		"colors": [
-			"Black"
+			"Black",
+			"White"
 		],
 		"quantities": [
 			[
-				15
+				15,
+				20
 			]
 		]
 	},
