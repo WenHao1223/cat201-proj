@@ -14,7 +14,7 @@ const AsyncImage: React.FC<AsyncImageProps> = ({ productID, color, number, alt, 
     useEffect(() => {
         const loadImage = async () => {
             try {
-                const image = await import(`../assets/images/${productID}/${color.toLowerCase()}-${number}.webp`);
+                const image = await import(`../assets/images/${productID}/${color.toLowerCase().replace(" ", "")}-${number}.webp`);
                 setSrc(image.default);
             } catch (error) {
                 console.error("Error loading image:", error);

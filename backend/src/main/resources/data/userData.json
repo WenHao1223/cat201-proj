@@ -41,10 +41,10 @@
         "colorIndex": 0
       },
       {
-        "productID": "B002",
+        "productID": "B003",
         "quantity": 1,
         "sizeIndex": 0,
-        "colorIndex": 0
+        "colorIndex": 1
       }
     ],
     "orders": [
