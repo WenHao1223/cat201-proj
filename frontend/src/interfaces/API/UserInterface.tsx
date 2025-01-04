@@ -57,8 +57,8 @@ export interface CartGeneralInterface {
     category: string;
     brand: string;
     quantity: number;
-    sizeIndex?: number;
-    colorIndex?: number;
+    sizeIndex: number;
+    colorIndex: number;
     size: string;
     color: string;
 }

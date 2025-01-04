@@ -25,6 +25,8 @@ const CartAddServlet: React.FC<CartAddServletProps> = ({
                 >
                     <p>Product ID: {carts[0].productID}</p>
                     <p>Quantity: {carts[0].quantity}</p>
+                    <p>Size Index: {carts[0].sizeIndex}</p>
+                    <p>Color Index: {carts[0].colorIndex}</p>
                     <p>Size: {carts[0].size}</p>
                     <p>Color: {carts[0].color}</p>
                 </div>

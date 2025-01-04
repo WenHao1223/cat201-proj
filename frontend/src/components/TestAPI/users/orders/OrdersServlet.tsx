@@ -37,10 +37,12 @@ const OrdersServlet: React.FC<OrdersServletProps> = ({ orders }) => {
                             }}
                         >
                             <h4>{product.name}</h4>
-                            <p>Price: {product.price}</p> 
+                            <p>Price: {product.price}</p>
                             <p>Category: {product.category}</p>
                             <p>Brand: {product.brand}</p>
                             <p>Quantity: {product.quantity}</p>
+                            <p>Size Index: {product.sizeIndex}</p>
+                            <p>Color Index: {product.colorIndex}</p>
                             <p>Size: {product.size}</p>
                             <p>Color: {product.color}</p>
                         </div>

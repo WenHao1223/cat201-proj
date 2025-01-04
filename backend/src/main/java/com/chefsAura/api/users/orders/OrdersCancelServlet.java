@@ -111,6 +111,8 @@ public class OrdersCancelServlet extends HttpServlet {
                                         cartJson.addProperty("category", product.getCategory());
                                         cartJson.addProperty("brand", product.getBrand());
                                         cartJson.addProperty("quantity", cart.getQuantity());
+                                        cartJson.addProperty("sizeIndex", cart.getSizeIndex());
+                                        cartJson.addProperty("colorIndex", cart.getColorIndex());
 
                                         try {
                                             cartJson.addProperty("size", product.getSizes().get(cart.getSizeIndex()));
