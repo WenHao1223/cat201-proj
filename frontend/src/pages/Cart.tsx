@@ -16,6 +16,7 @@ import Navbar from "@components/Navbar";
 import handleApiCall from "@utils/handleApiCall";
 
 import AsyncImage from "@components/AsyncImage";
+import Swal from "sweetalert2";
 
 interface CartProps {
     carts: CartGeneralInterface[] | null;
@@ -38,6 +39,7 @@ const Cart: React.FC<CartProps> = ({
     isLogin,
     setIsLogin,
 }) => {
+    const [subtotal, setSubtotal] = React.useState(0);
     const [error, setError] = React.useState("");
 
     const navigate = useNavigate();
@@ -69,6 +71,47 @@ const Cart: React.FC<CartProps> = ({
                 }
             },
             (error) => setError("\n Error viewing cart: " + error)
+        );
+    };
+
+    const updateCart = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const productID = event.target.id.split("-")[1];
+        const quantity = parseInt(event.target.value);
+        const sizeIndex = carts!.find(
+            (cart) => cart.productID === productID
+        )!.sizeIndex;
+        const colorIndex = carts!.find(
+            (cart) => cart.productID === productID
+        )!.colorIndex;
+
+        await handleApiCall(
+            "users/cart/update",
+            "PUT",
+            {
+                email: currentUserGeneralDetails!.email,
+                productID: productID,
+                quantity: quantity,
+                sizeIndex: sizeIndex,
+                colorIndex: colorIndex,
+            },
+            async (result) => {
+                console.log(result);
+                if ((await result.status) == "Success") {
+                    console.log("result.carts", result.carts);
+                    setCarts(
+                        result.carts.map((cart: string) => JSON.parse(cart))
+                    );
+                    Swal.fire({
+                        icon: "success",
+                        title: "Cart updated",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                } else {
+                    setError("\n Error updating cart: " + result.message);
+                }
+            },
+            (error) => setError("\n Error updating cart: " + error)
         );
     };
 
@@ -106,7 +149,9 @@ const Cart: React.FC<CartProps> = ({
                                             <div className="flex-shrink-0">
                                                 <AsyncImage
                                                     alt={product.name}
-                                                    productID={product.productID}
+                                                    productID={
+                                                        product.productID
+                                                    }
                                                     color={product.color}
                                                     number={0}
                                                     className="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48"
@@ -164,6 +209,9 @@ const Cart: React.FC<CartProps> = ({
                                                                 product.quantity
                                                             }
                                                             className="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-300 sm:text-sm"
+                                                            onChange={
+                                                                updateCart
+                                                            }
                                                         >
                                                             <option value={1}>
                                                                 1
@@ -242,7 +290,7 @@ const Cart: React.FC<CartProps> = ({
                                         Subtotal
                                     </dt>
                                     <dd className="text-sm font-medium text-gray-900">
-                                        $99.00
+                                        RM {subtotal.toFixed(2)}
                                     </dd>
                                 </div>
                                 <div className="flex items-center justify-between border-t border-gray-200 pt-4">
@@ -263,7 +311,7 @@ const Cart: React.FC<CartProps> = ({
                                         </a>
                                     </dt>
                                     <dd className="text-sm font-medium text-gray-900">
-                                        $5.00
+                                        RM 5.00
                                     </dd>
                                 </div>
                                 <div className="flex items-center justify-between border-t border-gray-200 pt-4">
@@ -284,7 +332,7 @@ const Cart: React.FC<CartProps> = ({
                                         </a>
                                     </dt>
                                     <dd className="text-sm font-medium text-gray-900">
-                                        $8.32
+                                        RM 8.32
                                     </dd>
                                 </div>
                                 <div className="flex items-center justify-between border-t border-gray-200 pt-4">
@@ -292,7 +340,7 @@ const Cart: React.FC<CartProps> = ({
                                         Order total
                                     </dt>
                                     <dd className="text-base font-medium text-gray-900">
-                                        $112.32
+                                        RM 112.32
                                     </dd>
                                 </div>
                             </dl>

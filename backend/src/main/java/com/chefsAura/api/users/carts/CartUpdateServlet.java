@@ -111,6 +111,9 @@ public class CartUpdateServlet extends HttpServlet {
                     // Create JSON response
                     jsonResponse.addProperty("status", "Success");
                     jsonResponse.add("carts", jsonCart);
+                } catch (IllegalArgumentException e) {
+                    jsonResponse.addProperty("status", "Error");
+                    jsonResponse.addProperty("message", e.getMessage());
                 } catch (Exception e) {
                     jsonResponse.addProperty("status", "Error");
                     jsonResponse.addProperty("message", "Failed to add product to cart");
