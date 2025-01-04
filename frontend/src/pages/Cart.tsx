@@ -48,7 +48,6 @@ const Cart: React.FC<CartProps> = ({
     }
 
     useEffect(() => {
-        console.log(1);
         if (currentUserGeneralDetails) {
             viewCart();
         }
@@ -109,9 +108,21 @@ const Cart: React.FC<CartProps> = ({
                     });
                 } else {
                     setError("\n Error updating cart: " + result.message);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Error updating cart - " + result.message,
+                    });
                 }
             },
-            (error) => setError("\n Error updating cart: " + error)
+            (error) => {
+                setError("\n Error updating cart: " + error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Error updating cart - " + error,
+                });
+            }
         );
     };
 
