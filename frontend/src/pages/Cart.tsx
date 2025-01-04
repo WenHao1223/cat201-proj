@@ -40,6 +40,8 @@ const Cart: React.FC<CartProps> = ({
     setIsLogin,
 }) => {
     const [subtotal, setSubtotal] = React.useState(0);
+    const [shippingTotal, setShippingTotal] = React.useState(0);
+    const [taxTotal, setTaxTotal] = React.useState(0);
     const [error, setError] = React.useState("");
 
     const navigate = useNavigate();
@@ -52,6 +54,20 @@ const Cart: React.FC<CartProps> = ({
             viewCart();
         }
     }, [currentUserGeneralDetails]);
+
+    useEffect(() => {
+        if (carts) {
+            let subtotal = 0;
+            carts.forEach((cart) => {
+                subtotal += cart.price * cart.quantity;
+            });
+            setSubtotal(subtotal);
+            if (subtotal < 150) {
+                setShippingTotal(5);
+            }
+            setTaxTotal(subtotal * 0.06);
+        }
+    }, [carts]);
 
     const viewCart = async () => {
         await handleApiCall(
@@ -171,7 +187,7 @@ const Cart: React.FC<CartProps> = ({
                 });
             }
         );
-    }
+    };
 
     return (
         <div className="bg-white">
@@ -354,7 +370,7 @@ const Cart: React.FC<CartProps> = ({
                                     <dt className="text-sm text-gray-600">
                                         Subtotal
                                     </dt>
-                                    <dd className="subtotal text-sm font-medium text-gray-900">
+                                    <dd className="text-sm font-medium text-gray-900">
                                         RM {subtotal.toFixed(2)}
                                     </dd>
                                 </div>
@@ -362,13 +378,9 @@ const Cart: React.FC<CartProps> = ({
                                     <dt className="flex items-center text-sm text-gray-600">
                                         <span>Shipping estimate</span>
                                         <a
-                                            href="#"
-                                            className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500"
+                                            className="tooltip ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500"
+                                            data-tip="Free shipping for orders above RM 150"
                                         >
-                                            <span className="sr-only">
-                                                Learn more about how shipping is
-                                                calculated
-                                            </span>
                                             <QuestionMarkCircleIcon
                                                 aria-hidden="true"
                                                 className="h-5 w-5"
@@ -376,20 +388,16 @@ const Cart: React.FC<CartProps> = ({
                                         </a>
                                     </dt>
                                     <dd className="text-sm font-medium text-gray-900">
-                                        RM 5.00
+                                        RM {shippingTotal.toFixed(2)}
                                     </dd>
                                 </div>
                                 <div className="flex items-center justify-between border-t border-gray-200 pt-4">
                                     <dt className="flex text-sm text-gray-600">
                                         <span>Tax estimate</span>
                                         <a
-                                            href="#"
-                                            className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500"
+                                            className="tooltip ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500"
+                                            data-tip="6% tax"
                                         >
-                                            <span className="sr-only">
-                                                Learn more about how tax is
-                                                calculated
-                                            </span>
                                             <QuestionMarkCircleIcon
                                                 aria-hidden="true"
                                                 className="h-5 w-5"
@@ -397,7 +405,7 @@ const Cart: React.FC<CartProps> = ({
                                         </a>
                                     </dt>
                                     <dd className="text-sm font-medium text-gray-900">
-                                        RM 8.32
+                                        RM {taxTotal.toFixed(2)}
                                     </dd>
                                 </div>
                                 <div className="flex items-center justify-between border-t border-gray-200 pt-4">
@@ -405,7 +413,12 @@ const Cart: React.FC<CartProps> = ({
                                         Order total
                                     </dt>
                                     <dd className="text-base font-medium text-gray-900">
-                                        RM 112.32
+                                        RM{" "}
+                                        {(
+                                            subtotal +
+                                            shippingTotal +
+                                            taxTotal
+                                        ).toFixed(2)}
                                     </dd>
                                 </div>
                             </dl>
