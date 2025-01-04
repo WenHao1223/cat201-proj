@@ -189,6 +189,11 @@ const Cart: React.FC<CartProps> = ({
         );
     };
 
+    const checkout = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        navigate("/checkout");
+    }
+
     return (
         <div className="bg-white">
             <Navbar
@@ -201,7 +206,10 @@ const Cart: React.FC<CartProps> = ({
                     <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
                         Shopping Cart
                     </h1>
-                    <form className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+                    <form
+                        onSubmit={checkout}
+                        className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16"
+                    >
                         <section
                             aria-labelledby="cart-heading"
                             className="lg:col-span-7"
