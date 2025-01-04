@@ -126,6 +126,53 @@ const Cart: React.FC<CartProps> = ({
         );
     };
 
+    const removeFromCart = async (
+        productID: string,
+        sizeIndex: number,
+        colorIndex: number
+    ) => {
+        await handleApiCall(
+            "users/cart/remove",
+            "DELETE",
+            {
+                email: currentUserGeneralDetails!.email,
+                productID: productID,
+                sizeIndex: sizeIndex,
+                colorIndex: colorIndex,
+            },
+            async (result) => {
+                console.log(result);
+                if ((await result.status) == "Success") {
+                    console.log("result.carts", result.carts);
+                    setCarts(
+                        result.carts.map((cart: string) => JSON.parse(cart))
+                    );
+                    Swal.fire({
+                        icon: "success",
+                        title: "Item removed from cart",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                } else {
+                    setError("\n Error removing from cart: " + result.message);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Error removing from cart - " + result.message,
+                    });
+                }
+            },
+            (error) => {
+                setError("\n Error removing from cart: " + error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Error removing from cart - " + error,
+                });
+            }
+        );
+    }
+
     return (
         <div className="bg-white">
             <Navbar
@@ -254,6 +301,13 @@ const Cart: React.FC<CartProps> = ({
                                                             <button
                                                                 type="button"
                                                                 className="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500"
+                                                                onClick={() =>
+                                                                    removeFromCart(
+                                                                        product.productID,
+                                                                        product.sizeIndex,
+                                                                        product.colorIndex
+                                                                    )
+                                                                }
                                                             >
                                                                 <span className="sr-only">
                                                                     Remove
@@ -300,7 +354,7 @@ const Cart: React.FC<CartProps> = ({
                                     <dt className="text-sm text-gray-600">
                                         Subtotal
                                     </dt>
-                                    <dd className="text-sm font-medium text-gray-900">
+                                    <dd className="subtotal text-sm font-medium text-gray-900">
                                         RM {subtotal.toFixed(2)}
                                     </dd>
                                 </div>
