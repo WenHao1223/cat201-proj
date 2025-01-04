@@ -263,19 +263,19 @@ public class User {
     }
 
     // update product quantity in cart
-    public void updateProductQuantityInCart(String productID, int sizeIndex, int colorIndex, int addedQuantity) {
+    public void updateProductQuantityInCart(String productID, int sizeIndex, int colorIndex, int updatedQuantity) {
         for (Cart cart : this.carts) {
             if (cart.getProductID().equals(productID) && cart.getSizeIndex() == sizeIndex
                     && cart.getColorIndex() == colorIndex) {
                 if (Inventory.getProduct(cart.getProductID()).getQuantities().get(cart.getSizeIndex())
-                        .get(cart.getColorIndex()) < cart.getQuantity() + addedQuantity) {
+                        .get(cart.getColorIndex()) < updatedQuantity) {
                     System.err.println("Quantity not available");
                     throw new IllegalArgumentException("Quantity not available");
                 }
-                if (cart.getQuantity() + addedQuantity < 0) {
+                if (updatedQuantity < 0) {
                     cart.setQuantity(0);
                 } else {
-                    cart.setQuantity(cart.getQuantity() + addedQuantity);
+                    cart.setQuantity(updatedQuantity);
                 }
                 System.out.println("Product quantity updated successfully");
                 return;
