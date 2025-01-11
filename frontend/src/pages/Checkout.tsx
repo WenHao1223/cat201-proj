@@ -145,17 +145,26 @@ const Checkout: React.FC<CheckoutProps> = ({
                     <dt className="text-base">Total</dt>
                     <dd className="text-base">$361.80</dd>
                   </div>
+
+                  <div className="mt-10 border-t border-gray-200 pt-6 sm:flex sm:items-center sm:justify-between">
+                    <button
+                      type="submit"
+                      className="w-full rounded-lg border border-transparent text-white shadow-sm focus:ring-offset-gray-50 sm:order-last m:w-auto hover:bg-black hover:shadow-md"
+                    >
+                      Proceed to Payment
+                    </button>
+                  </div>
                 </dl>
 
-                <Popover className="fixed inset-x-0 bottom-0 flex flex-col-reverse text-base font-medium text-gray-700 lg:hidden">
+                <Popover className="fixed inset-x-0 bottom-0 flex flex-col-reverse text-base font-medium text-gray-200 lg:hidden">
                   <div className="relative z-10 border-t border-gray-200 bg-white px-4 sm:px-6">
                     <div className="mx-auto max-w-lg">
                       <PopoverButton className="flex w-full items-center py-6 font-medium">
                         <span className="mr-auto text-base">Total</span>
-                        <span className="mr-2 text-base">$361.80</span>
+                        <span className="mr-3 text-base">$361.80</span>
                         <ChevronUpIcon
                           aria-hidden="true"
-                          className="h-5 w-5 text-gray-500"
+                          className="h-5 w-7 text-gray-200"
                         />
                       </PopoverButton>
                     </div>
@@ -455,22 +464,19 @@ const Checkout: React.FC<CheckoutProps> = ({
                     />
                     <label
                       htmlFor="same-as-shipping"
-                      className="ml-3 text-sm font-medium text-gray-900 cursor-pointer"
+                      className="text-sm font-medium text-gray-900 cursor-pointer"
                     >
-                      Same as shipping information
+                      Same as shipping address
                     </label>
                   </div>
                 </section>
-                <div className="mt-10 border-t border-gray-200 pt-6 sm:flex sm:items-center sm:justify-between">
+                <div className="mt-10 border-t border-gray-200 pt-6 sm:flex sm:items-center sm:justify-between lg:hidden">
                   <button
                     type="submit"
-                    className="w-full rounded-md border border-transparent text-white shadow-sm focus:ring-offset-gray-50 sm:order-last sm:ml-6 sm:w-auto hover:bg-black hover:shadow-lg"
+                    className="w-full rounded-lg border border-gray-300 bg-black px-4 py-3 text-white shadow-md hover:bg-black focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 sm:order-last sm:w-auto"
                   >
-                    Continue
+                    Proceed to Payment
                   </button>
-                  <p className="mt-4 text-center text-sm text-gray-500 sm:mt-0 sm:text-left">
-                    You won't be charged until the next step.
-                  </p>
                 </div>
               </div>
             </form>
