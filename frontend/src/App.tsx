@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import Product from "./pages/Product";
 import "./App.css";
 
 import {
@@ -143,6 +144,13 @@ const App: React.FC = () => {
                             <Profile/>
                         }
                     />
+                    <Route
+                        path="/product"
+                        element={
+                            <Product/>
+                        }
+                    />
+                    
                 </Routes>
             </div>
         </Router>
