@@ -218,6 +218,115 @@ const Profile: React.FC<ProfileProps> = ({
         );
     };
 
+    const addBillingAddress = async () => {
+        Swal.fire({
+            title: "Add Billing Address",
+            input: "text",
+            showCancelButton: true,
+            confirmButtonText: "Add",
+            showLoaderOnConfirm: true,
+            preConfirm: async (newBillingAddress: string) => {
+                await handleApiCall(
+                    `users/billingAddresses/add`,
+                    "POST",
+                    {
+                        email: currentUserGeneralDetails?.email,
+                        newBillingAddress,
+                    },
+                    async (result) => {
+                        if ((await result.status) === "Success") {
+                            setCurrentUserBillingAddresses(
+                                JSON.parse(result.billingAddresses)
+                            );
+                        } else {
+                            setError(
+                                "\n Error adding billing address: " +
+                                    result.message
+                            );
+                        }
+                    },
+                    (error) =>
+                        setError("\n Error adding billing address: " + error)
+                );
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
+        });
+    };
+
+    const updateBillingAddress = async (index: number) => {
+        Swal.fire({
+            title: "Update Billing Address",
+            input: "text",
+            inputValue: currentUserBillingAddresses[index],
+            showCancelButton: true,
+            confirmButtonText: "Update",
+            showLoaderOnConfirm: true,
+            preConfirm: async (updateBillingAddress: string) => {
+                await handleApiCall(
+                    `users/billingAddresses/update`,
+                    "PUT",
+                    {
+                        email: currentUserGeneralDetails?.email,
+                        index,
+                        updateBillingAddress,
+                    },
+                    async (result) => {
+                        if ((await result.status) === "Success") {
+                            setCurrentUserBillingAddresses(
+                                JSON.parse(result.billingAddresses)
+                            );
+                        } else {
+                            setError(
+                                "\n Error updating billing address: " +
+                                    result.message
+                            );
+                        }
+                    },
+                    (error) =>
+                        setError("\n Error updating billing address: " + error)
+                );
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
+        });
+    };
+    
+    const removeBillingAddress = async (removedAddress: string) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                await handleApiCall(
+                    `users/billingAddresses/remove`,
+                    "DELETE",
+                    {
+                        email: currentUserGeneralDetails?.email,
+                        removedAddress,
+                    },
+                    async (result) => {
+                        if ((await result.status) === "Success") {
+                            setCurrentUserBillingAddresses(
+                                JSON.parse(result.billingAddresses)
+                            );
+                        } else {
+                            setError(
+                                "\n Error removing billing address: " +
+                                    result.message
+                            );
+                        }
+                    },
+                    (error) =>
+                        setError("\n Error removing billing address: " + error)
+                );
+            }
+        });
+    };
+
     const handleInputChange = (field: string, value: string) => {
         // setUserData({ ...userData, [field]: value });
     };
@@ -440,10 +549,24 @@ const Profile: React.FC<ProfileProps> = ({
                                             >
                                                 <span>{address}</span>
                                                 <div className="flex space-x-2">
-                                                    <button className="bg-transparent border-1 border-gray-900 text-blue-500 hover:bg-gray-800 hover:text-blue-300">
+                                                    <button
+                                                        className="bg-transparent border-1 border-gray-900 text-blue-500 hover:bg-gray-800 hover:text-blue-300"
+                                                        onClick={() => {
+                                                            updateBillingAddress(
+                                                                index
+                                                            );
+                                                        }}
+                                                    >
                                                         <i className="fas fa-pencil-alt"></i>
                                                     </button>
-                                                    <button className="bg-transparent border-1 border-gray-900 text-red-500 hover:bg-gray-800 hover:text-red-300">
+                                                    <button
+                                                        className="bg-transparent border-1 border-gray-900 text-red-500 hover:bg-gray-800 hover:text-red-300"
+                                                        onClick={() => {
+                                                            removeBillingAddress(
+                                                                address
+                                                            );
+                                                        }}
+                                                    >
                                                         <i className="fas fa-minus"></i>
                                                     </button>
                                                 </div>
@@ -451,7 +574,10 @@ const Profile: React.FC<ProfileProps> = ({
                                         )
                                     )}
                                 </ul>
-                                <button className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                <button
+                                    className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                    onClick={addBillingAddress}
+                                >
                                     Add Billing Address
                                 </button>
                             </div>
