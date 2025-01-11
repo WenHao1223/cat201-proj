@@ -1,5 +1,9 @@
-import { UserGeneralDetailsInterface } from "@interfaces/API/UserInterface";
-import React, { useState } from "react";
+import {
+    PaymentGeneralInterface,
+    UserGeneralDetailsInterface,
+} from "@interfaces/API/UserInterface";
+import handleApiCall from "@utils/handleApiCall";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface ProfileProps {
@@ -17,11 +21,87 @@ const Profile: React.FC<ProfileProps> = ({
     isLogin,
     setIsLogin,
 }) => {
+    const [currentUserPaymentDetails, setCurrentUserPaymentDetails] = useState<
+        PaymentGeneralInterface[]
+    >([]);
+    const [currentUserShippingAddresses, setCurrentUserShippingAddresses] =
+        useState<string[]>([]);
+    const [currentUserBillingAddresses, setCurrentUserBillingAddresses] =
+        useState<string[]>([]);
+    const [error, setError] = useState<string>("");
 
     const navigate = useNavigate();
-    if (!isLogin) {
-        navigate("/login");
-    }
+    useEffect(() => {
+        if (!isLogin) {
+            navigate("/login");
+        } else {
+            viewCurrentUserPaymentDetailsMethod();
+            viewCurrentUserShippingAddressesMethod();
+            viewCurrentUserBillingAddressesMethod();
+        }
+    }, [isLogin]);
+
+    const viewCurrentUserPaymentDetailsMethod = async () => {
+        await handleApiCall(
+            `users/paymentDetails?email=${currentUserGeneralDetails?.email}`,
+            "GET",
+            null,
+            async (result) => {
+                if ((await result.status) === "Success") {
+                    const paymentDetailsArray = result.paymentDetails.map(
+                        (paymentDetail: string) => JSON.parse(paymentDetail)
+                    );
+                    console.log(paymentDetailsArray);
+                    setCurrentUserPaymentDetails(paymentDetailsArray);
+                } else {
+                    setError(
+                        "\n Error viewing payment details: " + result.message
+                    );
+                }
+            },
+            (error) => setError("\n Error viewing payment details: " + error)
+        );
+    };
+
+    const viewCurrentUserShippingAddressesMethod = async () => {
+        await handleApiCall(
+            `users/shippingAddresses?email=${currentUserGeneralDetails?.email}`,
+            "GET",
+            null,
+            async (result) => {
+                if ((await result.status) === "Success") {
+                    setCurrentUserShippingAddresses(
+                        JSON.parse(result.shippingAddresses)
+                    );
+                } else {
+                    setError(
+                        "\n Error viewing shipping addresses: " + result.message
+                    );
+                }
+            },
+            (error) => setError("\n Error viewing shipping addresses: " + error)
+        );
+    };
+
+    const viewCurrentUserBillingAddressesMethod = async () => {
+        await handleApiCall(
+            `users/billingAddresses?email=${currentUserGeneralDetails?.email}`,
+            "GET",
+            null,
+            async (result) => {
+                if ((await result.status) === "Success") {
+                    setCurrentUserBillingAddresses(
+                        JSON.parse(result.billingAddresses)
+                    );
+                } else {
+                    setError(
+                        "\n Error viewing billing addresses: " + result.message
+                    );
+                }
+            },
+            (error) => setError("\n Error viewing billing addresses: " + error)
+        );
+    };
 
     const handleInputChange = (field: string, value: string) => {
         // setUserData({ ...userData, [field]: value });
@@ -34,8 +114,6 @@ const Profile: React.FC<ProfileProps> = ({
     const editProfile = () => {
         // console.log("Profile edited", userData);
     };
-
-    console.log(currentUserGeneralDetails);
 
     return (
         <div className="profile-page p-6 bg-gray-100 min-h-screen flex flex-col items-center">
@@ -50,37 +128,49 @@ const Profile: React.FC<ProfileProps> = ({
                             <label className="block text-sm font-medium text-gray-700">
                                 Username:
                             </label>
-                            <span className="block font-light">{currentUserGeneralDetails?.username}</span>
+                            <span className="block font-light">
+                                {currentUserGeneralDetails?.username}
+                            </span>
                         </div>
                         <div className="profile-item">
                             <label className="block text-sm font-medium text-gray-700">
                                 Email:
                             </label>
-                            <span className="block font-light">{currentUserGeneralDetails?.email}</span>
+                            <span className="block font-light">
+                                {currentUserGeneralDetails?.email}
+                            </span>
                         </div>
                         <div className="profile-item">
                             <label className="block text-sm font-medium text-gray-700">
                                 First Name:
                             </label>
-                            <span className="block font-light">{currentUserGeneralDetails?.firstName}</span>
+                            <span className="block font-light">
+                                {currentUserGeneralDetails?.firstName}
+                            </span>
                         </div>
                         <div className="profile-item">
                             <label className="block text-sm font-medium text-gray-700">
                                 Last Name:
                             </label>
-                            <span className="block font-light">{currentUserGeneralDetails?.lastName}</span>
+                            <span className="block font-light">
+                                {currentUserGeneralDetails?.lastName}
+                            </span>
                         </div>
                         <div className="profile-item">
                             <label className="block text-sm font-medium text-gray-700">
                                 Phone Number:
                             </label>
-                            <span className="block font-light">{currentUserGeneralDetails?.phoneNo}</span>
+                            <span className="block font-light">
+                                {currentUserGeneralDetails?.phoneNo}
+                            </span>
                         </div>
                         <div className="profile-item">
                             <label className="block text-sm font-medium text-gray-700">
                                 Nationality:
                             </label>
-                            <span className="block font-light">{currentUserGeneralDetails?.nationality}</span>
+                            <span className="block font-light">
+                                {currentUserGeneralDetails?.nationality}
+                            </span>
                         </div>
                         <div className="profile-item">
                             <label className="block text-sm font-medium text-gray-700">
@@ -94,7 +184,9 @@ const Profile: React.FC<ProfileProps> = ({
                             <label className="block text-sm font-medium text-gray-700">
                                 Date of Birth:
                             </label>
-                            <span className="block font-light">{currentUserGeneralDetails?.dob}</span>
+                            <span className="block font-light">
+                                {currentUserGeneralDetails?.dob}
+                            </span>
                         </div>
                     </div>
                     <button
@@ -112,17 +204,20 @@ const Profile: React.FC<ProfileProps> = ({
                             Payment Methods
                         </h3>
                         <ul className="list-disc pl-5 space-y-2">
-                            {/* {userData.paymentDetails.map((method, index) => (
-                                <li
-                                    key={index}
-                                    className="flex justify-between items-center"
-                                >
-                                    <span>{method}</span>
-                                    <button className="text-red-500 hover:text-red-700">
-                                        Delete
-                                    </button>
-                                </li>
-                            ))} */}
+                            {currentUserPaymentDetails.map(
+                                (paymentDetail: PaymentGeneralInterface, index: any) => (
+                                    <li
+                                        key={paymentDetail.paymentID}
+                                        className="flex justify-between items-center"
+                                    >
+                                        <span>{paymentDetail.cardNumber}</span>
+                                        <span>{paymentDetail.paymentMethod}</span>
+                                        <button className="text-red-500 hover:text-red-700">
+                                            Delete
+                                        </button>
+                                    </li>
+                                )
+                            )}
                         </ul>
                         <button className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Add Payment Method
@@ -134,7 +229,7 @@ const Profile: React.FC<ProfileProps> = ({
                             Shipping Addresses
                         </h3>
                         <ul className="list-disc pl-5 space-y-2">
-                            {/* {userData.shippingAddresses.map(
+                            {currentUserShippingAddresses.map(
                                 (address, index) => (
                                     <li
                                         key={index}
@@ -146,7 +241,7 @@ const Profile: React.FC<ProfileProps> = ({
                                         </button>
                                     </li>
                                 )
-                            )} */}
+                            )}
                         </ul>
                         <button className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Add Shipping Address
@@ -158,7 +253,7 @@ const Profile: React.FC<ProfileProps> = ({
                             Billing Addresses
                         </h3>
                         <ul className="list-disc pl-5 space-y-2">
-                            {/* {userData.billingAddresses.map((address, index) => (
+                            {currentUserBillingAddresses.map((address, index) => (
                                 <li
                                     key={index}
                                     className="flex justify-between items-center"
@@ -168,7 +263,7 @@ const Profile: React.FC<ProfileProps> = ({
                                         Delete
                                     </button>
                                 </li>
-                            ))} */}
+                            ))}
                         </ul>
                         <button className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Add Billing Address

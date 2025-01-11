@@ -45,9 +45,11 @@ const Cart: React.FC<CartProps> = ({
     const [error, setError] = React.useState("");
 
     const navigate = useNavigate();
-    if (!isLogin) {
-        navigate("/login");
-    }
+    useEffect(() => {
+        if (!isLogin) {
+            navigate("/login");
+        }
+    }, [isLogin]);
 
     useEffect(() => {
         if (currentUserGeneralDetails) {
@@ -192,7 +194,7 @@ const Cart: React.FC<CartProps> = ({
     const checkout = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         navigate("/checkout");
-    }
+    };
 
     return (
         <div className="bg-white">
