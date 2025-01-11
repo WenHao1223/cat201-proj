@@ -39,7 +39,7 @@ const Profile: React.FC<ProfileProps> = ({
     const [isEditing, setIsEditing] = useState(false);
     const [editableUserDetails, setEditableUserDetails] =
         useState<UserGeneralDetailsInterface | null>(null);
-        
+
     const countryOptions = getNames().sort();
 
     const navigate = useNavigate();
@@ -84,38 +84,84 @@ const Profile: React.FC<ProfileProps> = ({
     const addPaymentMethod = async () => {
         Swal.fire({
             title: "Add Payment Method",
-            input: "text",
+            html: `
+                <select id="paymentMethodType" class="swal2-select">
+                    <option value="debit_card">Debit Card</option>
+                    <option value="credit_card">Credit Card</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="visa">Visa</option>
+                </select>
+                <input type="text" id="cardNumber" class="swal2-input" placeholder="Enter card number">
+                <div id="additionalFields" style="display: block;">
+                    <input type="text" id="expiryDate" class="swal2-input" placeholder="Enter expiry date (MM/YY)">
+                    <input type="text" id="cvv" class="swal2-input" placeholder="Enter CVV (3 digits)">
+                </div>
+            `,
+            focusConfirm: false,
             showCancelButton: true,
             confirmButtonText: "Add",
             showLoaderOnConfirm: true,
-            preConfirm: async (newPaymentMethod: string) => {
+            preConfirm: async () => {
+                const paymentMethod = (document.getElementById('paymentMethodType') as HTMLSelectElement).value;
+                const cardNumber = (document.getElementById('cardNumber') as HTMLInputElement).value;
+                const expiryDate = (document.getElementById('expiryDate') as HTMLInputElement).value;
+                const cvv = (document.getElementById('cvv') as HTMLInputElement).value;
+    
+                if (!cardNumber) {
+                    Swal.showValidationMessage('Card number or email is required');
+                    return;
+                }
+    
+                if ((paymentMethod === 'debit_card' || paymentMethod === 'credit_card') && (!expiryDate || !cvv)) {
+                    Swal.showValidationMessage('Expiry date and CVV are required for debit and credit cards');
+                    return;
+                }
+    
+                const newPaymentMethod = {
+                    paymentMethod: paymentMethod,
+                    cardNumber,
+                    expiryDate: paymentMethod === 'debit_card' || paymentMethod === 'credit_card' ? expiryDate : "",
+                    cvv: paymentMethod === 'debit_card' || paymentMethod === 'credit_card' ? cvv : "",
+                };
+    
                 await handleApiCall(
                     `users/paymentDetails/add`,
                     "POST",
                     {
                         email: currentUserGeneralDetails?.email,
-                        newPaymentMethod,
+                        paymentMethod: newPaymentMethod.paymentMethod,
+                        cardNumber: newPaymentMethod.cardNumber,
+                        expiryDate: newPaymentMethod.expiryDate,
+                        cvv: newPaymentMethod.cvv
                     },
                     async (result) => {
                         if ((await result.status) === "Success") {
-                            const paymentDetailsArray =
-                                result.paymentDetails.map(
-                                    (paymentDetail: string) =>
-                                        JSON.parse(paymentDetail)
-                                );
+                            const paymentDetailsArray = result.paymentDetails.map(
+                                (paymentDetail: string) => JSON.parse(paymentDetail)
+                            );
                             setCurrentUserPaymentDetails(paymentDetailsArray);
                         } else {
-                            setError(
-                                "\n Error adding payment method: " +
-                                    result.message
-                            );
+                            Swal.showValidationMessage(`Error: ${result.message}`);
                         }
                     },
-                    (error) =>
-                        setError("\n Error adding payment method: " + error)
+                    (error) => Swal.showValidationMessage(`Request failed: ${error}`)
                 );
             },
             allowOutsideClick: () => !Swal.isLoading(),
+        });
+    
+        const paymentMethodTypeElement = document.getElementById('paymentMethodType') as HTMLSelectElement;
+        const cardNumberElement = document.getElementById('cardNumber') as HTMLInputElement;
+        const additionalFields = document.getElementById('additionalFields') as HTMLDivElement;
+    
+        paymentMethodTypeElement.addEventListener('change', () => {
+            if (paymentMethodTypeElement.value === 'debit_card' || paymentMethodTypeElement.value === 'credit_card') {
+                cardNumberElement.placeholder = 'Enter card number';
+                additionalFields.style.display = 'block';
+            } else {
+                cardNumberElement.placeholder = 'Enter email address';
+                additionalFields.style.display = 'none';
+            }
         });
     };
 
@@ -468,15 +514,19 @@ const Profile: React.FC<ProfileProps> = ({
             confirmButtonText: "Change",
             showLoaderOnConfirm: true,
             preConfirm: async () => {
-                const currentPassword = (document.getElementById(
-                    "currentPassword"
-                ) as HTMLInputElement).value;
-                const newPassword = (document.getElementById(
-                    "newPassword"
-                ) as HTMLInputElement).value;
-                const confirmPassword = (document.getElementById(
-                    "confirmPassword"
-                ) as HTMLInputElement).value;
+                const currentPassword = (
+                    document.getElementById(
+                        "currentPassword"
+                    ) as HTMLInputElement
+                ).value;
+                const newPassword = (
+                    document.getElementById("newPassword") as HTMLInputElement
+                ).value;
+                const confirmPassword = (
+                    document.getElementById(
+                        "confirmPassword"
+                    ) as HTMLInputElement
+                ).value;
 
                 if (newPassword !== confirmPassword) {
                     Swal.showValidationMessage("Passwords do not match");
@@ -498,7 +548,8 @@ const Profile: React.FC<ProfileProps> = ({
                                 );
                             } else {
                                 setError(
-                                    "\n Error changing password: " + result.message
+                                    "\n Error changing password: " +
+                                        result.message
                                 );
                             }
                         },
@@ -509,7 +560,7 @@ const Profile: React.FC<ProfileProps> = ({
             },
             allowOutsideClick: () => !Swal.isLoading(),
         });
-    }
+    };
 
     return (
         <div className="bg-gray-100">
@@ -696,7 +747,9 @@ const Profile: React.FC<ProfileProps> = ({
                                             onChange={(e) =>
                                                 handleInputChange(
                                                     "gender",
-                                                    e.target.value == "Male" ? "1" : "2"
+                                                    e.target.value == "Male"
+                                                        ? "1"
+                                                        : "2"
                                                 )
                                             }
                                             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
