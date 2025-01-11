@@ -29,9 +29,9 @@ public class CartAddServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setHeader("Access-Control-Allow-Methods", "PUT, OPTIONS");
+        response.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
 
         // Read request body
         StringBuilder sb = new StringBuilder();
@@ -46,7 +46,7 @@ public class CartAddServlet extends HttpServlet {
         Gson gson = new Gson();
         JsonObject jsonObject = gson.fromJson(sb.toString(), JsonObject.class);
         System.out.println(
-                "CartAddServlet PUT request received with parameters: " + jsonObject.toString());
+                "CartAddServlet POST request received with parameters: " + jsonObject.toString());
         String email = jsonObject.get("email").getAsString();
         String productID = jsonObject.get("productID").getAsString();
         int quantity = jsonObject.get("quantity").getAsInt();

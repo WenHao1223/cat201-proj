@@ -525,7 +525,7 @@ const TestAPI: React.FC = () => {
         setNewShippingAddress(newShippingAddress);
         await handleApiCall(
             "users/shippingAddresses/add",
-            "PUT",
+            "POST",
             {
                 email: userEmail,
                 newShippingAddress,
@@ -611,7 +611,7 @@ const TestAPI: React.FC = () => {
         setNewBillingAddress(newBillingAddress);
         await handleApiCall(
             "users/billingAddresses/add",
-            "PUT",
+            "POST",
             {
                 email: userEmail,
                 newBillingAddress,
@@ -707,7 +707,7 @@ const TestAPI: React.FC = () => {
         });
         await handleApiCall(
             "users/paymentDetails/add",
-            "PUT",
+            "POST",
             {
                 email: userEmail,
                 paymentMethod,
@@ -804,7 +804,7 @@ const TestAPI: React.FC = () => {
     ) => {
         await handleApiCall(
             `users/cart/add`,
-            "PUT",
+            "POST",
             {
                 email: userEmail,
                 productID,
@@ -948,7 +948,7 @@ const TestAPI: React.FC = () => {
         });
         await handleApiCall(
             `users/orders/add`,
-            "PUT",
+            "POST",
             {
                 email: userEmail,
                 shippingAddress,

@@ -31,9 +31,9 @@ public class OrdersAddServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setHeader("Access-Control-Allow-Methods", "PUT, OPTIONS");
+        response.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
 
         // Read request body
         StringBuilder sb = new StringBuilder();
@@ -48,7 +48,7 @@ public class OrdersAddServlet extends HttpServlet {
         Gson gson = new Gson();
         JsonObject jsonObject = gson.fromJson(sb.toString(), JsonObject.class);
         System.out.println(
-                "OrdersAddServlet PUT request received with parameters: " + jsonObject.toString());
+                "OrdersAddServlet POST request received with parameters: " + jsonObject.toString());
         String email = jsonObject.get("email").getAsString();
         String shippingAddress = jsonObject.get("shippingAddress").getAsString();
         String billingAddress = jsonObject.get("billingAddress").getAsString();

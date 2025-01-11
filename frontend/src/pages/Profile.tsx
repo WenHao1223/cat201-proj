@@ -10,6 +10,7 @@ import Card from "@assets/payment/card.png";
 import PayPal from "@assets/payment/paypal.png";
 import Visa from "@assets/payment/visa.png";
 import Navbar from "@components/Navbar";
+import Swal from "sweetalert2";
 
 interface ProfileProps {
     currentUserGeneralDetails: UserGeneralDetailsInterface | null;
@@ -86,6 +87,115 @@ const Profile: React.FC<ProfileProps> = ({
             },
             (error) => setError("\n Error viewing shipping addresses: " + error)
         );
+    };
+
+    const addShippingAddress = async () => {
+        Swal.fire({
+            title: "Add Shipping Address",
+            input: "text",
+            showCancelButton: true,
+            confirmButtonText: "Add",
+            showLoaderOnConfirm: true,
+            preConfirm: async (newShippingAddress: string) => {
+                await handleApiCall(
+                    `users/shippingAddresses/add`,
+                    "POST",
+                    {
+                        email: currentUserGeneralDetails?.email,
+                        newShippingAddress,
+                    },
+                    async (result) => {
+                        if ((await result.status) === "Success") {
+                            setCurrentUserShippingAddresses(
+                                JSON.parse(result.shippingAddresses)
+                            );
+                        } else {
+                            setError(
+                                "\n Error adding shipping address: " +
+                                    result.message
+                            );
+                        }
+                    },
+                    (error) =>
+                        setError("\n Error adding shipping address: " + error)
+                );
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
+        });
+    };
+
+    const updateShippingAddress = async (index: number) => {
+        Swal.fire({
+            title: "Update Shipping Address",
+            input: "text",
+            inputValue: currentUserShippingAddresses[index],
+            showCancelButton: true,
+            confirmButtonText: "Update",
+            showLoaderOnConfirm: true,
+            preConfirm: async (updateShippingAddress: string) => {
+                await handleApiCall(
+                    `users/shippingAddresses/update`,
+                    "PUT",
+                    {
+                        email: currentUserGeneralDetails?.email,
+                        index,
+                        updateShippingAddress,
+                    },
+                    async (result) => {
+                        if ((await result.status) === "Success") {
+                            setCurrentUserShippingAddresses(
+                                JSON.parse(result.shippingAddresses)
+                            );
+                        } else {
+                            setError(
+                                "\n Error updating shipping address: " +
+                                    result.message
+                            );
+                        }
+                    },
+                    (error) =>
+                        setError("\n Error updating shipping address: " + error)
+                );
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
+        });
+    };
+
+    const removeShippingAddress = async (removedAddress: string) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                await handleApiCall(
+                    `users/shippingAddresses/remove`,
+                    "DELETE",
+                    {
+                        email: currentUserGeneralDetails?.email,
+                        removedAddress,
+                    },
+                    async (result) => {
+                        if ((await result.status) === "Success") {
+                            setCurrentUserShippingAddresses(
+                                JSON.parse(result.shippingAddresses)
+                            );
+                        } else {
+                            setError(
+                                "\n Error removing shipping address: " +
+                                    result.message
+                            );
+                        }
+                    },
+                    (error) =>
+                        setError("\n Error removing shipping address: " + error)
+                );
+            }
+        });
     };
 
     const viewCurrentUserBillingAddressesMethod = async () => {
@@ -283,10 +393,24 @@ const Profile: React.FC<ProfileProps> = ({
                                                 >
                                                     <span>{address}</span>
                                                     <div className="flex space-x-2">
-                                                        <button className="bg-transparent border-1 border-gray-900 text-blue-500 hover:bg-gray-800 hover:text-blue-300">
+                                                        <button
+                                                            className="bg-transparent border-1 border-gray-900 text-blue-500 hover:bg-gray-800 hover:text-blue-300"
+                                                            onClick={() => {
+                                                                updateShippingAddress(
+                                                                    index
+                                                                );
+                                                            }}
+                                                        >
                                                             <i className="fas fa-pencil-alt"></i>
                                                         </button>
-                                                        <button className="bg-transparent border-1 border-gray-900 text-red-500 hover:bg-gray-800 hover:text-red-300">
+                                                        <button
+                                                            className="bg-transparent border-1 border-gray-900 text-red-500 hover:bg-gray-800 hover:text-red-300"
+                                                            onClick={() => {
+                                                                removeShippingAddress(
+                                                                    address
+                                                                );
+                                                            }}
+                                                        >
                                                             <i className="fas fa-minus"></i>
                                                         </button>
                                                     </div>
@@ -295,7 +419,10 @@ const Profile: React.FC<ProfileProps> = ({
                                         )}
                                     </ul>
                                 </ul>
-                                <button className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                <button
+                                    className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                    onClick={addShippingAddress}
+                                >
                                     Add Shipping Address
                                 </button>
                             </div>
