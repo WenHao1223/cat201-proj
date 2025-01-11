@@ -54,7 +54,7 @@ public class UsersShippingAddressesRemoveServlet extends HttpServlet {
 
             if (user != null) {
                 try {
-                    if (user.getRole() != "user") {
+                    if (!user.getRole().equals("user")) {
                         throw new IllegalArgumentException("User is not a customer");
                     }
                 } catch (IllegalArgumentException e) {
