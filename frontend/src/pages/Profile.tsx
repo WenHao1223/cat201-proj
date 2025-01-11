@@ -5,6 +5,7 @@ import {
 import handleApiCall from "@utils/handleApiCall";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getNames } from "country-list";
 
 import Card from "@assets/payment/card.png";
 import PayPal from "@assets/payment/paypal.png";
@@ -35,6 +36,11 @@ const Profile: React.FC<ProfileProps> = ({
     const [currentUserBillingAddresses, setCurrentUserBillingAddresses] =
         useState<string[]>([]);
     const [error, setError] = useState<string>("");
+    const [isEditing, setIsEditing] = useState(false);
+    const [editableUserDetails, setEditableUserDetails] =
+        useState<UserGeneralDetailsInterface | null>(null);
+        
+    const countryOptions = getNames().sort();
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -46,6 +52,12 @@ const Profile: React.FC<ProfileProps> = ({
             viewCurrentUserBillingAddressesMethod();
         }
     }, [isLogin]);
+
+    useEffect(() => {
+        if (currentUserGeneralDetails) {
+            setEditableUserDetails({ ...currentUserGeneralDetails });
+        }
+    }, [currentUserGeneralDetails]);
 
     const viewCurrentUserPaymentDetailsMethod = async () => {
         await handleApiCall(
@@ -86,14 +98,16 @@ const Profile: React.FC<ProfileProps> = ({
                     },
                     async (result) => {
                         if ((await result.status) === "Success") {
-                            const paymentDetailsArray = result.paymentDetails.map(
-                                (paymentDetail: string) =>
-                                    JSON.parse(paymentDetail)
-                            );
+                            const paymentDetailsArray =
+                                result.paymentDetails.map(
+                                    (paymentDetail: string) =>
+                                        JSON.parse(paymentDetail)
+                                );
                             setCurrentUserPaymentDetails(paymentDetailsArray);
                         } else {
                             setError(
-                                "\n Error adding payment method: " + result.message
+                                "\n Error adding payment method: " +
+                                    result.message
                             );
                         }
                     },
@@ -363,16 +377,83 @@ const Profile: React.FC<ProfileProps> = ({
         });
     };
 
-    const handleInputChange = (field: string, value: string) => {
-        // setUserData({ ...userData, [field]: value });
+    const editProfileMethod = async (field: string, value: string) => {
+        await handleApiCall(
+            "users/editProfile",
+            "PUT",
+            {
+                email: currentUserGeneralDetails?.email,
+                field,
+                value,
+            },
+            async (result) => {
+                if (await result.status) {
+                    setCurrentUserGeneralDetails(JSON.parse(result.user));
+                } else {
+                    setError("\n Error updating profile: " + result.message);
+                }
+            },
+            (error) => setError("\n Error updating profile: " + error)
+        );
     };
 
-    const saveProfile = () => {
-        // console.log("Profile saved", userData);
+    const handleInputChange = (field: string, value: string) => {
+        if (editableUserDetails) {
+            setEditableUserDetails({ ...editableUserDetails, [field]: value });
+            editProfileMethod(field, value);
+        }
+    };
+
+    const saveProfile = async () => {
+        if (editableUserDetails) {
+            const updatedFields: Partial<UserGeneralDetailsInterface> = {};
+            for (const key in editableUserDetails) {
+                if (
+                    editableUserDetails[
+                        key as keyof UserGeneralDetailsInterface
+                    ] !==
+                    currentUserGeneralDetails?.[
+                        key as keyof UserGeneralDetailsInterface
+                    ]
+                ) {
+                    updatedFields[key as keyof UserGeneralDetailsInterface] =
+                        editableUserDetails[
+                            key as keyof UserGeneralDetailsInterface
+                        ];
+                }
+            }
+
+            if (Object.keys(updatedFields).length > 0) {
+                await handleApiCall(
+                    `users/updateProfile`,
+                    "PUT",
+                    {
+                        email: currentUserGeneralDetails?.email,
+                        ...updatedFields,
+                    },
+                    async (result) => {
+                        if ((await result.status) === "Success") {
+                            setCurrentUserGeneralDetails(editableUserDetails);
+                            Swal.fire(
+                                "Success",
+                                "Profile updated successfully",
+                                "success"
+                            );
+                        } else {
+                            setError(
+                                "\n Error updating profile: " + result.message
+                            );
+                        }
+                    },
+                    (error) => setError("\n Error updating profile: " + error)
+                );
+            }
+        }
+        setIsEditing(false);
     };
 
     const editProfile = () => {
-        // console.log("Profile edited", userData);
+        setIsEditing(true);
     };
 
     return (
@@ -398,72 +479,214 @@ const Profile: React.FC<ProfileProps> = ({
                                     <label className="block text-sm font-medium text-gray-700">
                                         Username:
                                     </label>
-                                    <span className="block font-light">
-                                        {currentUserGeneralDetails?.username}
-                                    </span>
+                                    {isEditing ? (
+                                        <input
+                                            type="text"
+                                            value={
+                                                editableUserDetails?.username
+                                            }
+                                            onChange={(e) =>
+                                                handleInputChange(
+                                                    "username",
+                                                    e.target.value
+                                                )
+                                            }
+                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                        />
+                                    ) : (
+                                        <span className="block font-light">
+                                            {
+                                                currentUserGeneralDetails?.username
+                                            }
+                                        </span>
+                                    )}
                                 </div>
                                 <div className="profile-item">
                                     <label className="block text-sm font-medium text-gray-700">
                                         Email:
                                     </label>
-                                    <span className="block font-light">
-                                        {currentUserGeneralDetails?.email}
-                                    </span>
+                                    {isEditing ? (
+                                        <input
+                                            type="text"
+                                            value={editableUserDetails?.email}
+                                            onChange={(e) =>
+                                                handleInputChange(
+                                                    "email",
+                                                    e.target.value
+                                                )
+                                            }
+                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                        />
+                                    ) : (
+                                        <span className="block font-light">
+                                            {currentUserGeneralDetails?.email}
+                                        </span>
+                                    )}
                                 </div>
                                 <div className="profile-item">
                                     <label className="block text-sm font-medium text-gray-700">
                                         First Name:
                                     </label>
-                                    <span className="block font-light">
-                                        {currentUserGeneralDetails?.firstName}
-                                    </span>
+                                    {isEditing ? (
+                                        <input
+                                            type="text"
+                                            value={
+                                                editableUserDetails?.firstName
+                                            }
+                                            onChange={(e) =>
+                                                handleInputChange(
+                                                    "firstName",
+                                                    e.target.value
+                                                )
+                                            }
+                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                        />
+                                    ) : (
+                                        <span className="block font-light">
+                                            {
+                                                currentUserGeneralDetails?.firstName
+                                            }
+                                        </span>
+                                    )}
                                 </div>
                                 <div className="profile-item">
                                     <label className="block text-sm font-medium text-gray-700">
                                         Last Name:
                                     </label>
-                                    <span className="block font-light">
-                                        {currentUserGeneralDetails?.lastName}
-                                    </span>
+                                    {isEditing ? (
+                                        <input
+                                            type="text"
+                                            value={
+                                                editableUserDetails?.lastName
+                                            }
+                                            onChange={(e) =>
+                                                handleInputChange(
+                                                    "lastName",
+                                                    e.target.value
+                                                )
+                                            }
+                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                        />
+                                    ) : (
+                                        <span className="block font-light">
+                                            {
+                                                currentUserGeneralDetails?.lastName
+                                            }
+                                        </span>
+                                    )}
                                 </div>
                                 <div className="profile-item">
                                     <label className="block text-sm font-medium text-gray-700">
                                         Phone Number:
                                     </label>
-                                    <span className="block font-light">
-                                        {currentUserGeneralDetails?.phoneNo}
-                                    </span>
+                                    {isEditing ? (
+                                        <input
+                                            type="text"
+                                            value={editableUserDetails?.phoneNo}
+                                            onChange={(e) =>
+                                                handleInputChange(
+                                                    "phoneNo",
+                                                    e.target.value
+                                                )
+                                            }
+                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                        />
+                                    ) : (
+                                        <span className="block font-light">
+                                            {currentUserGeneralDetails?.phoneNo}
+                                        </span>
+                                    )}
                                 </div>
                                 <div className="profile-item">
                                     <label className="block text-sm font-medium text-gray-700">
                                         Nationality:
                                     </label>
-                                    <span className="block font-light">
-                                        {currentUserGeneralDetails?.nationality}
-                                    </span>
+                                    {isEditing ? (
+                                        <select
+                                            value={
+                                                editableUserDetails?.nationality
+                                            }
+                                            onChange={(e) =>
+                                                handleInputChange(
+                                                    "nationality",
+                                                    e.target.value
+                                                )
+                                            }
+                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                        >
+                                            {countryOptions.map((country) => (
+                                                <option
+                                                    key={country}
+                                                    value={country}
+                                                >
+                                                    {country}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    ) : (
+                                        <span className="block font-light">
+                                            {
+                                                currentUserGeneralDetails?.nationality
+                                            }
+                                        </span>
+                                    )}
                                 </div>
                                 <div className="profile-item">
                                     <label className="block text-sm font-medium text-gray-700">
                                         Gender:
                                     </label>
-                                    <span className="block font-light">
-                                        {currentUserGeneralDetails?.gender}
-                                    </span>
+                                    {isEditing ? (
+                                        <select
+                                            value={editableUserDetails?.gender}
+                                            onChange={(e) =>
+                                                handleInputChange(
+                                                    "gender",
+                                                    e.target.value == "Male" ? "1" : "2"
+                                                )
+                                            }
+                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                        >
+                                            <option value="Male">Male</option>
+                                            <option value="Female">
+                                                Female
+                                            </option>
+                                        </select>
+                                    ) : (
+                                        <span className="block font-light">
+                                            {currentUserGeneralDetails?.gender}
+                                        </span>
+                                    )}
                                 </div>
                                 <div className="profile-item">
                                     <label className="block text-sm font-medium text-gray-700">
                                         Date of Birth:
                                     </label>
-                                    <span className="block font-light">
-                                        {currentUserGeneralDetails?.dob}
-                                    </span>
+                                    {isEditing ? (
+                                        <input
+                                            type="text"
+                                            value={editableUserDetails?.dob}
+                                            onChange={(e) =>
+                                                handleInputChange(
+                                                    "dob",
+                                                    e.target.value
+                                                )
+                                            }
+                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                        />
+                                    ) : (
+                                        <span className="block font-light">
+                                            {currentUserGeneralDetails?.dob}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                             <button
-                                onClick={editProfile}
-                                className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                onClick={isEditing ? saveProfile : editProfile}
+                                className={`mt-4 w-full rounded-md border border-transparent px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
+                                    isEditing ? "bg-green-700" : "bg-indigo-500"
+                                }`}
                             >
-                                Edit Profile
+                                {isEditing ? "Save Profile" : "Edit Profile"}
                             </button>
                         </div>
 
