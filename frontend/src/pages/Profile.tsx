@@ -456,6 +456,61 @@ const Profile: React.FC<ProfileProps> = ({
         setIsEditing(true);
     };
 
+    const changePassword = () => {
+        Swal.fire({
+            title: "Change Password",
+            html: `
+            <input type="password" id="currentPassword" class="swal2-input" placeholder="Old Password">
+            <input type="password" id="newPassword" class="swal2-input" placeholder="New Password">
+            <input type="password" id="confirmPassword" class="swal2-input" placeholder="Confirm Password">
+            `,
+            showCancelButton: true,
+            confirmButtonText: "Change",
+            showLoaderOnConfirm: true,
+            preConfirm: async () => {
+                const currentPassword = (document.getElementById(
+                    "currentPassword"
+                ) as HTMLInputElement).value;
+                const newPassword = (document.getElementById(
+                    "newPassword"
+                ) as HTMLInputElement).value;
+                const confirmPassword = (document.getElementById(
+                    "confirmPassword"
+                ) as HTMLInputElement).value;
+
+                if (newPassword !== confirmPassword) {
+                    Swal.showValidationMessage("Passwords do not match");
+                } else {
+                    await handleApiCall(
+                        `users/changePassword`,
+                        "PUT",
+                        {
+                            email: currentUserGeneralDetails?.email,
+                            currentPassword,
+                            newPassword,
+                        },
+                        async (result) => {
+                            if ((await result.status) === "Success") {
+                                Swal.fire(
+                                    "Success",
+                                    "Password changed successfully",
+                                    "success"
+                                );
+                            } else {
+                                setError(
+                                    "\n Error changing password: " + result.message
+                                );
+                            }
+                        },
+                        (error) =>
+                            setError("\n Error changing password: " + error)
+                    );
+                }
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
+        });
+    }
+
     return (
         <div className="bg-gray-100">
             <Navbar
@@ -687,6 +742,14 @@ const Profile: React.FC<ProfileProps> = ({
                                 }`}
                             >
                                 {isEditing ? "Save Profile" : "Edit Profile"}
+                            </button>
+                            <button
+                                onClick={changePassword}
+                                className={`mt-4 w-full rounded-md border border-transparent px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
+                                    isEditing ? "bg-green-700" : "bg-cyan-700"
+                                }`}
+                            >
+                                Change Password
                             </button>
                         </div>
 
