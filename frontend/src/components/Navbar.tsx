@@ -42,14 +42,14 @@ const Navbar: React.FC<NavbarProps> = ({
                 {isLogin ? (
                     <>
                         <Link to="/cart">
-                            <ShoppingCartIcon className="h-6 w-6 text-gray-800" />
+                            <ShoppingCartIcon className="h-6 w-8 text-gray-800" />
                         </Link>
                         <Link to="/checkout">
-                            <button className="btn btn-warning">Checkout</button>
+                            <button className="btn btn-gray-800">Checkout</button>
                         </Link>
                         <button
                             onClick={handleLogout}
-                            className="btn btn-light"
+                            className="btn btn-light hover:bg-slate-500 hover:text-white"
                         >
                             Logout
                         </button>
@@ -57,10 +57,10 @@ const Navbar: React.FC<NavbarProps> = ({
                 ) : (
                     <>
                         <Link to="/login">
-                            <button className="btn btn-light">Login</button>
+                            <button className="btn btn-light hover:bg-slate-500">Login</button>
                         </Link>
                         <Link to="/register">
-                            <button className="btn btn-warning">Register</button>
+                            <button className="btn btn-gray-800">Register</button>
                         </Link>
                     </>
                 )}
