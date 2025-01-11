@@ -137,7 +137,21 @@ const App: React.FC = () => {
                             />
                         }
                     />
-                    <Route path="/profile" element={<Profile />} />
+                    <Route
+                        path="/profile"
+                        element={
+                            <Profile
+                                currentUserGeneralDetails={
+                                    currentUserGeneralDetails
+                                }
+                                setCurrentUserGeneralDetails={
+                                    setCurrentUserGeneralDetails
+                                }
+                                isLogin={isLogin}
+                                setIsLogin={setIsLogin}
+                            />
+                        }
+                    />
                 </Routes>
             </div>
         </Router>

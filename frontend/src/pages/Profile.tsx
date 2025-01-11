@@ -1,32 +1,41 @@
+import { UserGeneralDetailsInterface } from "@interfaces/API/UserInterface";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Profile: React.FC = () => {
-    const [userData, setUserData] = useState({
-        username: "",
-        email: "",
-        password: "",
-        nationality: "",
-        firstName: "",
-        lastName: "",
-        phoneNo: "",
-        gender: "",
-        dob: "",
-        paymentDetails: [],
-        shippingAddresses: [],
-        billingAddresses: [],
-    });
+interface ProfileProps {
+    currentUserGeneralDetails: UserGeneralDetailsInterface | null;
+    setCurrentUserGeneralDetails: React.Dispatch<
+        React.SetStateAction<UserGeneralDetailsInterface | null>
+    >;
+    isLogin: boolean;
+    setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Profile: React.FC<ProfileProps> = ({
+    currentUserGeneralDetails,
+    setCurrentUserGeneralDetails,
+    isLogin,
+    setIsLogin,
+}) => {
+
+    const navigate = useNavigate();
+    if (!isLogin) {
+        navigate("/login");
+    }
 
     const handleInputChange = (field: string, value: string) => {
-        setUserData({ ...userData, [field]: value });
+        // setUserData({ ...userData, [field]: value });
     };
 
     const saveProfile = () => {
-        console.log("Profile saved", userData);
+        // console.log("Profile saved", userData);
     };
 
     const editProfile = () => {
-        console.log("Profile edited", userData);
+        // console.log("Profile edited", userData);
     };
+
+    console.log(currentUserGeneralDetails);
 
     return (
         <div className="profile-page p-6 bg-gray-100 min-h-screen flex flex-col items-center">
@@ -41,55 +50,51 @@ const Profile: React.FC = () => {
                             <label className="block text-sm font-medium text-gray-700">
                                 Username:
                             </label>
-                            Jccc$
+                            <span className="block font-light">{currentUserGeneralDetails?.username}</span>
                         </div>
                         <div className="profile-item">
                             <label className="block text-sm font-medium text-gray-700">
                                 Email:
                             </label>
-                            tantjc227@gmail.com
-                        </div>
-                        <div className="profile-item">
-                            <label className="block text-sm font-medium text-gray-700">
-                                Password:
-                            </label>
-                            abcd1234
+                            <span className="block font-light">{currentUserGeneralDetails?.email}</span>
                         </div>
                         <div className="profile-item">
                             <label className="block text-sm font-medium text-gray-700">
                                 First Name:
                             </label>
-                            Tan
+                            <span className="block font-light">{currentUserGeneralDetails?.firstName}</span>
                         </div>
                         <div className="profile-item">
                             <label className="block text-sm font-medium text-gray-700">
                                 Last Name:
                             </label>
-                            Jun Cheng
+                            <span className="block font-light">{currentUserGeneralDetails?.lastName}</span>
                         </div>
                         <div className="profile-item">
                             <label className="block text-sm font-medium text-gray-700">
                                 Phone Number:
                             </label>
-                            0123456789
+                            <span className="block font-light">{currentUserGeneralDetails?.phoneNo}</span>
                         </div>
                         <div className="profile-item">
                             <label className="block text-sm font-medium text-gray-700">
                                 Nationality:
                             </label>
-                            Malaysian
+                            <span className="block font-light">{currentUserGeneralDetails?.nationality}</span>
                         </div>
                         <div className="profile-item">
                             <label className="block text-sm font-medium text-gray-700">
                                 Gender:
                             </label>
-                            Male
+                            <span className="block font-light">
+                                {currentUserGeneralDetails?.gender}
+                            </span>
                         </div>
                         <div className="profile-item">
                             <label className="block text-sm font-medium text-gray-700">
                                 Date of Birth:
                             </label>
-                            22/07/2000
+                            <span className="block font-light">{currentUserGeneralDetails?.dob}</span>
                         </div>
                     </div>
                     <button
@@ -107,7 +112,7 @@ const Profile: React.FC = () => {
                             Payment Methods
                         </h3>
                         <ul className="list-disc pl-5 space-y-2">
-                            {userData.paymentDetails.map((method, index) => (
+                            {/* {userData.paymentDetails.map((method, index) => (
                                 <li
                                     key={index}
                                     className="flex justify-between items-center"
@@ -117,7 +122,7 @@ const Profile: React.FC = () => {
                                         Delete
                                     </button>
                                 </li>
-                            ))}
+                            ))} */}
                         </ul>
                         <button className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Add Payment Method
@@ -129,7 +134,7 @@ const Profile: React.FC = () => {
                             Shipping Addresses
                         </h3>
                         <ul className="list-disc pl-5 space-y-2">
-                            {userData.shippingAddresses.map(
+                            {/* {userData.shippingAddresses.map(
                                 (address, index) => (
                                     <li
                                         key={index}
@@ -141,7 +146,7 @@ const Profile: React.FC = () => {
                                         </button>
                                     </li>
                                 )
-                            )}
+                            )} */}
                         </ul>
                         <button className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Add Shipping Address
@@ -153,7 +158,7 @@ const Profile: React.FC = () => {
                             Billing Addresses
                         </h3>
                         <ul className="list-disc pl-5 space-y-2">
-                            {userData.billingAddresses.map((address, index) => (
+                            {/* {userData.billingAddresses.map((address, index) => (
                                 <li
                                     key={index}
                                     className="flex justify-between items-center"
@@ -163,7 +168,7 @@ const Profile: React.FC = () => {
                                         Delete
                                     </button>
                                 </li>
-                            ))}
+                            ))} */}
                         </ul>
                         <button className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Add Billing Address
