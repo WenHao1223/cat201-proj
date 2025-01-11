@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import Card from "@assets/payment/card.png";
 import PayPal from "@assets/payment/paypal.png";
 import Visa from "@assets/payment/visa.png";
+import Navbar from "@components/Navbar";
 
 interface ProfileProps {
     currentUserGeneralDetails: UserGeneralDetailsInterface | null;
@@ -120,198 +121,214 @@ const Profile: React.FC<ProfileProps> = ({
     };
 
     return (
-        <div className="profile-page p-6 bg-gray-100 min-h-screen flex flex-col items-center">
-            <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Non-scrollable Profile Information */}
-                <div className="card profile-card bg-white shadow-md rounded-lg p-6 mb-6">
-                    <h2 className="text-2xl font-semibold mb-4 text-center">
-                        Profile Information
-                    </h2>
-                    <div className="profile-info grid grid-cols-1 gap-4">
-                        <div className="profile-item">
-                            <label className="block text-sm font-medium text-gray-700">
-                                Username:
-                            </label>
-                            <span className="block font-light">
-                                {currentUserGeneralDetails?.username}
-                            </span>
+        <div className="bg-gray-100">
+            <Navbar
+                isLogin={isLogin}
+                setIsLogin={setIsLogin}
+                setCurrentUserGeneralDetails={setCurrentUserGeneralDetails}
+            />
+            <div className="mx-auto bg-gray-100 max-w-2xl pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
+                <div className="profile-page p-6 flex flex-col items-center overflow-hidden">
+                    <h1 className="text-3xl font-semibold my-4 text-center">
+                        Profile
+                    </h1>
+                    <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Non-scrollable Profile Information */}
+                        <div className="card profile-card bg-white shadow-md rounded-lg p-6 mb-6">
+                            <h3 className="text-xl font-semibold mb-4">
+                                General Information
+                            </h3>
+                            <div className="profile-info grid grid-cols-1 gap-4">
+                                <div className="profile-item">
+                                    <label className="block text-sm font-medium text-gray-700">
+                                        Username:
+                                    </label>
+                                    <span className="block font-light">
+                                        {currentUserGeneralDetails?.username}
+                                    </span>
+                                </div>
+                                <div className="profile-item">
+                                    <label className="block text-sm font-medium text-gray-700">
+                                        Email:
+                                    </label>
+                                    <span className="block font-light">
+                                        {currentUserGeneralDetails?.email}
+                                    </span>
+                                </div>
+                                <div className="profile-item">
+                                    <label className="block text-sm font-medium text-gray-700">
+                                        First Name:
+                                    </label>
+                                    <span className="block font-light">
+                                        {currentUserGeneralDetails?.firstName}
+                                    </span>
+                                </div>
+                                <div className="profile-item">
+                                    <label className="block text-sm font-medium text-gray-700">
+                                        Last Name:
+                                    </label>
+                                    <span className="block font-light">
+                                        {currentUserGeneralDetails?.lastName}
+                                    </span>
+                                </div>
+                                <div className="profile-item">
+                                    <label className="block text-sm font-medium text-gray-700">
+                                        Phone Number:
+                                    </label>
+                                    <span className="block font-light">
+                                        {currentUserGeneralDetails?.phoneNo}
+                                    </span>
+                                </div>
+                                <div className="profile-item">
+                                    <label className="block text-sm font-medium text-gray-700">
+                                        Nationality:
+                                    </label>
+                                    <span className="block font-light">
+                                        {currentUserGeneralDetails?.nationality}
+                                    </span>
+                                </div>
+                                <div className="profile-item">
+                                    <label className="block text-sm font-medium text-gray-700">
+                                        Gender:
+                                    </label>
+                                    <span className="block font-light">
+                                        {currentUserGeneralDetails?.gender}
+                                    </span>
+                                </div>
+                                <div className="profile-item">
+                                    <label className="block text-sm font-medium text-gray-700">
+                                        Date of Birth:
+                                    </label>
+                                    <span className="block font-light">
+                                        {currentUserGeneralDetails?.dob}
+                                    </span>
+                                </div>
+                            </div>
+                            <button
+                                onClick={editProfile}
+                                className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            >
+                                Edit Profile
+                            </button>
                         </div>
-                        <div className="profile-item">
-                            <label className="block text-sm font-medium text-gray-700">
-                                Email:
-                            </label>
-                            <span className="block font-light">
-                                {currentUserGeneralDetails?.email}
-                            </span>
-                        </div>
-                        <div className="profile-item">
-                            <label className="block text-sm font-medium text-gray-700">
-                                First Name:
-                            </label>
-                            <span className="block font-light">
-                                {currentUserGeneralDetails?.firstName}
-                            </span>
-                        </div>
-                        <div className="profile-item">
-                            <label className="block text-sm font-medium text-gray-700">
-                                Last Name:
-                            </label>
-                            <span className="block font-light">
-                                {currentUserGeneralDetails?.lastName}
-                            </span>
-                        </div>
-                        <div className="profile-item">
-                            <label className="block text-sm font-medium text-gray-700">
-                                Phone Number:
-                            </label>
-                            <span className="block font-light">
-                                {currentUserGeneralDetails?.phoneNo}
-                            </span>
-                        </div>
-                        <div className="profile-item">
-                            <label className="block text-sm font-medium text-gray-700">
-                                Nationality:
-                            </label>
-                            <span className="block font-light">
-                                {currentUserGeneralDetails?.nationality}
-                            </span>
-                        </div>
-                        <div className="profile-item">
-                            <label className="block text-sm font-medium text-gray-700">
-                                Gender:
-                            </label>
-                            <span className="block font-light">
-                                {currentUserGeneralDetails?.gender}
-                            </span>
-                        </div>
-                        <div className="profile-item">
-                            <label className="block text-sm font-medium text-gray-700">
-                                Date of Birth:
-                            </label>
-                            <span className="block font-light">
-                                {currentUserGeneralDetails?.dob}
-                            </span>
-                        </div>
-                    </div>
-                    <button
-                        onClick={editProfile}
-                        className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >
-                        Edit Profile
-                    </button>
-                </div>
 
-                {/* Scrollable Section */}
-                <div className="card-container grid grid-cols-1 gap-6 overflow-y-auto h-[calc(100vh-50px)]">
-                    <div className="card bg-white shadow-md rounded-lg p-6">
-                        <h3 className="text-xl font-semibold mb-4">
-                            Payment Methods
-                        </h3>
-                        <ul className="grid grid-cols-1 gap-4">
-                            {currentUserPaymentDetails.map(
-                                (
-                                    paymentDetail: PaymentGeneralInterface,
-                                    index: any
-                                ) => (
-                                    <li
-                                        key={paymentDetail.paymentID}
-                                        className="flex justify-between items-center p-4 border rounded"
-                                    >
-                                        <div className="flex items-center space-x-4">
-                                            <img
-                                                src={
-                                                    paymentDetail.paymentMethod ===
-                                                    "DEBIT_CARD" || paymentDetail.paymentMethod === "CREDIT_CARD"
-                                                        ? Card
-                                                        : paymentDetail.paymentMethod ===
-                                                          "PAYPAL"
-                                                        ? PayPal
-                                                        : paymentDetail.paymentMethod ===
-                                                          "VISA"
-                                                        ? Visa
-                                                        : ""
-                                                }
-                                                alt={
-                                                    paymentDetail.paymentMethod
-                                                }
-                                                className="w-8 h-8"
-                                            />
-                                            <span>
-                                                {paymentDetail.cardNumber}
-                                            </span>
-                                        </div>
-                                        <div className="flex space-x-2">
-                                            <button className="bg-transparent border-1 border-gray-900 text-red-500 hover:bg-gray-800 hover:text-red-300">
-                                                <i className="fas fa-minus"></i>
-                                            </button>
-                                        </div>
-                                    </li>
-                                )
-                            )}
-                        </ul>
-                        <button className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                            Add Payment Method
-                        </button>
-                    </div>
+                        {/* Scrollable Section */}
+                        <div className="card-container grid grid-cols-1 gap-6 overflow-y-auto h-[calc(100vh-50px)]">
+                            <div className="card bg-white shadow-md rounded-lg p-6">
+                                <h3 className="text-xl font-semibold mb-4">
+                                    Payment Methods
+                                </h3>
+                                <ul className="grid grid-cols-1 gap-4">
+                                    {currentUserPaymentDetails.map(
+                                        (
+                                            paymentDetail: PaymentGeneralInterface,
+                                            index: any
+                                        ) => (
+                                            <li
+                                                key={paymentDetail.paymentID}
+                                                className="flex justify-between items-center p-4 border rounded"
+                                            >
+                                                <div className="flex items-center space-x-4">
+                                                    <img
+                                                        src={
+                                                            paymentDetail.paymentMethod ===
+                                                                "DEBIT_CARD" ||
+                                                            paymentDetail.paymentMethod ===
+                                                                "CREDIT_CARD"
+                                                                ? Card
+                                                                : paymentDetail.paymentMethod ===
+                                                                  "PAYPAL"
+                                                                ? PayPal
+                                                                : paymentDetail.paymentMethod ===
+                                                                  "VISA"
+                                                                ? Visa
+                                                                : ""
+                                                        }
+                                                        alt={
+                                                            paymentDetail.paymentMethod
+                                                        }
+                                                        className="w-8 h-8"
+                                                    />
+                                                    <span>
+                                                        {
+                                                            paymentDetail.cardNumber
+                                                        }
+                                                    </span>
+                                                </div>
+                                                <div className="flex space-x-2">
+                                                    <button className="bg-transparent border-1 border-gray-900 text-red-500 hover:bg-gray-800 hover:text-red-300">
+                                                        <i className="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                            </li>
+                                        )
+                                    )}
+                                </ul>
+                                <button className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                    Add Payment Method
+                                </button>
+                            </div>
 
-                    <div className="card bg-white shadow-md rounded-lg p-6">
-                        <h3 className="text-xl font-semibold mb-4">
-                            Shipping Addresses
-                        </h3>
-                        <ul className="list-disc space-y-2">
-                            <ul className="grid grid-cols-1 gap-4">
-                                {currentUserShippingAddresses.map(
-                                    (address, index) => (
-                                        <li
-                                            key={index}
-                                            className="flex justify-between items-center p-4 border rounded-md"
-                                        >
-                                            <span>{address}</span>
-                                            <div className="flex space-x-2">
-                                                <button className="bg-transparent border-1 border-gray-900 text-blue-500 hover:bg-gray-800 hover:text-blue-300">
-                                                    <i className="fas fa-pencil-alt"></i>
-                                                </button>
-                                                <button className="bg-transparent border-1 border-gray-900 text-red-500 hover:bg-gray-800 hover:text-red-300">
-                                                    <i className="fas fa-minus"></i>
-                                                </button>
-                                            </div>
-                                        </li>
-                                    )
-                                )}
-                            </ul>
-                        </ul>
-                        <button className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                            Add Shipping Address
-                        </button>
-                    </div>
+                            <div className="card bg-white shadow-md rounded-lg p-6">
+                                <h3 className="text-xl font-semibold mb-4">
+                                    Shipping Addresses
+                                </h3>
+                                <ul className="list-disc space-y-2">
+                                    <ul className="grid grid-cols-1 gap-4">
+                                        {currentUserShippingAddresses.map(
+                                            (address, index) => (
+                                                <li
+                                                    key={index}
+                                                    className="flex justify-between items-center p-4 border rounded-md"
+                                                >
+                                                    <span>{address}</span>
+                                                    <div className="flex space-x-2">
+                                                        <button className="bg-transparent border-1 border-gray-900 text-blue-500 hover:bg-gray-800 hover:text-blue-300">
+                                                            <i className="fas fa-pencil-alt"></i>
+                                                        </button>
+                                                        <button className="bg-transparent border-1 border-gray-900 text-red-500 hover:bg-gray-800 hover:text-red-300">
+                                                            <i className="fas fa-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                            )
+                                        )}
+                                    </ul>
+                                </ul>
+                                <button className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                    Add Shipping Address
+                                </button>
+                            </div>
 
-                    <div className="card bg-white shadow-md rounded-lg p-6">
-                        <h3 className="text-xl font-semibold mb-4">
-                            Billing Addresses
-                        </h3>
-                        <ul className="grid grid-cols-1 gap-4">
-                            {currentUserBillingAddresses.map(
-                                (address, index) => (
-                                    <li
-                                        key={index}
-                                        className="flex justify-between items-center p-4 border rounded-md"
-                                    >
-                                        <span>{address}</span>
-                                        <div className="flex space-x-2">
-                                            <button className="bg-transparent border-1 border-gray-900 text-blue-500 hover:bg-gray-800 hover:text-blue-300">
-                                                <i className="fas fa-pencil-alt"></i>
-                                            </button>
-                                            <button className="bg-transparent border-1 border-gray-900 text-red-500 hover:bg-gray-800 hover:text-red-300">
-                                                <i className="fas fa-minus"></i>
-                                            </button>
-                                        </div>
-                                    </li>
-                                )
-                            )}
-                        </ul>
-                        <button className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                            Add Billing Address
-                        </button>
+                            <div className="card bg-white shadow-md rounded-lg p-6">
+                                <h3 className="text-xl font-semibold mb-4">
+                                    Billing Addresses
+                                </h3>
+                                <ul className="grid grid-cols-1 gap-4">
+                                    {currentUserBillingAddresses.map(
+                                        (address, index) => (
+                                            <li
+                                                key={index}
+                                                className="flex justify-between items-center p-4 border rounded-md"
+                                            >
+                                                <span>{address}</span>
+                                                <div className="flex space-x-2">
+                                                    <button className="bg-transparent border-1 border-gray-900 text-blue-500 hover:bg-gray-800 hover:text-blue-300">
+                                                        <i className="fas fa-pencil-alt"></i>
+                                                    </button>
+                                                    <button className="bg-transparent border-1 border-gray-900 text-red-500 hover:bg-gray-800 hover:text-red-300">
+                                                        <i className="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                            </li>
+                                        )
+                                    )}
+                                </ul>
+                                <button className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                    Add Billing Address
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
