@@ -6,6 +6,10 @@ import handleApiCall from "@utils/handleApiCall";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import Card from "@assets/payment/card.png";
+import PayPal from "@assets/payment/paypal.png";
+import Visa from "@assets/payment/visa.png";
+
 interface ProfileProps {
     currentUserGeneralDetails: UserGeneralDetailsInterface | null;
     setCurrentUserGeneralDetails: React.Dispatch<
@@ -198,23 +202,49 @@ const Profile: React.FC<ProfileProps> = ({
                 </div>
 
                 {/* Scrollable Section */}
-                <div className="card-container grid grid-cols-1 gap-6 overflow-y-auto h-[calc(100vh-150px)]">
+                <div className="card-container grid grid-cols-1 gap-6 overflow-y-auto h-[calc(100vh-50px)]">
                     <div className="card bg-white shadow-md rounded-lg p-6">
                         <h3 className="text-xl font-semibold mb-4">
                             Payment Methods
                         </h3>
-                        <ul className="list-disc pl-5 space-y-2">
+                        <ul className="grid grid-cols-1 gap-4">
                             {currentUserPaymentDetails.map(
-                                (paymentDetail: PaymentGeneralInterface, index: any) => (
+                                (
+                                    paymentDetail: PaymentGeneralInterface,
+                                    index: any
+                                ) => (
                                     <li
                                         key={paymentDetail.paymentID}
-                                        className="flex justify-between items-center"
+                                        className="flex justify-between items-center p-4 border rounded"
                                     >
-                                        <span>{paymentDetail.cardNumber}</span>
-                                        <span>{paymentDetail.paymentMethod}</span>
-                                        <button className="text-red-500 hover:text-red-700">
-                                            Delete
-                                        </button>
+                                        <div className="flex items-center space-x-4">
+                                            <img
+                                                src={
+                                                    paymentDetail.paymentMethod ===
+                                                    "DEBIT_CARD" || paymentDetail.paymentMethod === "CREDIT_CARD"
+                                                        ? Card
+                                                        : paymentDetail.paymentMethod ===
+                                                          "PAYPAL"
+                                                        ? PayPal
+                                                        : paymentDetail.paymentMethod ===
+                                                          "VISA"
+                                                        ? Visa
+                                                        : ""
+                                                }
+                                                alt={
+                                                    paymentDetail.paymentMethod
+                                                }
+                                                className="w-8 h-8"
+                                            />
+                                            <span>
+                                                {paymentDetail.cardNumber}
+                                            </span>
+                                        </div>
+                                        <div className="flex space-x-2">
+                                            <button className="bg-transparent border-1 border-gray-900 text-red-500 hover:bg-gray-800 hover:text-red-300">
+                                                <i className="fas fa-minus"></i>
+                                            </button>
+                                        </div>
                                     </li>
                                 )
                             )}
@@ -228,20 +258,27 @@ const Profile: React.FC<ProfileProps> = ({
                         <h3 className="text-xl font-semibold mb-4">
                             Shipping Addresses
                         </h3>
-                        <ul className="list-disc pl-5 space-y-2">
-                            {currentUserShippingAddresses.map(
-                                (address, index) => (
-                                    <li
-                                        key={index}
-                                        className="flex justify-between items-center"
-                                    >
-                                        <span>{address}</span>
-                                        <button className="text-red-500 hover:text-red-700">
-                                            Delete
-                                        </button>
-                                    </li>
-                                )
-                            )}
+                        <ul className="list-disc space-y-2">
+                            <ul className="grid grid-cols-1 gap-4">
+                                {currentUserShippingAddresses.map(
+                                    (address, index) => (
+                                        <li
+                                            key={index}
+                                            className="flex justify-between items-center p-4 border rounded-md"
+                                        >
+                                            <span>{address}</span>
+                                            <div className="flex space-x-2">
+                                                <button className="bg-transparent border-1 border-gray-900 text-blue-500 hover:bg-gray-800 hover:text-blue-300">
+                                                    <i className="fas fa-pencil-alt"></i>
+                                                </button>
+                                                <button className="bg-transparent border-1 border-gray-900 text-red-500 hover:bg-gray-800 hover:text-red-300">
+                                                    <i className="fas fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        </li>
+                                    )
+                                )}
+                            </ul>
                         </ul>
                         <button className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Add Shipping Address
@@ -252,18 +289,25 @@ const Profile: React.FC<ProfileProps> = ({
                         <h3 className="text-xl font-semibold mb-4">
                             Billing Addresses
                         </h3>
-                        <ul className="list-disc pl-5 space-y-2">
-                            {currentUserBillingAddresses.map((address, index) => (
-                                <li
-                                    key={index}
-                                    className="flex justify-between items-center"
-                                >
-                                    <span>{address}</span>
-                                    <button className="text-red-500 hover:text-red-700">
-                                        Delete
-                                    </button>
-                                </li>
-                            ))}
+                        <ul className="grid grid-cols-1 gap-4">
+                            {currentUserBillingAddresses.map(
+                                (address, index) => (
+                                    <li
+                                        key={index}
+                                        className="flex justify-between items-center p-4 border rounded-md"
+                                    >
+                                        <span>{address}</span>
+                                        <div className="flex space-x-2">
+                                            <button className="bg-transparent border-1 border-gray-900 text-blue-500 hover:bg-gray-800 hover:text-blue-300">
+                                                <i className="fas fa-pencil-alt"></i>
+                                            </button>
+                                            <button className="bg-transparent border-1 border-gray-900 text-red-500 hover:bg-gray-800 hover:text-red-300">
+                                                <i className="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </li>
+                                )
+                            )}
                         </ul>
                         <button className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Add Billing Address
