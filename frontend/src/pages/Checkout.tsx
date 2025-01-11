@@ -149,7 +149,7 @@ const Checkout: React.FC<CheckoutProps> = ({
                   <div className="mt-10 border-t border-gray-200 pt-6 sm:flex sm:items-center sm:justify-between">
                     <button
                       type="submit"
-                      className="w-full rounded-lg border border-transparent text-white shadow-sm focus:ring-offset-gray-50 sm:order-last m:w-auto hover:bg-black hover:shadow-md"
+                      className="w-full rounded-lg border border-transparent bg-gray-800 text-white shadow-sm focus:ring-offset-gray-50 sm:order-last m:w-auto hover:bg-black hover:shadow-md px-4 py-3"
                     >
                       Proceed to Payment
                     </button>
