@@ -69,6 +69,42 @@ const Profile: React.FC<ProfileProps> = ({
         );
     };
 
+    const addPaymentMethod = async () => {
+        Swal.fire({
+            title: "Add Payment Method",
+            input: "text",
+            showCancelButton: true,
+            confirmButtonText: "Add",
+            showLoaderOnConfirm: true,
+            preConfirm: async (newPaymentMethod: string) => {
+                await handleApiCall(
+                    `users/paymentDetails/add`,
+                    "POST",
+                    {
+                        email: currentUserGeneralDetails?.email,
+                        newPaymentMethod,
+                    },
+                    async (result) => {
+                        if ((await result.status) === "Success") {
+                            const paymentDetailsArray = result.paymentDetails.map(
+                                (paymentDetail: string) =>
+                                    JSON.parse(paymentDetail)
+                            );
+                            setCurrentUserPaymentDetails(paymentDetailsArray);
+                        } else {
+                            setError(
+                                "\n Error adding payment method: " + result.message
+                            );
+                        }
+                    },
+                    (error) =>
+                        setError("\n Error adding payment method: " + error)
+                );
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
+        });
+    };
+
     const viewCurrentUserShippingAddressesMethod = async () => {
         await handleApiCall(
             `users/shippingAddresses?email=${currentUserGeneralDetails?.email}`,
@@ -289,7 +325,7 @@ const Profile: React.FC<ProfileProps> = ({
             allowOutsideClick: () => !Swal.isLoading(),
         });
     };
-    
+
     const removeBillingAddress = async (removedAddress: string) => {
         Swal.fire({
             title: "Are you sure?",
@@ -483,7 +519,10 @@ const Profile: React.FC<ProfileProps> = ({
                                         )
                                     )}
                                 </ul>
-                                <button className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                <button
+                                    className="mt-4 w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                    onClick={addPaymentMethod}
+                                >
                                     Add Payment Method
                                 </button>
                             </div>
