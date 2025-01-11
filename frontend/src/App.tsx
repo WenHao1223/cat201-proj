@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import Admin from "./pages/Admin";
 import "./App.css";
 
 import {
@@ -136,6 +137,7 @@ const App: React.FC = () => {
                             />
                         }
                     />
+                    <Route path="/admin" element={<Admin />} />
                 </Routes>
             </div>
         </Router>

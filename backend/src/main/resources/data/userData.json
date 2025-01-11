@@ -2,49 +2,61 @@
   {
     "username": "jdoe123",
     "email": "jdoe@example.com",
-    "password": "password123",
+    "password": "password1234",
     "nationality": "Malaysia",
     "firstName": "John",
     "lastName": "Doe",
-    "phoneNo": "+6012-345 6789",
+    "phoneNo": "+6011-5860 6808",
     "gender": 1,
     "dob": "1990-01-01",
     "agreeToTerms": true,
     "shippingAddresses": [
       "123 Main St, Kuala Lumpur",
-      "234 Elm St, Kuala Lumpur"
+      "123, Test Street, Test City, Test State, Test Country, 12345"
     ],
     "billingAddresses": [
-      "123 Main St, Kuala Lumpur"
+      "123, Test Street, Test City, Test State, Test Country, 12345"
     ],
     "paymentDetails": [
-      {
-        "paymentID": 1,
-        "paymentMethod": "credit_card",
-        "cardNumber": "4111111111111111",
-        "expiryDate": "12/24",
-        "cvv": "123"
-      },
       {
         "paymentID": 2,
         "paymentMethod": "paypal",
         "cardNumber": "jdoe123@paypal.com",
         "expiryDate": "",
         "cvv": ""
+      },
+      {
+        "paymentID": 13,
+        "paymentMethod": "visa",
+        "cardNumber": "1234567890123456",
+        "expiryDate": "12/24",
+        "cvv": "123"
       }
     ],
     "carts": [
-      {
-        "productID": "B001",
-        "quantity": 3,
-        "sizeIndex": 0,
-        "colorIndex": 0
-      },
       {
         "productID": "B003",
         "quantity": 1,
         "sizeIndex": 0,
         "colorIndex": 1
+      },
+      {
+        "productID": "B003",
+        "quantity": 34,
+        "sizeIndex": 0,
+        "colorIndex": 0
+      },
+      {
+        "productID": "B001",
+        "quantity": 1,
+        "sizeIndex": 0,
+        "colorIndex": 0
+      },
+      {
+        "productID": "B001",
+        "quantity": 1,
+        "sizeIndex": 0,
+        "colorIndex": 0
       }
     ],
     "orders": [
@@ -54,7 +66,7 @@
         "billingAddress": "123 Main St, Kuala Lumpur",
         "paymentID": 1,
         "orderDate": "2023-10-01",
-        "orderStatus": "Ordered",
+        "orderStatus": "Cancelled",
         "cartProducts": [
           {
             "productID": "B002",
@@ -520,5 +532,22 @@
         ]
       }
     ]
+  },
+  {
+    "username": "jdoe",
+    "email": "testRegistering@example.com",
+    "password": "password123",
+    "nationality": "Singapore",
+    "firstName": "John",
+    "lastName": "Doe",
+    "phoneNo": "+6012-345 6789",
+    "gender": 1,
+    "dob": "1990-01-01",
+    "agreeToTerms": true,
+    "shippingAddresses": [],
+    "billingAddresses": [],
+    "paymentDetails": [],
+    "carts": [],
+    "orders": []
   }
 ]

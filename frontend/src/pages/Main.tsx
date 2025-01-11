@@ -86,6 +86,15 @@ const Main: React.FC<MainProps> = ({
                                 </button>
                             </>
                         )}
+                        {isLogin &&(
+                            <>
+                                <Link to="/admin">
+                                    <button className="text-white">
+                                        Go to Admin
+                                    </button>
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
