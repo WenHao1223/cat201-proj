@@ -443,6 +443,44 @@ const Profile: React.FC<ProfileProps> = ({
         );
     };
 
+    const removePaymentMethod = async (paymentID: string) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                await handleApiCall(
+                    `users/paymentDetails/remove`,
+                    "DELETE",
+                    {
+                        email: currentUserGeneralDetails?.email,
+                        paymentID,
+                    },
+                    async (result) => {
+                        if ((await result.status) === "Success") {
+                            const paymentDetailsArray = result.paymentDetails.map(
+                                (paymentDetail: string) => JSON.parse(paymentDetail)
+                            );
+                            setCurrentUserPaymentDetails(paymentDetailsArray);
+                        } else {
+                            setError(
+                                "\n Error removing payment method: " +
+                                    result.message
+                            );
+                        }
+                    },
+                    (error) =>
+                        setError("\n Error removing payment method: " + error)
+                );
+            }
+        });
+    }
+
     const handleInputChange = (field: string, value: string) => {
         if (editableUserDetails) {
             setEditableUserDetails({ ...editableUserDetails, [field]: value });
@@ -872,7 +910,9 @@ const Profile: React.FC<ProfileProps> = ({
                                                     </span>
                                                 </div>
                                                 <div className="flex space-x-2">
-                                                    <button className="bg-transparent border-1 border-gray-900 text-red-500 hover:bg-gray-800 hover:text-red-300">
+                                                    <button className="bg-transparent border-1 border-gray-900 text-red-500 hover:bg-gray-800 hover:text-red-300" onClick={() => {
+                                                        removePaymentMethod(paymentDetail.paymentID.toString());
+                                                    }}>
                                                         <i className="fas fa-minus"></i>
                                                     </button>
                                                 </div>
