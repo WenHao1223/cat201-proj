@@ -74,6 +74,7 @@ const TestAPI: React.FC = () => {
             phoneNo: "",
             gender: 0,
             dob: "",
+            role: "",
             agreeToTerms: false,
         });
 

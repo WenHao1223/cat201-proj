@@ -92,6 +92,7 @@ public class UsersEditProfileServlet extends HttpServlet {
                 userJson.addProperty("phoneNo", currentUser.getPhoneNo());
                 userJson.addProperty("gender", currentUser.getGender());
                 userJson.addProperty("dob", currentUser.getDob());
+                userJson.addProperty("role", currentUser.getRole());
                 jsonResponse.addProperty("user", userJson.toString());
             }
         } else {
