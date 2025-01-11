@@ -54,6 +54,10 @@ public class UsersBillingAddressesAddServlet extends HttpServlet {
 
             if (user != null) {
                 try {
+                    if (user.getRole() != "user") {
+                        throw new IllegalArgumentException("User is not a customer");
+                    }
+
                     user.addBillingAddress(newBillingAddress);
                     List<String> billingAddresses = user.getBillingAddresses();
 
@@ -63,6 +67,9 @@ public class UsersBillingAddressesAddServlet extends HttpServlet {
                     // Create JSON response
                     jsonResponse.addProperty("status", "Success");
                     jsonResponse.addProperty("billingAddresses", jsonBillingAddresses.toString());
+                } catch (IllegalArgumentException e) {
+                    jsonResponse.addProperty("status", "Error");
+                    jsonResponse.addProperty("message", e.getMessage());
                 } catch (Exception e) {
                     jsonResponse.addProperty("status", "Error");
                     jsonResponse.addProperty("message", "Failed to add billing address");

@@ -40,6 +40,19 @@ public class OrdersServlet extends HttpServlet {
         if (!email.isEmpty()) {
             User user = UserCollection.getUserByEmail(email);
             if (user != null) {
+                try {
+                    if (user.getRole() != "user") {
+                        throw new IllegalArgumentException("User is not a customer");
+                    }
+                } catch (IllegalArgumentException e) {
+                    jsonResponse.addProperty("status", "Error");
+                    jsonResponse.addProperty("message", e.getMessage());
+                    PrintWriter out = response.getWriter();
+                    out.write(jsonResponse.toString());
+                    out.flush();
+                    return;
+                }
+                
                 List<Order> orders = user.getOrders();
                 JsonArray jsonOrder = new JsonArray();
 

@@ -53,16 +53,27 @@ public class UsersBillingAddressesRemoveServlet extends HttpServlet {
             User user = UserCollection.getUserByEmail(email);
 
             if (user != null) {
-                user.removeBillingAddress(removedAddress);
-                List<String> billingAddresses = user.getBillingAddresses();
+                try {
+                    if (user.getRole() != "user") {
+                        throw new IllegalArgumentException("User is not a customer");
+                    }
 
-                // Convert the list to a JSON array
-                JsonArray jsonBillingAddresses = gson.toJsonTree(billingAddresses).getAsJsonArray();
+                    user.removeBillingAddress(removedAddress);
+                    List<String> billingAddresses = user.getBillingAddresses();
 
-                // Create JSON response
-                jsonResponse.addProperty("status", "Success");
-                jsonResponse.addProperty("billingAddresses", jsonBillingAddresses.toString());
+                    // Convert the list to a JSON array
+                    JsonArray jsonBillingAddresses = gson.toJsonTree(billingAddresses).getAsJsonArray();
 
+                    // Create JSON response
+                    jsonResponse.addProperty("status", "Success");
+                    jsonResponse.addProperty("billingAddresses", jsonBillingAddresses.toString());
+                } catch (IllegalArgumentException e) {
+                    jsonResponse.addProperty("status", "Error");
+                    jsonResponse.addProperty("message", e.getMessage());
+                } catch (Exception e) {
+                    jsonResponse.addProperty("status", "Error");
+                    jsonResponse.addProperty("message", "Failed to add billing address");
+                }
             } else {
                 jsonResponse.addProperty("status", "Error");
                 jsonResponse.addProperty("message", "User not found");
