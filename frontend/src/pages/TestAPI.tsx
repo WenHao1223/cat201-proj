@@ -307,7 +307,12 @@ const TestAPI: React.FC = () => {
             "POST",
             null,
             (result) => {
-                setUsers(result);
+                console.log(result);
+                if (result == null) {
+                    setError("\n No user data found");
+                } else {
+                    setUsers(result);
+                }
                 setToDefault();
                 setShowUsers(true);
             },
@@ -1006,7 +1011,8 @@ const TestAPI: React.FC = () => {
             <button className="text-white" onClick={fetchProductData}>Fetch Product Data</button>
             <button className="text-white"
                 onClick={() =>
-                    validateUserLoginMethod("jdoe@example.com", "password123")
+                    // validateUserLoginMethod("jdoe@example.com", "password123")
+                    validateUserLoginMethod("admin@gmail.com", "admin123")
                 }
             >
                 Validate User Login
@@ -1149,7 +1155,7 @@ const TestAPI: React.FC = () => {
 
             <div>
                 {error && <p style={{ color: "red" }}>{error}</p>}
-                {showUsers && users.length > 0 && (
+                {showUsers && users && users.length > 0 && (
                     <UsersServlet users={users} />
                 )}
                 {showProducts && products.length > 0 && (
