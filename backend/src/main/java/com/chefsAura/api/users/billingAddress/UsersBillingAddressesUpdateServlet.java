@@ -55,6 +55,10 @@ public class UsersBillingAddressesUpdateServlet extends HttpServlet {
 
             if (user != null) {
                 try {
+                    if (user.getRole() != "user") {
+                        throw new IllegalArgumentException("User is not a customer");
+                    }
+
                     user.updateBillingAddress(index, updateBillingAddress);
                     List<String> billingAddresses = user.getBillingAddresses();
 
@@ -67,6 +71,9 @@ public class UsersBillingAddressesUpdateServlet extends HttpServlet {
                 } catch (IndexOutOfBoundsException e) {
                     jsonResponse.addProperty("status", "Error");
                     jsonResponse.addProperty("message", "Index out of bounds");
+                } catch (IllegalArgumentException e) {
+                    jsonResponse.addProperty("status", "Error");
+                    jsonResponse.addProperty("message", e.getMessage());
                 } catch (Exception e) {
                     jsonResponse.addProperty("status", "Error");
                     jsonResponse.addProperty("message", e.getMessage());

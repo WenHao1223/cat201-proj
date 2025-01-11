@@ -54,6 +54,10 @@ public class UsersShippingAddressesAddServlet extends HttpServlet {
 
             if (user != null) {
                 try {
+                    if (user.getRole() != "user") {
+                        throw new IllegalArgumentException("User is not a customer");
+                    }
+                    
                     user.addShippingAddress(newShippingAddress);
                     List<String> shippingAddresses = user.getShippingAddresses();
 
@@ -63,6 +67,9 @@ public class UsersShippingAddressesAddServlet extends HttpServlet {
                     // Create JSON response
                     jsonResponse.addProperty("status", "Success");
                     jsonResponse.addProperty("shippingAddresses", jsonShippingAddresses.toString());
+                } catch (IllegalArgumentException e) {
+                    jsonResponse.addProperty("status", "Error");
+                    jsonResponse.addProperty("message", e.getMessage());
                 } catch (Exception e) {
                     jsonResponse.addProperty("status", "Error");
                     jsonResponse.addProperty("message", e.getMessage());

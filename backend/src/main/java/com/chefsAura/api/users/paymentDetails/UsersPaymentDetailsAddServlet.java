@@ -58,6 +58,10 @@ public class UsersPaymentDetailsAddServlet extends HttpServlet {
             User user = UserCollection.getUserByEmail(email);
             if (user != null) {
                 try {
+                    if (user.getRole() != "user") {
+                        throw new IllegalArgumentException("User is not a customer");
+                    }
+                    
                     user.addPaymentDetails(new Payment(
                             PaymentMethodEnum.fromString(paymentMethod),
                             cardNumber,
@@ -77,6 +81,9 @@ public class UsersPaymentDetailsAddServlet extends HttpServlet {
                     // Create JSON response
                     jsonResponse.addProperty("status", "Success");
                     jsonResponse.add("paymentDetails", jsonPaymentDetails);
+                } catch (IllegalArgumentException e) {
+                    jsonResponse.addProperty("status", "Error");
+                    jsonResponse.addProperty("message", e.getMessage());
                 } catch (Exception e) {
                     jsonResponse.addProperty("status", "Error");
                     jsonResponse.addProperty("message", e.getMessage());

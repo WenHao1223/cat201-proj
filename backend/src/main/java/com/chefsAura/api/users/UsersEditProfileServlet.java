@@ -52,6 +52,20 @@ public class UsersEditProfileServlet extends HttpServlet {
         if (!email.isEmpty()) {
             User user = UserCollection.getUserByEmail(email);
             if (user != null) {
+                try {
+                    if (user.getRole() != "user") {
+                        throw new IllegalArgumentException("User is not a customer");
+                    }
+                } catch (IllegalArgumentException e) {
+                    jsonResponse.addProperty("status", false);
+                    jsonResponse.addProperty("message", e.getMessage());
+                    response.setContentType("application/json");
+                    PrintWriter out = response.getWriter();
+                    out.write(gson.toJson(jsonResponse));
+                    out.flush();
+                    return;
+                }
+
                 Map<String, BiConsumer<User, String>> fieldUpdaters = new HashMap<>();
                 fieldUpdaters.put("username", User::setUsername);
                 fieldUpdaters.put("nationality", User::setNationality);
@@ -92,6 +106,7 @@ public class UsersEditProfileServlet extends HttpServlet {
                 userJson.addProperty("phoneNo", currentUser.getPhoneNo());
                 userJson.addProperty("gender", currentUser.getGender());
                 userJson.addProperty("dob", currentUser.getDob());
+                userJson.addProperty("role", currentUser.getRole());
                 jsonResponse.addProperty("user", userJson.toString());
             }
         } else {

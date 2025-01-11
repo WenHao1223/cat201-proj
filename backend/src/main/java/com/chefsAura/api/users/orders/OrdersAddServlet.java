@@ -61,6 +61,10 @@ public class OrdersAddServlet extends HttpServlet {
 
             if (user != null) {
                 try {
+                    if (user.getRole() != "user") {
+                        throw new IllegalArgumentException("User is not a customer");
+                    }
+                    
                     int newOrderID = user.addOrder(shippingAddress, billingAddress, paymentID);
 
                     // get the new order details
