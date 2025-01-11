@@ -337,14 +337,27 @@ const Checkout: React.FC<CheckoutProps> = ({
                   >
                     Shipping address
                   </h2>
-
+                  <div className="mt-6 flex items-center">
+                    <input
+                      id="same-as-profile-address"
+                      name="same-as-profile-address"
+                      type="checkbox"
+                      className="h-5 w-5 rounded-md border border-gray-300"
+                    />
+                    <label
+                      htmlFor="same-as-profile-address"
+                      className="text-sm font-medium text-gray-900 cursor-pointer"
+                    >
+                      Same as profile address
+                    </label>
+                  </div>
                   <div className="mt-6 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-3">
                     <div className="sm:col-span-3">
                       <label
-                        htmlFor="company"
+                        htmlFor="address1"
                         className="block text-sm font-medium text-gray-700"
                       >
-                        Company
+                        Address 1
                       </label>
                       <div className="mt-2">
                         <input
@@ -358,10 +371,10 @@ const Checkout: React.FC<CheckoutProps> = ({
 
                     <div className="sm:col-span-3">
                       <label
-                        htmlFor="address"
+                        htmlFor="address2"
                         className="block text-sm font-medium text-gray-700"
                       >
-                        Address
+                        Address 2
                       </label>
                       <div className="mt-2">
                         <input
@@ -460,7 +473,7 @@ const Checkout: React.FC<CheckoutProps> = ({
                       id="same-as-shipping"
                       name="same-as-shipping"
                       type="checkbox"
-                      className="h-5 w-5 rounded-lg border border-gray-300"
+                      className="h-5 w-5 rounded-md border border-gray-300"
                     />
                     <label
                       htmlFor="same-as-shipping"
