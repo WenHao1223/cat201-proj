@@ -13,7 +13,11 @@ const Product = () => {
     const [specificProduct, setSpecificProduct] =
         useState<ProductInterface | null>(null);
     const [error, setError] = useState("");
-    let images: string[] = [];
+    const [images, setImages] = useState<string[]>([]);
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [selectedColor, setSelectedColor] = useState("");
+    const [selectedSize, setSelectedSize] = useState("");
+    const [quantity, setQuantity] = useState(1);
 
     const navigate = useNavigate();
 
@@ -49,37 +53,35 @@ const Product = () => {
 
     useEffect(() => {
         if (!specificProduct) return;
-        // fetch all images from @assets/images/productID folder
-        // and store them in an array
-        for (let i = 0; i < specificProduct!.colors.length; i++) {
-            for (let j = 0; j < specificProduct!.sizes.length; j++) {
-                console.log(
-                    `@assets/images/${productID}/${specificProduct!.colors[i]
-                        .toLowerCase()
-                        .replace(" ", "")}-${j}.webp`
-                );
-                const loadImage = async () => {
+
+        const loadImages = async () => {
+            const loadedImages: string[] = [];
+            for (let i = 0; i < specificProduct.colors.length; i++) {
+                const color = specificProduct.colors[i]
+                    .toLowerCase()
+                    .replace(" ", "");
+                let j = 0;
+                let imageLoaded = true;
+                while (imageLoaded) {
                     try {
                         const image = await import(
-                            `@assets/images/${productID}/${specificProduct!.colors[
-                                i
-                            ]
-                                .toLowerCase()
-                                .replace(" ", "")}-${j}.webp`
+                            `@assets/images/${productID}/${color}-${j}.webp`
                         );
-                        images.push(image.default);
+                        loadedImages.push(image.default);
+                        j++;
                     } catch (error) {
-                        console.error("Error loading image:", error);
+                        imageLoaded = false;
                     }
-                };
+                }
             }
-        }
-    }, [specificProduct]);
+            setImages(loadedImages);
+            if (loadedImages.length > 0) {
+                setSelectedImage(loadedImages[0]);
+            }
+        };
 
-    const [selectedImage, setSelectedImage] = useState(images[0]);
-    const [selectedColor, setSelectedColor] = useState("");
-    const [selectedSize, setSelectedSize] = useState("");
-    const [quantity, setQuantity] = useState(1);
+        loadImages();
+    }, [specificProduct, productID]);
 
     const handleAddToCart = () => {
         if (!selectedColor || !selectedSize) {
@@ -236,12 +238,10 @@ const Product = () => {
         `}
                 </style>
                 <div className="image-gallery">
-                    <AsyncImage
-                        productID={productID!}
-                        color={specificProduct!.colors[0]}
-                        number={0}
+                    <img
+                        src={selectedImage || images[0]}
                         alt="Product Image"
-                        className="product-image"
+                        className="main-image"
                     />
                     <div className="thumbnail-container">
                         {images.map((img, index) => (
