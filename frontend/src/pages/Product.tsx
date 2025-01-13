@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
-import image1 from "../assets/image1.webp";
-import image2 from "../assets/image2.webp";
-import image3 from "../assets/image3.webp";
 import { useNavigate, useParams } from "react-router-dom";
 import handleApiCall from "@utils/handleApiCall";
 import { ProductInterface } from "@interfaces/API/ProductInterface";
-import AsyncImage from "@components/AsyncImage";
 import Swal from "sweetalert2";
 
 const Product = () => {
