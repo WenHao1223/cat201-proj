@@ -154,7 +154,7 @@ const App: React.FC = () => {
                         }
                     />
                     <Route
-                        path="/product"
+                        path="/product/:productID"
                         element={
                             <Product/>
                         }

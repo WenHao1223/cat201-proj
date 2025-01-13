@@ -1,24 +1,82 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import image1 from "../assets/image1.webp";
 import image2 from "../assets/image2.webp";
 import image3 from "../assets/image3.webp";
+import { useNavigate, useParams } from "react-router-dom";
+import handleApiCall from "@utils/handleApiCall";
+import { ProductInterface } from "@interfaces/API/ProductInterface";
+import AsyncImage from "@components/AsyncImage";
+import Swal from "sweetalert2";
 
 const Product = () => {
-    const [product] = useState({
-        productID: "PM001",
-        name: "KitchenAid ® 3.5-Cup Food Chopper",
-        description:
-            "Compact and convenient for everyday use, this two-speed food chopper in chic matte black chops and purees with one-touch operation. With a three-cup capacity and wet-ingredient opening on the lid, it's easy to whip up cheese dips, hummus, salsa and lots more.",
-        price: 99.99,
-        category: "Food Processor and Mixer",
-        brand: "Kitchen Aid",
-        sizes: ["10 inch"],
-        colors: ["Matte Black", "Metallic Chrome"],
-        quantities: [20, 15],
-        images: [image1, image2, image3],
-    });
+    const { productID } = useParams<{ productID: string }>();
+    const [specificProduct, setSpecificProduct] =
+        useState<ProductInterface | null>(null);
+    const [error, setError] = useState("");
+    let images: string[] = [];
 
-    const [selectedImage, setSelectedImage] = useState(product.images[0]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        viewSpecificProductMethod(productID!);
+    }, []);
+
+    const viewSpecificProductMethod = async (productID: string) => {
+        await handleApiCall(
+            `products/${productID}`,
+            "GET",
+            null,
+            async (result) => {
+                setSpecificProduct(result);
+            },
+            (error) => {
+                setError("\n Error viewing specific product: " + error);
+                Swal.fire({
+                    title: "Error!",
+                    text: "Error viewing specific product: " + error,
+                    icon: "error",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        navigate("/main");
+                    }
+                });
+            }
+        );
+    };
+
+    useEffect(() => {
+        if (!specificProduct) return;
+        // fetch all images from @assets/images/productID folder
+        // and store them in an array
+        for (let i = 0; i < specificProduct!.colors.length; i++) {
+            for (let j = 0; j < specificProduct!.sizes.length; j++) {
+                console.log(
+                    `@assets/images/${productID}/${specificProduct!.colors[i]
+                        .toLowerCase()
+                        .replace(" ", "")}-${j}.webp`
+                );
+                const loadImage = async () => {
+                    try {
+                        const image = await import(
+                            `@assets/images/${productID}/${specificProduct!.colors[
+                                i
+                            ]
+                                .toLowerCase()
+                                .replace(" ", "")}-${j}.webp`
+                        );
+                        images.push(image.default);
+                    } catch (error) {
+                        console.error("Error loading image:", error);
+                    }
+                };
+            }
+        }
+    }, [specificProduct]);
+
+    const [selectedImage, setSelectedImage] = useState(images[0]);
     const [selectedColor, setSelectedColor] = useState("");
     const [selectedSize, setSelectedSize] = useState("");
     const [quantity, setQuantity] = useState(1);
@@ -28,18 +86,24 @@ const Product = () => {
             alert("Please select a colour and size before adding to cart.");
             return;
         }
-        alert(`Added ${quantity} item(s) of ${product.name} to the cart.`);
+        alert(
+            `Added ${quantity} item(s) of ${specificProduct!.name} to the cart.`
+        );
     };
 
     const getMaxQuantity = () => {
-        const colorIndex = product.colors.indexOf(selectedColor);
-        return colorIndex !== -1 ? product.quantities[colorIndex] : 1;
+        const sizeIndex = specificProduct!.sizes.indexOf(selectedSize);
+        const colorIndex = specificProduct!.colors.indexOf(selectedColor);
+        return sizeIndex !== -1 && colorIndex !== -1
+            ? specificProduct!.quantities[sizeIndex][colorIndex]
+            : 1;
     };
 
     return (
-        <div className="product-page">
-            <style>
-                {`
+        specificProduct && (
+            <div className="product-page">
+                <style>
+                    {`
           .product-page {
             font-family: 'Helvetica Neue', sans-serif;
             max-width: 1200px;
@@ -170,76 +234,104 @@ const Product = () => {
             background-color: #0056b3;
           }
         `}
-            </style>
-            <div className="image-gallery">
-                <img src={selectedImage} alt="Selected" className="main-image" />
-                <div className="thumbnail-container">
-                    {product.images.map((img, index) => (
-                        <img
-                            key={index}
-                            src={img}
-                            alt={`Thumbnail ${index + 1}`}
-                            className={`thumbnail ${selectedImage === img ? "selected" : ""}`}
-                            onClick={() => setSelectedImage(img)}
-                        />
-                    ))}
-                </div>
-            </div>
-            <div className="product-details">
-                <h1 className="product-name">{product.name}</h1>
-                <p className="product-description">{product.description}</p>
-                <p className="product-price">RM{product.price.toFixed(2)}</p>
-                <p className="product-id"><strong>Product ID:</strong> {product.productID}</p>
-                <p className="product-category"><strong>Category:</strong> {product.category}</p>
-                <p className="product-brand"><strong>Brand:</strong> {product.brand}</p>
-                <div className="selectors">
-                    <div className="selector">
-                        <label htmlFor="color">Colour:</label>
-                        <select
-                            id="color"
-                            value={selectedColor}
-                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedColor(e.target.value)}
-                        >
-                            <option value="">Select Colour</option>
-                            {product.colors.map((color, index) => (
-                                <option key={index} value={color}>
-                                    {color}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="selector">
-                        <label htmlFor="size">Size:</label>
-                        <select
-                            id="size"
-                            value={selectedSize}
-                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedSize(e.target.value)}
-                        >
-                            <option value="">Select Size</option>
-                            {product.sizes.map((size, index) => (
-                                <option key={index} value={size}>
-                                    {size}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="selector">
-                        <label htmlFor="quantity">Quantity:</label>
-                        <input
-                            type="number"
-                            id="quantity"
-                            min="1"
-                            max={getMaxQuantity()}
-                            value={quantity}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuantity(Number(e.target.value))}
-                        />
+                </style>
+                <div className="image-gallery">
+                    <AsyncImage
+                        productID={productID!}
+                        color={specificProduct!.colors[0]}
+                        number={0}
+                        alt="Product Image"
+                        className="product-image"
+                    />
+                    <div className="thumbnail-container">
+                        {images.map((img, index) => (
+                            <img
+                                key={index}
+                                src={img}
+                                alt={`Thumbnail ${index + 1}`}
+                                className={`thumbnail ${
+                                    selectedImage === img ? "selected" : ""
+                                }`}
+                                onClick={() => setSelectedImage(img)}
+                            />
+                        ))}
                     </div>
                 </div>
-                <button className="add-to-cart-button" onClick={handleAddToCart}>
-                    Add to Cart
-                </button>
+                <div className="product-details">
+                    <h1 className="product-name">{specificProduct!.name}</h1>
+                    <p className="product-description">
+                        {specificProduct!.description}
+                    </p>
+                    <p className="product-price">
+                        RM{specificProduct!.price.toFixed(2)}
+                    </p>
+                    <p className="product-id">
+                        <strong>Product ID:</strong> {productID}
+                    </p>
+                    <p className="product-category">
+                        <strong>Category:</strong> {specificProduct!.category}
+                    </p>
+                    <p className="product-brand">
+                        <strong>Brand:</strong> {specificProduct!.brand}
+                    </p>
+                    <div className="selectors">
+                        <div className="selector">
+                            <label htmlFor="color">Colour:</label>
+                            <select
+                                id="color"
+                                value={selectedColor}
+                                onChange={(
+                                    e: React.ChangeEvent<HTMLSelectElement>
+                                ) => setSelectedColor(e.target.value)}
+                            >
+                                <option value="">Select Colour</option>
+                                {specificProduct!.colors.map((color, index) => (
+                                    <option key={index} value={color}>
+                                        {color}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="selector">
+                            <label htmlFor="size">Size:</label>
+                            <select
+                                id="size"
+                                value={selectedSize}
+                                onChange={(
+                                    e: React.ChangeEvent<HTMLSelectElement>
+                                ) => setSelectedSize(e.target.value)}
+                            >
+                                <option value="">Select Size</option>
+                                {specificProduct!.sizes.map((size, index) => (
+                                    <option key={index} value={size}>
+                                        {size}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="selector">
+                            <label htmlFor="quantity">Quantity:</label>
+                            <input
+                                type="number"
+                                id="quantity"
+                                min="1"
+                                max={getMaxQuantity()}
+                                value={quantity}
+                                onChange={(
+                                    e: React.ChangeEvent<HTMLInputElement>
+                                ) => setQuantity(Number(e.target.value))}
+                            />
+                        </div>
+                    </div>
+                    <button
+                        className="add-to-cart-button"
+                        onClick={handleAddToCart}
+                    >
+                        Add to Cart
+                    </button>
+                </div>
             </div>
-        </div>
+        )
     );
 };
 
