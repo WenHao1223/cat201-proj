@@ -100,11 +100,21 @@ const Product: React.FC<ProductProps> = ({
 
     const handleAddToCart = () => {
         if (!selectedColor || !selectedSize) {
-            alert("Please select a colour and size before adding to cart.");
+            Swal.fire({
+                title: "Error!",
+                text: "Please select a colour and size.",
+                icon: "error",
+                confirmButtonText: "OK",
+            });
             return;
         }
         if (!isLogin) {
-            alert("Please login to add items to cart.");
+            Swal.fire({
+                title: "Error!",
+                text: "Please login to add to cart.",
+                icon: "error",
+                confirmButtonText: "OK",
+            });
             return;
         }
         addToCart(
@@ -113,9 +123,12 @@ const Product: React.FC<ProductProps> = ({
             specificProduct!.sizes.indexOf(selectedSize),
             specificProduct!.colors.indexOf(selectedColor)
         );
-        alert(
-            `Added ${quantity} item(s) of ${specificProduct!.name} to the cart.`
-        );
+        Swal.fire({
+            title: "Success!",
+            text: "Added to cart successfully.",
+            icon: "success",
+            confirmButtonText: "OK",
+        });
     };
 
     const getMaxQuantity = () => {
