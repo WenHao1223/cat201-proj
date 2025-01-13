@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { ShoppingCartIcon } from "@heroicons/react/20/solid";
+import { UserIcon, ShoppingCartIcon } from "@heroicons/react/20/solid";
 
 interface NavbarProps {
     isLogin: boolean;
@@ -43,9 +43,9 @@ const Navbar: React.FC<NavbarProps> = ({
                     <>
                         <Link to="/cart">
                             <ShoppingCartIcon className="h-6 w-8 text-gray-800" />
-                        </Link>
-                        <Link to="/checkout">
-                            <button className="btn btn-gray-800">Checkout</button>
+                        </Link>                        
+                        <Link to="/profile">
+                            <UserIcon className="h-6 w-8 text-gray-800" />
                         </Link>
                         <button
                             onClick={handleLogout}
