@@ -42,6 +42,19 @@ public class SpecificOrderServlet extends HttpServlet {
         if (!email.isEmpty()) {
             User user = UserCollection.getUserByEmail(email);
             if (user != null) {
+                try {
+                    if (!user.getRole().equals("user")) {
+                        throw new IllegalArgumentException("User is not a customer");
+                    }
+                } catch (IllegalArgumentException e) {
+                    jsonResponse.addProperty("status", "Error");
+                    jsonResponse.addProperty("message", e.getMessage());
+                    PrintWriter out = response.getWriter();
+                    out.write(jsonResponse.toString());
+                    out.flush();
+                    return;
+                }
+                
                 Order order = user.getOrderByID(Integer.parseInt(orderID));
                 JsonArray jsonOrder = new JsonArray();
 

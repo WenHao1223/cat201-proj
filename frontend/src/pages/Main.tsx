@@ -71,6 +71,11 @@ const Main: React.FC<MainProps> = ({
                         )}
                         {isLogin && (
                             <>
+                                <Link to="/profile">
+                                    <button className="text-white">
+                                        Go to Profile
+                                    </button>
+                                </Link>
                                 <Link to="/cart">
                                     <button className="text-white">
                                         Go to Cart

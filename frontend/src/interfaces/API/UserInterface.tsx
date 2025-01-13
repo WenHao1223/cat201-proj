@@ -10,6 +10,7 @@ export interface UserInterface {
     phoneNo: string;
     gender: number;
     dob: string;
+    role?: string;
     agreeToTerms: boolean;
     shippingAddresses?: string[];
     billingAddresses?: string[];
@@ -26,6 +27,7 @@ export interface UserGeneralDetailsInterface {
     lastName: string;
     phoneNo: string;
     gender: number;
+    role: string;
     dob: string;
 }
 

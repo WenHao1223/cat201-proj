@@ -35,15 +35,28 @@ public class UsersBillingAddressesServlet extends HttpServlet {
 
         if (email != "") {
             User user = UserCollection.getUserByEmail(email);
-            List<String> billingAddresses = user.getBillingAddresses();
-    
-            // Convert the list to a JSON array
-            Gson gson = new Gson();
-            JsonArray jsonBillingAddresses = gson.toJsonTree(billingAddresses).getAsJsonArray();
-    
-            // Create JSON response
-            jsonResponse.addProperty("status", "Success");
-            jsonResponse.addProperty("billingAddresses", jsonBillingAddresses.toString());   
+
+            try {
+                if (!user.getRole().equals("user")) {
+                    throw new IllegalArgumentException("User is not a customer");
+                }
+
+                List<String> billingAddresses = user.getBillingAddresses();
+
+                // Convert the list to a JSON array
+                Gson gson = new Gson();
+                JsonArray jsonBillingAddresses = gson.toJsonTree(billingAddresses).getAsJsonArray();
+
+                // Create JSON response
+                jsonResponse.addProperty("status", "Success");
+                jsonResponse.addProperty("billingAddresses", jsonBillingAddresses.toString());
+            } catch (IllegalArgumentException e) {
+                jsonResponse.addProperty("status", "Error");
+                jsonResponse.addProperty("message", e.getMessage());
+            } catch (Exception e) {
+                jsonResponse.addProperty("status", "Error");
+                jsonResponse.addProperty("message", e.getMessage());
+            }
         } else {
             jsonResponse.addProperty("status", "Error");
             jsonResponse.addProperty("message", "No user is logged in");

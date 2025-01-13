@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ChevronRightIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
 import {
     Popover,
@@ -66,9 +66,11 @@ const Checkout: React.FC<CheckoutProps> = ({
     isLogin,
 }) => {
     const navigate = useNavigate();
-    if (!isLogin) {
-        navigate("/login");
-    }
+    useEffect(() => {
+        if (!isLogin) {
+            navigate("/login");
+        }
+    }, [isLogin]);
 
     return (
         <div className="bg-white">

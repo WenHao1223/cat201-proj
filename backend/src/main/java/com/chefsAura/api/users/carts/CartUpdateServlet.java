@@ -60,6 +60,10 @@ public class CartUpdateServlet extends HttpServlet {
 
             if (user != null) {
                 try {
+                    if (!user.getRole().equals("user")) {
+                        throw new IllegalArgumentException("User is not a customer");
+                    }
+                    
                     try {
                         user.updateProductQuantityInCart(
                                 productID,
