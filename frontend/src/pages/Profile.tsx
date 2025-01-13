@@ -692,7 +692,7 @@ const Profile: React.FC<ProfileProps> = ({
                                     </label>
                                     {isEditing ? (
                                         <input
-                                            type="text"
+                                            type="email"
                                             value={editableUserDetails?.email}
                                             onChange={(e) =>
                                                 handleInputChange(
@@ -766,7 +766,7 @@ const Profile: React.FC<ProfileProps> = ({
                                     </label>
                                     {isEditing ? (
                                         <input
-                                            type="text"
+                                            type="phone"
                                             value={editableUserDetails?.phoneNo}
                                             onChange={(e) =>
                                                 handleInputChange(
@@ -850,7 +850,7 @@ const Profile: React.FC<ProfileProps> = ({
                                     </label>
                                     {isEditing ? (
                                         <input
-                                            type="text"
+                                            type="date"
                                             value={editableUserDetails?.dob}
                                             onChange={(e) =>
                                                 handleInputChange(
@@ -870,23 +870,9 @@ const Profile: React.FC<ProfileProps> = ({
                                     <label className="block text-sm font-medium text-gray-700">
                                         Role:
                                     </label>
-                                    {isEditing ? (
-                                        <input
-                                            type="text"
-                                            value={editableUserDetails?.role}
-                                            onChange={(e) =>
-                                                handleInputChange(
-                                                    "role",
-                                                    e.target.value
-                                                )
-                                            }
-                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                        />
-                                    ) : (
-                                        <span className="block font-light">
-                                            {currentUserGeneralDetails?.role}
-                                        </span>
-                                    )}
+                                    <span className="block font-light">
+                                        {currentUserGeneralDetails?.role}
+                                    </span>
                                 </div>
                             </div>
                             <button
