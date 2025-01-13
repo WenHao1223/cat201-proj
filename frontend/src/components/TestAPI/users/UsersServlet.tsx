@@ -27,6 +27,7 @@ const UsersServlet: React.FC<UsersServletProps> = ({ users }) => {
                     <p>Gender: {user.gender}</p>
                     <p>Date of Birth: {user.dob}</p>
                     <p>Nationality: {user.nationality}</p>
+                    <p>Role: {user.role}</p>
                     <p>Agree to Terms: {user.agreeToTerms ? "Yes" : "No"}</p>
                     <h3>Shipping Addresses</h3>
                     <ul>

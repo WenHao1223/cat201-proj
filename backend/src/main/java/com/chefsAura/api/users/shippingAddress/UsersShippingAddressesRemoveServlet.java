@@ -53,6 +53,19 @@ public class UsersShippingAddressesRemoveServlet extends HttpServlet {
             User user = UserCollection.getUserByEmail(email);
 
             if (user != null) {
+                try {
+                    if (!user.getRole().equals("user")) {
+                        throw new IllegalArgumentException("User is not a customer");
+                    }
+                } catch (IllegalArgumentException e) {
+                    jsonResponse.addProperty("status", "Error");
+                    jsonResponse.addProperty("message", e.getMessage());
+                    PrintWriter out = response.getWriter();
+                    out.write(jsonResponse.toString());
+                    out.flush();
+                    return;
+                }
+
                 user.removeShippingAddress(removedAddress);
                 List<String> shippingAddresses = user.getShippingAddresses();
 

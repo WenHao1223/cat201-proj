@@ -35,6 +35,20 @@ public class UsersShippingAddressesServlet extends HttpServlet {
 
         if (email != "") {
             User user = UserCollection.getUserByEmail(email);
+
+            try {
+                if (!user.getRole().equals("user")) {
+                    throw new IllegalArgumentException("User is not a customer");
+                }
+            } catch (IllegalArgumentException e) {
+                jsonResponse.addProperty("status", "Error");
+                jsonResponse.addProperty("message", e.getMessage());
+                PrintWriter out = response.getWriter();
+                out.write(jsonResponse.toString());
+                out.flush();
+                return;
+            }
+
             List<String> shippingAddresses = user.getShippingAddresses();
     
             // Convert the list to a JSON array

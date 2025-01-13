@@ -28,9 +28,9 @@ public class UsersPaymentDetailsAddServlet extends HttpServlet {
     }
 
     @Override
-    public void doPut(HttpServletRequest request, HttpServletResponse response)
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setHeader("Access-Control-Allow-Methods", "PUT, OPTIONS");
+        response.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
 
         // Read request body
         StringBuilder sb = new StringBuilder();
@@ -45,7 +45,7 @@ public class UsersPaymentDetailsAddServlet extends HttpServlet {
         Gson gson = new Gson();
         JsonObject jsonObject = gson.fromJson(sb.toString(), JsonObject.class);
         System.out.println(
-                "UsersPaymentDetailsAddServlet PUT request received with parameters: " + jsonObject.toString());
+                "UsersPaymentDetailsAddServlet POST request received with parameters: " + jsonObject.toString());
         String email = jsonObject.get("email").getAsString();
         String paymentMethod = jsonObject.get("paymentMethod").getAsString();
         String cardNumber = jsonObject.get("cardNumber").getAsString();
@@ -58,6 +58,10 @@ public class UsersPaymentDetailsAddServlet extends HttpServlet {
             User user = UserCollection.getUserByEmail(email);
             if (user != null) {
                 try {
+                    if (!user.getRole().equals("user")) {
+                        throw new IllegalArgumentException("User is not a customer");
+                    }
+                    
                     user.addPaymentDetails(new Payment(
                             PaymentMethodEnum.fromString(paymentMethod),
                             cardNumber,
@@ -77,6 +81,9 @@ public class UsersPaymentDetailsAddServlet extends HttpServlet {
                     // Create JSON response
                     jsonResponse.addProperty("status", "Success");
                     jsonResponse.add("paymentDetails", jsonPaymentDetails);
+                } catch (IllegalArgumentException e) {
+                    jsonResponse.addProperty("status", "Error");
+                    jsonResponse.addProperty("message", e.getMessage());
                 } catch (Exception e) {
                     jsonResponse.addProperty("status", "Error");
                     jsonResponse.addProperty("message", e.getMessage());

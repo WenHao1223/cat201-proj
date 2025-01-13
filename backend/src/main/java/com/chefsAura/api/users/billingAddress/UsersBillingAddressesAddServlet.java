@@ -26,9 +26,9 @@ public class UsersBillingAddressesAddServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setHeader("Access-Control-Allow-Methods", "PUT, OPTIONS");
+        response.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
 
         // Read request body
         StringBuilder sb = new StringBuilder();
@@ -43,7 +43,7 @@ public class UsersBillingAddressesAddServlet extends HttpServlet {
         Gson gson = new Gson();
         JsonObject jsonObject = gson.fromJson(sb.toString(), JsonObject.class);
         System.out.println(
-                "UsersBillingAddressesAddServlet PUT request received with parameters: " + jsonObject.toString());
+                "UsersBillingAddressesAddServlet POST request received with parameters: " + jsonObject.toString());
         String email = jsonObject.get("email").getAsString();
         String newBillingAddress = jsonObject.get("newBillingAddress").getAsString();
 
@@ -54,6 +54,10 @@ public class UsersBillingAddressesAddServlet extends HttpServlet {
 
             if (user != null) {
                 try {
+                    if (!user.getRole().equals("user")) {
+                        throw new IllegalArgumentException("User is not a customer");
+                    }
+
                     user.addBillingAddress(newBillingAddress);
                     List<String> billingAddresses = user.getBillingAddresses();
 
@@ -63,6 +67,9 @@ public class UsersBillingAddressesAddServlet extends HttpServlet {
                     // Create JSON response
                     jsonResponse.addProperty("status", "Success");
                     jsonResponse.addProperty("billingAddresses", jsonBillingAddresses.toString());
+                } catch (IllegalArgumentException e) {
+                    jsonResponse.addProperty("status", "Error");
+                    jsonResponse.addProperty("message", e.getMessage());
                 } catch (Exception e) {
                     jsonResponse.addProperty("status", "Error");
                     jsonResponse.addProperty("message", "Failed to add billing address");

@@ -13,6 +13,7 @@ import {
     CartGeneralInterface,
     UserGeneralDetailsInterface,
 } from "@interfaces/API/UserInterface";
+import Profile from "@pages/Profile";
 
 const App: React.FC = () => {
     const [currentUserGeneralDetails, setCurrentUserGeneralDetails] =
@@ -133,6 +134,21 @@ const App: React.FC = () => {
                                     currentUserGeneralDetails!
                                 }
                                 isLogin={isLogin}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/profile"
+                        element={
+                            <Profile
+                                currentUserGeneralDetails={
+                                    currentUserGeneralDetails
+                                }
+                                setCurrentUserGeneralDetails={
+                                    setCurrentUserGeneralDetails
+                                }
+                                isLogin={isLogin}
+                                setIsLogin={setIsLogin}
                             />
                         }
                     />

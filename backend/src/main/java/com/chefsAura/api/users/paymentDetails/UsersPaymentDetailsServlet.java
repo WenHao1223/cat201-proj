@@ -36,6 +36,19 @@ public class UsersPaymentDetailsServlet extends HttpServlet {
         if (email != "") {
             User user = UserCollection.getUserByEmail(email);
             if (user != null) {
+                try {
+                    if (!user.getRole().equals("user")) {
+                        throw new IllegalArgumentException("User is not a customer");
+                    }
+                } catch (IllegalArgumentException e) {
+                    jsonResponse.addProperty("status", "Error");
+                    jsonResponse.addProperty("message", e.getMessage());
+                    PrintWriter out = response.getWriter();
+                    out.write(jsonResponse.toString());
+                    out.flush();
+                    return;
+                }
+                
                 List<Payment> paymentDetails = user.getPaymentDetails();
                 JsonArray jsonPaymentDetails = new JsonArray();
 
