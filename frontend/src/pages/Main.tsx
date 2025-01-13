@@ -71,6 +71,7 @@ import image2 from "../assets/image2.webp";
 import image3 from "../assets/image3.webp";
 import { ProductInterface } from "@interfaces/API/ProductInterface";
 import handleApiCall from "@utils/handleApiCall";
+import AsyncImage from "@components/AsyncImage";
 
 const products = [
     {
@@ -185,9 +186,11 @@ const Main: React.FC<MainProps> = ({
                             className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
                         >
                             <div className="aspect-h-4 aspect-w-3 bg-gray-200 sm:aspect-none group-hover:opacity-75 sm:h-96">
-                                <img
+                                <AsyncImage
+                                    productID={product.productID}
+                                    color={product.colors[0]}
+                                    number={0}
                                     alt={product.name}
-                                    // src={product.imageSrc}
                                     className="h-full w-full object-cover object-center sm:h-full sm:w-full"
                                 />
                             </div>
