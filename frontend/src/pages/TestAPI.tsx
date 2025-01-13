@@ -74,6 +74,7 @@ const TestAPI: React.FC = () => {
             phoneNo: "",
             gender: 0,
             dob: "",
+            role: "",
             agreeToTerms: false,
         });
 
@@ -306,7 +307,12 @@ const TestAPI: React.FC = () => {
             "POST",
             null,
             (result) => {
-                setUsers(result);
+                console.log(result);
+                if (result == null) {
+                    setError("\n No user data found");
+                } else {
+                    setUsers(result);
+                }
                 setToDefault();
                 setShowUsers(true);
             },
@@ -525,7 +531,7 @@ const TestAPI: React.FC = () => {
         setNewShippingAddress(newShippingAddress);
         await handleApiCall(
             "users/shippingAddresses/add",
-            "PUT",
+            "POST",
             {
                 email: userEmail,
                 newShippingAddress,
@@ -611,7 +617,7 @@ const TestAPI: React.FC = () => {
         setNewBillingAddress(newBillingAddress);
         await handleApiCall(
             "users/billingAddresses/add",
-            "PUT",
+            "POST",
             {
                 email: userEmail,
                 newBillingAddress,
@@ -707,7 +713,7 @@ const TestAPI: React.FC = () => {
         });
         await handleApiCall(
             "users/paymentDetails/add",
-            "PUT",
+            "POST",
             {
                 email: userEmail,
                 paymentMethod,
@@ -804,7 +810,7 @@ const TestAPI: React.FC = () => {
     ) => {
         await handleApiCall(
             `users/cart/add`,
-            "PUT",
+            "POST",
             {
                 email: userEmail,
                 productID,
@@ -948,7 +954,7 @@ const TestAPI: React.FC = () => {
         });
         await handleApiCall(
             `users/orders/add`,
-            "PUT",
+            "POST",
             {
                 email: userEmail,
                 shippingAddress,
@@ -1005,7 +1011,8 @@ const TestAPI: React.FC = () => {
             <button className="text-white" onClick={fetchProductData}>Fetch Product Data</button>
             <button className="text-white"
                 onClick={() =>
-                    validateUserLoginMethod("jdoe@example.com", "password123")
+                    // validateUserLoginMethod("jdoe@example.com", "password123")
+                    validateUserLoginMethod("admin@gmail.com", "admin123")
                 }
             >
                 Validate User Login
@@ -1148,7 +1155,7 @@ const TestAPI: React.FC = () => {
 
             <div>
                 {error && <p style={{ color: "red" }}>{error}</p>}
-                {showUsers && users.length > 0 && (
+                {showUsers && users && users.length > 0 && (
                     <UsersServlet users={users} />
                 )}
                 {showProducts && products.length > 0 && (

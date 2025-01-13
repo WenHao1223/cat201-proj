@@ -1,14 +1,33 @@
 [
   {
+    "username": "admin",
+    "email": "admin@gmail.com",
+    "password": "admin123",
+    "nationality": "Malaysia",
+    "firstName": "Admin",
+    "lastName": "Account",
+    "phoneNo": "+6012-345 6789",
+    "gender": 1,
+    "dob": "1990-01-01",
+    "role": "admin",
+    "agreeToTerms": true,
+    "shippingAddresses": [],
+    "billingAddresses": [],
+    "paymentDetails": [],
+    "carts": [],
+    "orders": []
+  },
+  {
     "username": "jdoe123",
     "email": "jdoe@example.com",
-    "password": "password123",
+    "password": "test",
     "nationality": "Malaysia",
     "firstName": "John",
     "lastName": "Doe",
     "phoneNo": "+6012-345 6789",
     "gender": 1,
     "dob": "1990-01-01",
+    "role": "user",
     "agreeToTerms": true,
     "shippingAddresses": [
       "123 Main St, Kuala Lumpur",
@@ -76,6 +95,7 @@
     "phoneNo": "+6013-456 7890",
     "gender": 2,
     "dob": "1985-05-15",
+    "role": "user",
     "agreeToTerms": true,
     "shippingAddresses": [
       "456 Elm St, Kuala Lumpur"
@@ -136,6 +156,7 @@
     "phoneNo": "+6014-567 8901",
     "gender": 1,
     "dob": "1988-03-22",
+    "role": "user",
     "agreeToTerms": true,
     "shippingAddresses": [
       "789 Pine St, Kuala Lumpur"
@@ -189,6 +210,7 @@
     "phoneNo": "+6015-678 9012",
     "gender": 1,
     "dob": "1992-07-11",
+    "role": "user",
     "agreeToTerms": true,
     "shippingAddresses": [
       "101 Maple St, Kuala Lumpur"
@@ -242,6 +264,7 @@
     "phoneNo": "+6016-789 0123",
     "gender": 1,
     "dob": "1980-12-30",
+    "role": "user",
     "agreeToTerms": true,
     "shippingAddresses": [
       "202 Oak St, Kuala Lumpur"
@@ -295,6 +318,7 @@
     "phoneNo": "+6017-890 1234",
     "gender": 2,
     "dob": "1995-04-20",
+    "role": "user",
     "agreeToTerms": true,
     "shippingAddresses": [
       "303 Birch St, Kuala Lumpur"
@@ -348,6 +372,7 @@
     "phoneNo": "+6018-901 2345",
     "gender": 1,
     "dob": "1982-09-09",
+    "role": "user",
     "agreeToTerms": true,
     "shippingAddresses": [
       "404 Cedar St, Kuala Lumpur"
@@ -401,6 +426,7 @@
     "phoneNo": "+6019-012 3456",
     "gender": 2,
     "dob": "1991-11-11",
+    "role": "user",
     "agreeToTerms": true,
     "shippingAddresses": [
       "505 Spruce St, Kuala Lumpur"
@@ -454,6 +480,7 @@
     "phoneNo": "+6019-123 4567",
     "gender": 1,
     "dob": "1987-06-06",
+    "role": "user",
     "agreeToTerms": true,
     "shippingAddresses": [],
     "billingAddresses": [],
@@ -471,6 +498,7 @@
     "phoneNo": "+6016-234 5678",
     "gender": 2,
     "dob": "1993-02-02",
+    "role": "user",
     "agreeToTerms": true,
     "shippingAddresses": [
       "707 Willow St, Kuala Lumpur"

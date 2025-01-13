@@ -14,6 +14,7 @@ public class User {
     String phoneNo;
     short gender;
     String dob;
+    String role;
     Boolean agreeToTerms;
 
     List<String> shippingAddresses;
@@ -34,6 +35,7 @@ public class User {
         phoneNo = "";
         gender = 0;
         dob = "";
+        role = "user";
         agreeToTerms = false;
         shippingAddresses = new ArrayList<>();
         billingAddresses = new ArrayList<>();
@@ -55,6 +57,7 @@ public class User {
         this.phoneNo = phoneNo;
         this.gender = gender;
         this.dob = dob;
+        this.role = "user";
         this.agreeToTerms = agreeToTerms;
         shippingAddresses = new ArrayList<>();
         billingAddresses = new ArrayList<>();
@@ -66,7 +69,7 @@ public class User {
     // used during first-time loading of users
     public User(String username, String email, String password,
             String nationality, String firstName, String lastName,
-            String phoneNo, short gender, String dob, Boolean agreeToTerms,
+            String phoneNo, short gender, String dob, String role, Boolean agreeToTerms,
             List<String> shippingAddresses, List<String> billingAddresses,
             List<Payment> paymentDetails,
             List<Cart> carts,
@@ -80,6 +83,7 @@ public class User {
         this.phoneNo = phoneNo;
         this.gender = gender;
         this.dob = dob;
+        this.role = role;
         this.agreeToTerms = agreeToTerms;
         this.shippingAddresses = shippingAddresses;
         this.billingAddresses = billingAddresses;
@@ -410,6 +414,11 @@ public class User {
     // get date of birth
     public String getDob() {
         return this.dob;
+    }
+
+    // get role
+    public String getRole() {
+        return this.role;
     }
 
     // get shipping addresses
