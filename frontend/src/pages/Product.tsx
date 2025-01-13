@@ -239,7 +239,7 @@ const Product = () => {
                         alt="Product Image"
                         className="main-image"
                     />
-                    <div className="thumbnail-container">
+                    <div className="thumbnail-container overflow-x-auto">
                         {images.map((img, index) => (
                             <img
                                 key={index}
