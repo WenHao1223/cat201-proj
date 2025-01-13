@@ -3,8 +3,27 @@ import { useNavigate, useParams } from "react-router-dom";
 import handleApiCall from "@utils/handleApiCall";
 import { ProductInterface } from "@interfaces/API/ProductInterface";
 import Swal from "sweetalert2";
+import {
+    CartGeneralInterface,
+    UserGeneralDetailsInterface,
+} from "@interfaces/API/UserInterface";
+import Navbar from "@components/Navbar";
 
-const Product = () => {
+interface ProductProps {
+    currentUserGeneralDetails: UserGeneralDetailsInterface | null;
+    isLogin: boolean;
+    carts: CartGeneralInterface[] | null;
+    setCarts: React.Dispatch<
+        React.SetStateAction<CartGeneralInterface[] | null>
+    >;
+}
+
+const Product: React.FC<ProductProps> = ({
+    currentUserGeneralDetails,
+    isLogin,
+    carts,
+    setCarts,
+}) => {
     const { productID } = useParams<{ productID: string }>();
     const [specificProduct, setSpecificProduct] =
         useState<ProductInterface | null>(null);
@@ -84,6 +103,16 @@ const Product = () => {
             alert("Please select a colour and size before adding to cart.");
             return;
         }
+        if (!isLogin) {
+            alert("Please login to add items to cart.");
+            return;
+        }
+        addToCart(
+            productID!,
+            quantity,
+            specificProduct!.sizes.indexOf(selectedSize),
+            specificProduct!.colors.indexOf(selectedColor)
+        );
         alert(
             `Added ${quantity} item(s) of ${specificProduct!.name} to the cart.`
         );
@@ -95,6 +124,35 @@ const Product = () => {
         return sizeIndex !== -1 && colorIndex !== -1
             ? specificProduct!.quantities[sizeIndex][colorIndex]
             : 1;
+    };
+
+    const addToCart = async (
+        productID: string,
+        quantity: number,
+        sizeIndex: number,
+        colorIndex: number
+    ) => {
+        await handleApiCall(
+            `users/cart/add`,
+            "POST",
+            {
+                email: currentUserGeneralDetails!.email,
+                productID,
+                quantity,
+                sizeIndex,
+                colorIndex,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setCarts(
+                        result.carts.map((cart: string) => JSON.parse(cart))
+                    );
+                } else {
+                    setError("\n Error adding to cart: " + result.message);
+                }
+            },
+            (error) => setError("\n Error adding to cart: " + error)
+        );
     };
 
     return (
@@ -233,6 +291,11 @@ const Product = () => {
           }
         `}
                 </style>
+                <Navbar
+                    isLogin={isLogin}
+                    setIsLogin={() => {}}
+                    setCurrentUserGeneralDetails={() => {}}
+                />
                 <div className="image-gallery">
                     <img
                         src={selectedImage || images[0]}
