@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChevronRightIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
 import {
     Popover,
@@ -8,9 +7,11 @@ import {
     PopoverPanel,
 } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 import {
     CartGeneralInterface,
+    PaymentGeneralInterface,
     UserGeneralDetailsInterface,
 } from "@interfaces/API/UserInterface";
 import Navbar from "@components/Navbar";
@@ -72,12 +73,31 @@ const Checkout: React.FC<CheckoutProps> = ({
     const [subtotal, setSubtotal] = React.useState(0);
     const [shippingTotal, setShippingTotal] = React.useState(0);
     const [taxTotal, setTaxTotal] = React.useState(0);
+
+    const [currentUserPaymentDetails, setCurrentUserPaymentDetails] = useState<
+        PaymentGeneralInterface[]
+    >([]);
+    const [currentUserShippingAddresses, setCurrentUserShippingAddresses] =
+        useState<string[]>([]);
+    const [currentUserBillingAddresses, setCurrentUserBillingAddresses] =
+        useState<string[]>([]);
+
+    const [selectedShippingAddress, setSelectedShippingAddress] = useState("");
+    const [newShippingAddress, setNewShippingAddress] = useState("");
+    const [selectedBillingAddress, setSelectedBillingAddress] = useState("");
+    const [newBillingAddress, setNewBillingAddress] = useState("");
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
+
     const [error, setError] = React.useState("");
 
     const navigate = useNavigate();
     useEffect(() => {
         if (!isLogin) {
             navigate("/login");
+        } else {
+            viewCurrentUserPaymentDetailsMethod();
+            viewCurrentUserShippingAddressesMethod();
+            viewCurrentUserBillingAddressesMethod();
         }
     }, [isLogin]);
 
@@ -99,6 +119,82 @@ const Checkout: React.FC<CheckoutProps> = ({
 
     const handleCheckboxChange = () => {
         setIsSameAsShipping(!isSameAsShipping);
+    };
+
+    const viewCurrentUserPaymentDetailsMethod = async () => {
+        await handleApiCall(
+            `users/paymentDetails?email=${currentUserGeneralDetails?.email}`,
+            "GET",
+            null,
+            async (result) => {
+                if ((await result.status) === "Success") {
+                    const paymentDetailsArray = result.paymentDetails.map(
+                        (paymentDetail: string) => JSON.parse(paymentDetail)
+                    );
+                    console.log(paymentDetailsArray);
+                    setCurrentUserPaymentDetails(paymentDetailsArray);
+                } else {
+                    setError(
+                        "\n Error viewing payment details: " + result.message
+                    );
+                }
+            },
+            (error) => setError("\n Error viewing payment details: " + error)
+        );
+    };
+
+    const viewCurrentUserShippingAddressesMethod = async () => {
+        await handleApiCall(
+            `users/shippingAddresses?email=${currentUserGeneralDetails?.email}`,
+            "GET",
+            null,
+            async (result) => {
+                if ((await result.status) === "Success") {
+                    setCurrentUserShippingAddresses(
+                        JSON.parse(result.shippingAddresses)
+                    );
+                } else {
+                    setError(
+                        "\n Error viewing shipping addresses: " + result.message
+                    );
+                }
+            },
+            (error) => setError("\n Error viewing shipping addresses: " + error)
+        );
+    };
+
+    const viewCurrentUserBillingAddressesMethod = async () => {
+        await handleApiCall(
+            `users/billingAddresses?email=${currentUserGeneralDetails?.email}`,
+            "GET",
+            null,
+            async (result) => {
+                if ((await result.status) === "Success") {
+                    setCurrentUserBillingAddresses(
+                        JSON.parse(result.billingAddresses)
+                    );
+                } else {
+                    setError(
+                        "\n Error viewing billing addresses: " + result.message
+                    );
+                }
+            },
+            (error) => setError("\n Error viewing billing addresses: " + error)
+        );
+    };
+
+    const handleCheckout = () => {
+        if (
+            (!selectedShippingAddress && !newShippingAddress) ||
+            (!selectedBillingAddress && !newBillingAddress) ||
+            !selectedPaymentMethod
+        ) {
+            Swal.fire("Error", "Please select all required fields.", "error");
+            return;
+        }
+
+        // Implement checkout functionality here
+        Swal.fire("Success", "Checkout successful!", "success");
     };
 
     return (
@@ -186,18 +282,8 @@ const Checkout: React.FC<CheckoutProps> = ({
                                     </div>
 
                                     <div className="flex items-center justify-between">
-                                        <dt className="text-gray-600">Taxes</dt>
-                                        <dd>$26.80</dd>
-                                    </div>
-
-                                    <div className="flex items-center justify-between">
                                         <dt className="text-gray-600">Tax</dt>
                                         <dd>RM {taxTotal.toFixed(2)}</dd>
-                                    </div>
-
-                                    <div className="flex items-center justify-between">
-                                        <dt className="text-gray-600">Taxes</dt>
-                                        <dd>$26.80</dd>
                                     </div>
 
                                     <div className="flex items-center justify-between border-t border-gray-200 pt-6">
@@ -216,6 +302,7 @@ const Checkout: React.FC<CheckoutProps> = ({
                                         <button
                                             type="submit"
                                             className="w-full rounded-lg border border-transparent bg-gray-800 text-white shadow-sm focus:ring-offset-gray-50 sm:order-last m:w-auto hover:bg-black hover:shadow-md px-4 py-3"
+                                            onClick={handleCheckout}
                                         >
                                             Proceed to Payment
                                         </button>
@@ -305,7 +392,9 @@ const Checkout: React.FC<CheckoutProps> = ({
                                                 name="email-address"
                                                 type="email"
                                                 autoComplete="email"
-                                                defaultValue={currentUserGeneralDetails?.email}
+                                                defaultValue={
+                                                    currentUserGeneralDetails?.email
+                                                }
                                                 className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
                                             />
                                         </div>
@@ -324,7 +413,9 @@ const Checkout: React.FC<CheckoutProps> = ({
                                                 name="contact-number"
                                                 type="tel"
                                                 autoComplete="tel"
-                                                defaultValue={currentUserGeneralDetails?.phoneNo}
+                                                defaultValue={
+                                                    currentUserGeneralDetails?.phoneNo
+                                                }
                                                 className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
                                             />
                                         </div>
@@ -430,19 +521,61 @@ const Checkout: React.FC<CheckoutProps> = ({
                                     <div className="mt-6 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-3">
                                         <div className="sm:col-span-3">
                                             <label
-                                                htmlFor="address1"
+                                                htmlFor="shipping-address"
                                                 className="block text-sm font-medium text-gray-700"
                                             >
                                                 Shipping Address
                                             </label>
                                             <div className="mt-2">
-                                                <input
-                                                    id="company"
-                                                    name="company"
-                                                    type="text"
+                                                <select
+                                                    id="shipping-address"
+                                                    name="shipping-address"
+                                                    value={
+                                                        selectedShippingAddress
+                                                    }
+                                                    onChange={(e) =>
+                                                        setSelectedShippingAddress(
+                                                            e.target.value
+                                                        )
+                                                    }
                                                     className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
-                                                />
+                                                >
+                                                    <option value="">
+                                                        Select Shipping Address
+                                                    </option>
+                                                    {currentUserShippingAddresses.map(
+                                                        (address, index) => (
+                                                            <option
+                                                                key={index}
+                                                                value={address}
+                                                            >
+                                                                {address}
+                                                            </option>
+                                                        )
+                                                    )}
+                                                    <option value="new">
+                                                        New Address
+                                                    </option>
+                                                </select>
                                             </div>
+                                            {selectedShippingAddress ===
+                                                "new" && (
+                                                <div className="mt-2">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Enter new shipping address"
+                                                        value={
+                                                            newShippingAddress
+                                                        }
+                                                        onChange={(e) =>
+                                                            setNewShippingAddress(
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
+                                                    />
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </section>
@@ -479,19 +612,61 @@ const Checkout: React.FC<CheckoutProps> = ({
                                     <div className="mt-6 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-3">
                                         <div className="sm:col-span-3">
                                             <label
-                                                htmlFor="address1"
+                                                htmlFor="billing-address"
                                                 className="block text-sm font-medium text-gray-700"
                                             >
                                                 Billing Address
                                             </label>
                                             <div className="mt-2">
-                                                <input
-                                                    id="company"
-                                                    name="company"
-                                                    type="text"
+                                                <select
+                                                    id="billing-address"
+                                                    name="billing-address"
+                                                    value={
+                                                        selectedBillingAddress
+                                                    }
+                                                    onChange={(e) =>
+                                                        setSelectedBillingAddress(
+                                                            e.target.value
+                                                        )
+                                                    }
                                                     className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
-                                                />
+                                                >
+                                                    <option value="">
+                                                        Select Billing Address
+                                                    </option>
+                                                    {currentUserBillingAddresses.map(
+                                                        (address, index) => (
+                                                            <option
+                                                                key={index}
+                                                                value={address}
+                                                            >
+                                                                {address}
+                                                            </option>
+                                                        )
+                                                    )}
+                                                    <option value="new">
+                                                        New Address
+                                                    </option>
+                                                </select>
                                             </div>
+                                            {selectedBillingAddress ===
+                                                "new" && (
+                                                <div className="mt-2">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Enter new billing address"
+                                                        value={
+                                                            newBillingAddress
+                                                        }
+                                                        onChange={(e) =>
+                                                            setNewBillingAddress(
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
+                                                    />
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 )}
@@ -499,6 +674,7 @@ const Checkout: React.FC<CheckoutProps> = ({
                                     <button
                                         type="submit"
                                         className="w-full rounded-lg border border-gray-300 bg-gray-900 px-4 py-3 text-white shadow-md hover:bg-black focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 sm:order-last sm:w-auto"
+                                        onClick={handleCheckout}
                                     >
                                         Proceed to Payment
                                     </button>
