@@ -87,6 +87,12 @@ const Checkout: React.FC<CheckoutProps> = ({
     const [selectedBillingAddress, setSelectedBillingAddress] = useState("");
     const [newBillingAddress, setNewBillingAddress] = useState("");
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
+    const [newPaymentMethod, setNewPaymentMethod] = useState({
+        paymentMethod: "",
+        cardNumber: "",
+        expiryDate: "",
+        cvv: "",
+    });
 
     const [error, setError] = React.useState("");
 
@@ -187,7 +193,7 @@ const Checkout: React.FC<CheckoutProps> = ({
         if (
             (!selectedShippingAddress && !newShippingAddress) ||
             (!selectedBillingAddress && !newBillingAddress) ||
-            !selectedPaymentMethod
+            (!selectedPaymentMethod && !newPaymentMethod.cardNumber)
         ) {
             Swal.fire("Error", "Please select all required fields.", "error");
             return;
@@ -433,77 +439,156 @@ const Checkout: React.FC<CheckoutProps> = ({
                                         Payment details
                                     </h2>
 
-                                    <div className="mt-6 grid grid-cols-3 gap-x-4 gap-y-6 sm:grid-cols-4">
-                                        <div className="col-span-3 sm:col-span-4">
+                                    <div className="mt-6 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-3">
+                                        <div className="sm:col-span-3">
                                             <label
-                                                htmlFor="name-on-card"
+                                                htmlFor="payment-method"
                                                 className="block text-sm font-medium text-gray-700"
                                             >
-                                                Name on card
+                                                Payment Method
                                             </label>
                                             <div className="mt-2">
-                                                <input
-                                                    id="name-on-card"
-                                                    name="name-on-card"
-                                                    type="text"
-                                                    autoComplete="cc-name"
+                                                <select
+                                                    id="payment-method"
+                                                    name="payment-method"
+                                                    value={
+                                                        selectedPaymentMethod
+                                                    }
+                                                    onChange={(e) =>
+                                                        setSelectedPaymentMethod(
+                                                            e.target.value
+                                                        )
+                                                    }
                                                     className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
-                                                />
+                                                >
+                                                    <option value="">
+                                                        Select Payment Method
+                                                    </option>
+                                                    {currentUserPaymentDetails.map(
+                                                        (method, index) => (
+                                                            <option
+                                                                key={index}
+                                                                value={
+                                                                    method.paymentID
+                                                                }
+                                                            >
+                                                                {
+                                                                    method.paymentMethod
+                                                                }{" "}
+                                                                -{" "}
+                                                                {
+                                                                    method.cardNumber
+                                                                }
+                                                            </option>
+                                                        )
+                                                    )}
+                                                    <option value="new">
+                                                        New Payment Method
+                                                    </option>
+                                                </select>
                                             </div>
-                                        </div>
-
-                                        <div className="col-span-3 sm:col-span-4">
-                                            <label
-                                                htmlFor="card-number"
-                                                className="block text-sm font-medium text-gray-700"
-                                            >
-                                                Card number
-                                            </label>
-                                            <div className="mt-2">
-                                                <input
-                                                    id="card-number"
-                                                    name="card-number"
-                                                    type="text"
-                                                    autoComplete="cc-number"
-                                                    className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div className="col-span-2 sm:col-span-3">
-                                            <label
-                                                htmlFor="expiration-date"
-                                                className="block text-sm font-medium text-gray-700"
-                                            >
-                                                Expiration date (MM/YY)
-                                            </label>
-                                            <div className="mt-2">
-                                                <input
-                                                    id="expiration-date"
-                                                    name="expiration-date"
-                                                    type="text"
-                                                    autoComplete="cc-exp"
-                                                    className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <label
-                                                htmlFor="cvc"
-                                                className="block text-sm font-medium text-gray-700"
-                                            >
-                                                CVC
-                                            </label>
-                                            <div className="mt-2">
-                                                <input
-                                                    id="cvc"
-                                                    name="cvc"
-                                                    type="text"
-                                                    autoComplete="csc"
-                                                    className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
-                                                />
-                                            </div>
+                                            {selectedPaymentMethod ===
+                                                "new" && (
+                                                <div className="mt-2 space-y-4">
+                                                    <select
+                                                        id="new-payment-method"
+                                                        name="new-payment-method"
+                                                        value={
+                                                            newPaymentMethod.paymentMethod
+                                                        }
+                                                        onChange={(e) =>
+                                                            setNewPaymentMethod(
+                                                                {
+                                                                    ...newPaymentMethod,
+                                                                    paymentMethod:
+                                                                        e.target
+                                                                            .value,
+                                                                }
+                                                            )
+                                                        }
+                                                        className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
+                                                    >
+                                                        <option value="">
+                                                            Select Payment
+                                                            Method
+                                                        </option>
+                                                        <option value="debit_card">
+                                                            Debit Card
+                                                        </option>
+                                                        <option value="credit_card">
+                                                            Credit Card
+                                                        </option>
+                                                        <option value="paypal">
+                                                            PayPal
+                                                        </option>
+                                                        <option value="visa">
+                                                            Visa
+                                                        </option>
+                                                    </select>
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Enter card number"
+                                                        value={
+                                                            newPaymentMethod.cardNumber
+                                                        }
+                                                        onChange={(e) =>
+                                                            setNewPaymentMethod(
+                                                                {
+                                                                    ...newPaymentMethod,
+                                                                    cardNumber:
+                                                                        e.target
+                                                                            .value,
+                                                                }
+                                                            )
+                                                        }
+                                                        className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
+                                                    />
+                                                    {(newPaymentMethod.paymentMethod ===
+                                                        "debit_card" ||
+                                                        newPaymentMethod.paymentMethod ===
+                                                            "credit_card") && (
+                                                        <div className="flex space-x-4">
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Expiry date (MM/YY)"
+                                                                value={
+                                                                    newPaymentMethod.expiryDate
+                                                                }
+                                                                onChange={(e) =>
+                                                                    setNewPaymentMethod(
+                                                                        {
+                                                                            ...newPaymentMethod,
+                                                                            expiryDate:
+                                                                                e
+                                                                                    .target
+                                                                                    .value,
+                                                                        }
+                                                                    )
+                                                                }
+                                                                className="block w-50 rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
+                                                            />
+                                                            <input
+                                                                type="text"
+                                                                placeholder="CVV (3 digits)"
+                                                                value={
+                                                                    newPaymentMethod.cvv
+                                                                }
+                                                                onChange={(e) =>
+                                                                    setNewPaymentMethod(
+                                                                        {
+                                                                            ...newPaymentMethod,
+                                                                            cvv: e
+                                                                                .target
+                                                                                .value,
+                                                                        }
+                                                                    )
+                                                                }
+                                                                className="block w-50 rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
+                                                            />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </section>
