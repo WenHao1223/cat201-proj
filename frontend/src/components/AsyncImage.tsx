@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 interface AsyncImageProps {
     productID: string;
@@ -8,13 +8,23 @@ interface AsyncImageProps {
     className?: string;
 }
 
-const AsyncImage: React.FC<AsyncImageProps> = ({ productID, color, number, alt, className }) => {
+const AsyncImage: React.FC<AsyncImageProps> = ({
+    productID,
+    color,
+    number,
+    alt,
+    className,
+}) => {
     const [src, setSrc] = useState<string | null>(null);
 
     useEffect(() => {
         const loadImage = async () => {
             try {
-                const image = await import(`../assets/images/${productID}/${color.toLowerCase().replace(" ", "")}-${number}.webp`);
+                const image = await import(
+                    `../assets/images/${productID}/${color
+                        .toLowerCase()
+                        .replace(" ", "")}-${number}.webp`
+                );
                 setSrc(image.default);
             } catch (error) {
                 console.error("Error loading image:", error);

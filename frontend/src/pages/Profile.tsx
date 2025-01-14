@@ -102,28 +102,53 @@ const Profile: React.FC<ProfileProps> = ({
             confirmButtonText: "Add",
             showLoaderOnConfirm: true,
             preConfirm: async () => {
-                const paymentMethod = (document.getElementById('paymentMethodType') as HTMLSelectElement).value;
-                const cardNumber = (document.getElementById('cardNumber') as HTMLInputElement).value;
-                const expiryDate = (document.getElementById('expiryDate') as HTMLInputElement).value;
-                const cvv = (document.getElementById('cvv') as HTMLInputElement).value;
-    
+                const paymentMethod = (
+                    document.getElementById(
+                        "paymentMethodType"
+                    ) as HTMLSelectElement
+                ).value;
+                const cardNumber = (
+                    document.getElementById("cardNumber") as HTMLInputElement
+                ).value;
+                const expiryDate = (
+                    document.getElementById("expiryDate") as HTMLInputElement
+                ).value;
+                const cvv = (document.getElementById("cvv") as HTMLInputElement)
+                    .value;
+
                 if (!cardNumber) {
-                    Swal.showValidationMessage('Card number or email is required');
+                    Swal.showValidationMessage(
+                        "Card number or email is required"
+                    );
                     return;
                 }
-    
-                if ((paymentMethod === 'debit_card' || paymentMethod === 'credit_card') && (!expiryDate || !cvv)) {
-                    Swal.showValidationMessage('Expiry date and CVV are required for debit and credit cards');
+
+                if (
+                    (paymentMethod === "debit_card" ||
+                        paymentMethod === "credit_card") &&
+                    (!expiryDate || !cvv)
+                ) {
+                    Swal.showValidationMessage(
+                        "Expiry date and CVV are required for debit and credit cards"
+                    );
                     return;
                 }
-    
+
                 const newPaymentMethod = {
                     paymentMethod: paymentMethod,
                     cardNumber,
-                    expiryDate: paymentMethod === 'debit_card' || paymentMethod === 'credit_card' ? expiryDate : "",
-                    cvv: paymentMethod === 'debit_card' || paymentMethod === 'credit_card' ? cvv : "",
+                    expiryDate:
+                        paymentMethod === "debit_card" ||
+                        paymentMethod === "credit_card"
+                            ? expiryDate
+                            : "",
+                    cvv:
+                        paymentMethod === "debit_card" ||
+                        paymentMethod === "credit_card"
+                            ? cvv
+                            : "",
                 };
-    
+
                 await handleApiCall(
                     `users/paymentDetails/add`,
                     "POST",
@@ -132,35 +157,49 @@ const Profile: React.FC<ProfileProps> = ({
                         paymentMethod: newPaymentMethod.paymentMethod,
                         cardNumber: newPaymentMethod.cardNumber,
                         expiryDate: newPaymentMethod.expiryDate,
-                        cvv: newPaymentMethod.cvv
+                        cvv: newPaymentMethod.cvv,
                     },
                     async (result) => {
                         if ((await result.status) === "Success") {
-                            const paymentDetailsArray = result.paymentDetails.map(
-                                (paymentDetail: string) => JSON.parse(paymentDetail)
-                            );
+                            const paymentDetailsArray =
+                                result.paymentDetails.map(
+                                    (paymentDetail: string) =>
+                                        JSON.parse(paymentDetail)
+                                );
                             setCurrentUserPaymentDetails(paymentDetailsArray);
                         } else {
-                            Swal.showValidationMessage(`Error: ${result.message}`);
+                            Swal.showValidationMessage(
+                                `Error: ${result.message}`
+                            );
                         }
                     },
-                    (error) => Swal.showValidationMessage(`Request failed: ${error}`)
+                    (error) =>
+                        Swal.showValidationMessage(`Request failed: ${error}`)
                 );
             },
             allowOutsideClick: () => !Swal.isLoading(),
         });
-    
-        const paymentMethodTypeElement = document.getElementById('paymentMethodType') as HTMLSelectElement;
-        const cardNumberElement = document.getElementById('cardNumber') as HTMLInputElement;
-        const additionalFields = document.getElementById('additionalFields') as HTMLDivElement;
-    
-        paymentMethodTypeElement.addEventListener('change', () => {
-            if (paymentMethodTypeElement.value === 'debit_card' || paymentMethodTypeElement.value === 'credit_card') {
-                cardNumberElement.placeholder = 'Enter card number';
-                additionalFields.style.display = 'block';
+
+        const paymentMethodTypeElement = document.getElementById(
+            "paymentMethodType"
+        ) as HTMLSelectElement;
+        const cardNumberElement = document.getElementById(
+            "cardNumber"
+        ) as HTMLInputElement;
+        const additionalFields = document.getElementById(
+            "additionalFields"
+        ) as HTMLDivElement;
+
+        paymentMethodTypeElement.addEventListener("change", () => {
+            if (
+                paymentMethodTypeElement.value === "debit_card" ||
+                paymentMethodTypeElement.value === "credit_card"
+            ) {
+                cardNumberElement.placeholder = "Enter card number";
+                additionalFields.style.display = "block";
             } else {
-                cardNumberElement.placeholder = 'Enter email address';
-                additionalFields.style.display = 'none';
+                cardNumberElement.placeholder = "Enter email address";
+                additionalFields.style.display = "none";
             }
         });
     };
@@ -463,9 +502,11 @@ const Profile: React.FC<ProfileProps> = ({
                     },
                     async (result) => {
                         if ((await result.status) === "Success") {
-                            const paymentDetailsArray = result.paymentDetails.map(
-                                (paymentDetail: string) => JSON.parse(paymentDetail)
-                            );
+                            const paymentDetailsArray =
+                                result.paymentDetails.map(
+                                    (paymentDetail: string) =>
+                                        JSON.parse(paymentDetail)
+                                );
                             setCurrentUserPaymentDetails(paymentDetailsArray);
                         } else {
                             setError(
@@ -479,7 +520,7 @@ const Profile: React.FC<ProfileProps> = ({
                 );
             }
         });
-    }
+    };
 
     const handleInputChange = (field: string, value: string) => {
         if (editableUserDetails) {
@@ -503,7 +544,7 @@ const Profile: React.FC<ProfileProps> = ({
                     updatedFields[key as keyof UserGeneralDetailsInterface] =
                         editableUserDetails[
                             key as keyof UserGeneralDetailsInterface
-                        ];
+                        ] as any;
                 }
             }
 
@@ -651,7 +692,7 @@ const Profile: React.FC<ProfileProps> = ({
                                     </label>
                                     {isEditing ? (
                                         <input
-                                            type="text"
+                                            type="email"
                                             value={editableUserDetails?.email}
                                             onChange={(e) =>
                                                 handleInputChange(
@@ -725,7 +766,7 @@ const Profile: React.FC<ProfileProps> = ({
                                     </label>
                                     {isEditing ? (
                                         <input
-                                            type="text"
+                                            type="phone"
                                             value={editableUserDetails?.phoneNo}
                                             onChange={(e) =>
                                                 handleInputChange(
@@ -809,7 +850,7 @@ const Profile: React.FC<ProfileProps> = ({
                                     </label>
                                     {isEditing ? (
                                         <input
-                                            type="text"
+                                            type="date"
                                             value={editableUserDetails?.dob}
                                             onChange={(e) =>
                                                 handleInputChange(
@@ -829,23 +870,9 @@ const Profile: React.FC<ProfileProps> = ({
                                     <label className="block text-sm font-medium text-gray-700">
                                         Role:
                                     </label>
-                                    {isEditing ? (
-                                        <input
-                                            type="text"
-                                            value={editableUserDetails?.role}
-                                            onChange={(e) =>
-                                                handleInputChange(
-                                                    "role",
-                                                    e.target.value
-                                                )
-                                            }
-                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                        />
-                                    ) : (
-                                        <span className="block font-light">
-                                            {currentUserGeneralDetails?.role}
-                                        </span>
-                                    )}
+                                    <span className="block font-light">
+                                        {currentUserGeneralDetails?.role}
+                                    </span>
                                 </div>
                             </div>
                             <button
@@ -910,9 +937,14 @@ const Profile: React.FC<ProfileProps> = ({
                                                     </span>
                                                 </div>
                                                 <div className="flex space-x-2">
-                                                    <button className="bg-transparent border-1 border-gray-900 text-red-500 hover:bg-gray-800 hover:text-red-300" onClick={() => {
-                                                        removePaymentMethod(paymentDetail.paymentID.toString());
-                                                    }}>
+                                                    <button
+                                                        className="bg-transparent border-1 border-gray-900 text-red-500 hover:bg-gray-800 hover:text-red-300"
+                                                        onClick={() => {
+                                                            removePaymentMethod(
+                                                                paymentDetail.paymentID.toString()
+                                                            );
+                                                        }}
+                                                    >
                                                         <i className="fas fa-minus"></i>
                                                     </button>
                                                 </div>
