@@ -156,10 +156,16 @@ const App: React.FC = () => {
                     <Route
                         path="/product/:productID"
                         element={
-                            <Product/>
+                            <Product
+                                currentUserGeneralDetails={
+                                    currentUserGeneralDetails
+                                }
+                                isLogin={isLogin}
+                                carts={carts}
+                                setCarts={setCarts}
+                            />
                         }
                     />
-                    
                 </Routes>
             </div>
         </Router>
