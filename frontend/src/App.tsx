@@ -135,6 +135,7 @@ const App: React.FC = () => {
                                     currentUserGeneralDetails!
                                 }
                                 isLogin={isLogin}
+                                carts={carts}
                             />
                         }
                     />
