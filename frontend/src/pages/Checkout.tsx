@@ -149,6 +149,38 @@ const Checkout: React.FC<CheckoutProps> = ({
         );
     };
 
+	const addPaymentDetailMethod = async (
+        paymentMethod: string,
+        cardNumber: string,
+        expiryDate?: string,
+        cvv?: string
+    ) => {
+        await handleApiCall(
+            "users/paymentDetails/add",
+            "POST",
+            {
+                email: currentUserGeneralDetails?.email,
+                paymentMethod,
+                cardNumber,
+                expiryDate,
+                cvv,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    const parsedPaymentDetails = result.paymentDetails.map(
+                        (paymentDetail: string) => JSON.parse(paymentDetail)
+                    );
+                    setCurrentUserPaymentDetails(parsedPaymentDetails);
+                } else {
+                    setError(
+                        "\n Error adding payment detail: " + result.message
+                    );
+                }
+            },
+            (error) => setError("\n Error adding payment detail: " + error)
+        );
+    };
+
     const viewCurrentUserShippingAddressesMethod = async () => {
         await handleApiCall(
             `users/shippingAddresses?email=${currentUserGeneralDetails?.email}`,
@@ -166,6 +198,30 @@ const Checkout: React.FC<CheckoutProps> = ({
                 }
             },
             (error) => setError("\n Error viewing shipping addresses: " + error)
+        );
+    };
+
+	const addShippingAddressMethod = async (newShippingAddress: string) => {
+        setNewShippingAddress(newShippingAddress);
+        await handleApiCall(
+            "users/shippingAddresses/add",
+            "POST",
+            {
+                email: currentUserGeneralDetails?.email,
+                newShippingAddress,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setCurrentUserShippingAddresses(
+                        JSON.parse(result.shippingAddresses)
+                    );
+                } else {
+                    setError(
+                        "\n Error adding shipping address: " + result.message
+                    );
+                }
+            },
+            (error) => setError("\n Error adding shipping address: " + error)
         );
     };
 
@@ -189,7 +245,31 @@ const Checkout: React.FC<CheckoutProps> = ({
         );
     };
 
-    const handleCheckout = () => {
+	const addBillingAddressMethod = async (newBillingAddress: string) => {
+        setNewBillingAddress(newBillingAddress);
+        await handleApiCall(
+            "users/billingAddresses/add",
+            "POST",
+            {
+                email: currentUserGeneralDetails?.email,
+                newBillingAddress,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setCurrentUserBillingAddresses(
+                        JSON.parse(result.billingAddresses)
+                    );
+                } else {
+                    setError(
+                        "\n Error adding billing address: " + result.message
+                    );
+                }
+            },
+            (error) => setError("\n Error adding billing address: " + error)
+        );
+    };
+
+    const handleCheckout = async () => {
         if (
             (!selectedShippingAddress && !newShippingAddress) ||
             (!selectedBillingAddress && !newBillingAddress) ||
@@ -197,6 +277,23 @@ const Checkout: React.FC<CheckoutProps> = ({
         ) {
             Swal.fire("Error", "Please select all required fields.", "error");
             return;
+        }
+
+        if (newShippingAddress) {
+            await addShippingAddressMethod(newShippingAddress);
+        }
+
+        if (newBillingAddress) {
+            await addBillingAddressMethod(newBillingAddress);
+        }
+
+        if (newPaymentMethod.cardNumber) {
+            await addPaymentDetailMethod(
+                newPaymentMethod.paymentMethod,
+                newPaymentMethod.cardNumber,
+                newPaymentMethod.expiryDate,
+                newPaymentMethod.cvv
+            );
         }
 
         // Implement checkout functionality here
@@ -447,7 +544,7 @@ const Checkout: React.FC<CheckoutProps> = ({
                                             >
                                                 Payment Method
                                             </label>
-                                            <div className="mt-2">
+                                            <div className="mt-2 relative">
                                                 <select
                                                     id="payment-method"
                                                     name="payment-method"
@@ -459,7 +556,7 @@ const Checkout: React.FC<CheckoutProps> = ({
                                                             e.target.value
                                                         )
                                                     }
-                                                    className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
+                                                    className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md appearance-none"
                                                 >
                                                     <option value="">
                                                         Select Payment Method
@@ -486,6 +583,15 @@ const Checkout: React.FC<CheckoutProps> = ({
                                                         New Payment Method
                                                     </option>
                                                 </select>
+                                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                                    <svg
+                                                        className="fill-current h-4 w-4"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 20 20"
+                                                    >
+                                                        <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                                                    </svg>
+                                                </div>
                                             </div>
                                             {selectedPaymentMethod ===
                                                 "new" && (
