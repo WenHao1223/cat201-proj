@@ -227,7 +227,7 @@ const Main: React.FC<MainProps> = ({
                             <a
                                 key={item.name}
                                 href={item.href}
-                                className="text-gray-400 hover:text-gray-500"
+                                className="text-gray-600 hover:text-black"
                             >
                                 <span className="sr-only">{item.name}</span>
                                 <item.icon

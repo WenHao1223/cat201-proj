@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { UserIcon, ShoppingCartIcon } from "@heroicons/react/20/solid";
+import logo from "@assets/ChefAuraLogo.webp";
 
 interface NavbarProps {
     isLogin: boolean;
@@ -35,6 +36,7 @@ const Navbar: React.FC<NavbarProps> = ({
         <nav className="fixed w-screen bg-white shadow-md md:px-8 xs:px-4 px-2 py-4 flex justify-between items-center z-50">
             <Link to="/">
                 <div className="text-2xl font-bold text-gray-800">
+                <img src={logo} alt="Chef's Aura Logo" className="inline-block mr-2 small-logo" />
                     Chef's Aura
                 </div>
             </Link>

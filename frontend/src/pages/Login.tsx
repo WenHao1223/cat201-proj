@@ -132,9 +132,9 @@ const Login: React.FC<LoginProps> = ({
                             <div className="button-container">
                                 <button
                                     type="submit"
-                                    className="btn btn-full-width btn-warning ms-2"
+                                    className="btn btn-full-width bg-gray-500 text-white ms-2"
                                 >
-                                    Submit form
+                                    Submit
                                 </button>
                             </div>
                             <div className="text sign-up-text pt-4">

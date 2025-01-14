@@ -436,7 +436,7 @@ const Cart: React.FC<CartProps> = ({
                             <div className="mt-6">
                                 <button
                                     type="submit"
-                                    className="w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                                    className="w-full rounded-md border border-transparent bg-gray-900 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-black focus:outline-none"
                                 >
                                     Checkout
                                 </button>

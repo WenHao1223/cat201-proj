@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useState } from "react";
 import { ChevronRightIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
 import {
   Popover,
@@ -46,6 +47,7 @@ const products = [
     price: "RM 129.99",
     color: "Steel Blue",
     inStock: true,
+    size: "15.8 inch",
     imageSrc: image3,
     imageAlt: "Insulated bottle with white base and black snap lid.",
   },
@@ -66,6 +68,12 @@ const Checkout: React.FC<CheckoutProps> = ({
             navigate("/login");
         }
     }, [isLogin]);
+
+    const [isSameAsShipping, setIsSameAsShipping] = useState(false);
+
+    const handleCheckboxChange = () => {
+    setIsSameAsShipping(!isSameAsShipping);
+    };
 
   return (
     <div className="bg-white">
@@ -161,7 +169,7 @@ const Checkout: React.FC<CheckoutProps> = ({
                 <Popover className="fixed inset-x-0 bottom-0 flex flex-col-reverse text-base font-medium text-gray-200 lg:hidden">
                   <div className="relative z-10 border-t border-gray-200 bg-white px-4 sm:px-6">
                     <div className="mx-auto max-w-lg">
-                      <PopoverButton className="flex w-full items-center py-6 font-medium">
+                      <PopoverButton className="flex w-full items-center py-6 bg-gray-900 font-medium">
                         <span className="mr-auto text-base">Total</span>
                         <span className="mr-3 text-base">$361.80</span>
                         <ChevronUpIcon
@@ -184,17 +192,17 @@ const Checkout: React.FC<CheckoutProps> = ({
                     <dl className="mx-auto max-w-lg space-y-6">
                       <div className="flex items-center justify-between">
                         <dt className="text-gray-600">Subtotal</dt>
-                        <dd>$320.00</dd>
+                        <dd className="text-gray-700">$320.00</dd>
                       </div>
 
                       <div className="flex items-center justify-between">
                         <dt className="text-gray-600">Shipping</dt>
-                        <dd>$15.00</dd>
+                        <dd className="text-gray-700">$15.00</dd>
                       </div>
 
                       <div className="flex items-center justify-between">
                         <dt className="text-gray-600">Taxes</dt>
-                        <dd>$26.80</dd>
+                        <dd className="text-gray-700">$26.80</dd>
                       </div>
                     </dl>
                   </PopoverPanel>
@@ -348,7 +356,7 @@ const Checkout: React.FC<CheckoutProps> = ({
                     />
                     <label
                       htmlFor="same-as-profile-address"
-                      className="text-sm font-medium text-gray-900 cursor-pointer"
+                      className="ml-2 text-sm font-medium text-gray-900 cursor-pointer"
                     >
                       Same as profile address
                     </label>
@@ -476,19 +484,130 @@ const Checkout: React.FC<CheckoutProps> = ({
                       name="same-as-shipping"
                       type="checkbox"
                       className="h-5 w-5 rounded-md border border-gray-300"
+                      checked={isSameAsShipping}
+                      onChange={handleCheckboxChange}
                     />
                     <label
                       htmlFor="same-as-shipping"
-                      className="text-sm font-medium text-gray-900 cursor-pointer"
+                      className="ml-2 text-sm font-medium text-gray-900 cursor-pointer"
                     >
                       Same as shipping address
                     </label>
                   </div>
                 </section>
+                {!isSameAsShipping && (
+                <div className="mt-6 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-3">
+                    <div className="sm:col-span-3">
+                      <label
+                        htmlFor="address1"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Address 1
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          id="company"
+                          name="company"
+                          type="text"
+                          className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 font-serif shadow-md"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="sm:col-span-3">
+                      <label
+                        htmlFor="address2"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Address 2
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          id="address"
+                          name="address"
+                          type="text"
+                          autoComplete="street-address"
+                          className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 font-serif shadow-md"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="sm:col-span-3">
+                      <label
+                        htmlFor="apartment"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Apartment, suite, etc.
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          id="apartment"
+                          name="apartment"
+                          type="text"
+                          className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 font-serif shadow-md"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="city"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        City
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          id="city"
+                          name="city"
+                          type="text"
+                          autoComplete="address-level2"
+                          className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 font-serif shadow-md"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="region"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        State / Province
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          id="region"
+                          name="region"
+                          type="text"
+                          autoComplete="address-level1"
+                          className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 font-serif shadow-md"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="postal-code"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Postal code
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          id="postal-code"
+                          name="postal-code"
+                          type="text"
+                          autoComplete="postal-code"
+                          className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 font-serif shadow-md"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
                 <div className="mt-10 border-t border-gray-200 pt-6 sm:flex sm:items-center sm:justify-between lg:hidden">
                   <button
                     type="submit"
-                    className="w-full rounded-lg border border-gray-300 bg-black px-4 py-3 text-white shadow-md hover:bg-black focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 sm:order-last sm:w-auto"
+                    className="w-full rounded-lg border border-gray-300 bg-gray-900 px-4 py-3 text-white shadow-md hover:bg-black focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 sm:order-last sm:w-auto"
                   >
                     Proceed to Payment
                   </button>
