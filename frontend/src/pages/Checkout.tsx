@@ -16,9 +16,6 @@ import {
 } from "@interfaces/API/UserInterface";
 import Navbar from "@components/Navbar";
 
-import image1 from "../assets/image1.webp";
-import image2 from "../assets/image2.webp";
-import image3 from "../assets/image3.webp";
 import handleApiCall from "@utils/handleApiCall";
 import AsyncImage from "@components/AsyncImage";
 
@@ -72,16 +69,30 @@ const Checkout: React.FC<CheckoutProps> = ({
     }, [isLogin]);
 
     useEffect(() => {
-        if (carts) {
+        console.log("carts", carts);
+        console.log("carts length", carts?.length);
+        if (carts && carts.length > 0) {
             let subtotal = 0;
             carts.forEach((cart) => {
                 subtotal += cart.price * cart.quantity;
             });
             setSubtotal(subtotal);
-            if (subtotal < 150) {
+            if (subtotal < 150 && subtotal > 0) {
                 setShippingTotal(5);
             }
             setTaxTotal(subtotal * 0.06);
+        } else {
+            Swal.fire({
+                title: "Error",
+                text: "No items in cart",
+                icon: "error",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            }).then((result) => {
+				if (result.isConfirmed) {
+					navigate("/main");
+				}
+			});
         }
     }, [carts]);
 
@@ -99,11 +110,11 @@ const Checkout: React.FC<CheckoutProps> = ({
         setIsSameAsShipping(!isSameAsShipping);
     };
 
-	useEffect(() => {
-		if (isSameAsShipping) {
-			setSelectedBillingAddress(selectedShippingAddress);
-		}
-	}, [isSameAsShipping]);
+    useEffect(() => {
+        if (isSameAsShipping) {
+            setSelectedBillingAddress(selectedShippingAddress);
+        }
+    }, [isSameAsShipping]);
 
     const viewCurrentUserPaymentDetailsMethod = async () => {
         await handleApiCall(
@@ -152,10 +163,14 @@ const Checkout: React.FC<CheckoutProps> = ({
                         );
                         setCurrentUserPaymentDetails(parsedPaymentDetails);
                         resolve(
-                            parsedPaymentDetails[parsedPaymentDetails.length - 1].paymentID
+                            parsedPaymentDetails[
+                                parsedPaymentDetails.length - 1
+                            ].paymentID
                         );
                     } else {
-                        setError("\n Error adding payment detail: " + result.message);
+                        setError(
+                            "\n Error adding payment detail: " + result.message
+                        );
                         reject(result.message);
                     }
                 },
@@ -314,8 +329,14 @@ const Checkout: React.FC<CheckoutProps> = ({
             paymentID = parseInt(selectedPaymentMethod);
         }
 
-        const shippingAddress = selectedShippingAddress == "new" ? newShippingAddress : selectedShippingAddress;
-		const billingAddress = selectedBillingAddress == "new" ? newBillingAddress : selectedBillingAddress
+        const shippingAddress =
+            selectedShippingAddress == "new"
+                ? newShippingAddress
+                : selectedShippingAddress;
+        const billingAddress =
+            selectedBillingAddress == "new"
+                ? newBillingAddress
+                : selectedBillingAddress;
 
         await addToOrder(shippingAddress, billingAddress, paymentID);
 
@@ -581,14 +602,22 @@ const Checkout: React.FC<CheckoutProps> = ({
                                                 <select
                                                     id="payment-method"
                                                     name="payment-method"
-                                                    value={selectedPaymentMethod}
+                                                    value={
+                                                        selectedPaymentMethod
+                                                    }
                                                     onChange={(e) => {
                                                         setSelectedPaymentMethod(
                                                             e.target.value
                                                         );
-                                                        if (e.target.value !== "new") {
+                                                        if (
+                                                            e.target.value !==
+                                                            "new"
+                                                        ) {
                                                             setCurrentPaymentID(
-                                                                parseInt(e.target.value)
+                                                                parseInt(
+                                                                    e.target
+                                                                        .value
+                                                                )
                                                             );
                                                         }
                                                     }}
@@ -600,7 +629,9 @@ const Checkout: React.FC<CheckoutProps> = ({
                                                     {currentUserPaymentDetails.map(
                                                         (method, index) => (
                                                             <option
-                                                                key={method.paymentID}
+                                                                key={
+                                                                    method.paymentID
+                                                                }
                                                                 value={
                                                                     method.paymentID
                                                                 }

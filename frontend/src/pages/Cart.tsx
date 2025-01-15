@@ -64,7 +64,7 @@ const Cart: React.FC<CartProps> = ({
                 subtotal += cart.price * cart.quantity;
             });
             setSubtotal(subtotal);
-            if (subtotal < 150) {
+            if (subtotal < 150 && subtotal > 0) {
                 setShippingTotal(5);
             }
             setTaxTotal(subtotal * 0.06);
@@ -224,7 +224,7 @@ const Cart: React.FC<CartProps> = ({
                                 role="list"
                                 className="divide-y divide-gray-200 border-b border-t border-gray-200"
                             >
-                                {carts ? (
+                                {carts && carts.length > 0 ? (
                                     carts.map((product) => (
                                         <li
                                             key={product.productID}
@@ -436,7 +436,12 @@ const Cart: React.FC<CartProps> = ({
                             <div className="mt-6">
                                 <button
                                     type="submit"
-                                    className="w-full rounded-md border border-transparent bg-gray-900 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-black focus:outline-none"
+                                    className={`w-full rounded-md border border-transparent px-4 py-3 text-base font-medium text-white shadow-sm ${
+                                        carts && carts.length === 0
+                                            ? "bg-gray-400 cursor-not-allowed"
+                                            : "bg-gray-900 hover:bg-black"
+                                    } focus:outline-none`}
+                                    disabled={!carts || carts.length === 0}
                                 >
                                     Checkout
                                 </button>
