@@ -79,7 +79,7 @@ public class OrdersCancelServlet extends HttpServlet {
                             // get payment details
                             try {
                                 JsonObject paymentJson = new JsonObject();
-                                Payment payment = user.getPaymentDetails().get(order.getPaymentID());
+                                Payment payment =user.getPaymentDetailsByID(order.getPaymentID());
                                 paymentJson.addProperty("paymentID", payment.getPaymentID());
                                 paymentJson.addProperty("paymentMethod", payment.getPaymentMethod().getMethod());
                                 paymentJson.addProperty("cardNumber", payment.getLastFourDigits());
@@ -164,7 +164,7 @@ public class OrdersCancelServlet extends HttpServlet {
                                 // get payment details
                                 try {
                                     JsonObject paymentJson = new JsonObject();
-                                    Payment payment = user.getPaymentDetails().get(orderItem.getPaymentID());
+                                    Payment payment = user.getPaymentDetailsByID(orderItem.getPaymentID());
                                     paymentJson.addProperty("paymentID", payment.getPaymentID());
                                     paymentJson.addProperty("paymentMethod", payment.getPaymentMethod().getMethod());
                                     paymentJson.addProperty("cardNumber", payment.getLastFourDigits());

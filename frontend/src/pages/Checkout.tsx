@@ -22,43 +22,6 @@ import image3 from "../assets/image3.webp";
 import handleApiCall from "@utils/handleApiCall";
 import AsyncImage from "@components/AsyncImage";
 
-const products = [
-    {
-        id: 1,
-        name: "KitchenAid ® Go ™ Cordless Hand Blender with Battery",
-        href: "#",
-        price: "RM 69.99",
-        color: "Black",
-        inStock: true,
-        size: "15 inch",
-        imageSrc: image1,
-        imageAlt: "Front of men's Basic Tee in sienna.",
-    },
-    {
-        id: 2,
-        name: "KitchenAid ® Go ™ Cordless Personal Blender 16-Oz",
-        href: "#",
-        price: "RM 89.99",
-        color: "Black",
-        inStock: false,
-        leadTime: "3–4 weeks",
-        size: "12 inch",
-        imageSrc: image2,
-        imageAlt: "Front of men's Basic Tee in black.",
-    },
-    {
-        id: 3,
-        name: "KitchenAid ® Steel Blender",
-        href: "#",
-        price: "RM 129.99",
-        color: "Steel Blue",
-        inStock: true,
-        size: "15.8 inch",
-        imageSrc: image3,
-        imageAlt: "Insulated bottle with white base and black snap lid.",
-    },
-];
-
 interface CheckoutProps {
     currentUserGeneralDetails: UserGeneralDetailsInterface | null;
     isLogin: boolean;

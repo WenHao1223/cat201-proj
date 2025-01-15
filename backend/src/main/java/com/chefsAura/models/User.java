@@ -436,6 +436,16 @@ public class User {
         return this.paymentDetails;
     }
 
+    // get payment details by ID
+    public Payment getPaymentDetailsByID(int paymentID) {
+        for (Payment payment : this.paymentDetails) {
+            if (payment.getPaymentID() == paymentID) {
+                return payment;
+            }
+        }
+        throw new IllegalArgumentException("Payment details not found");
+    }
+
     // get carts
     public List<Cart> getCarts() {
         return this.carts;
