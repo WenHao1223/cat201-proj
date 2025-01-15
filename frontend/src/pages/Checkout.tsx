@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ChevronRightIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
 import {
     Popover,
@@ -7,68 +7,355 @@ import {
     PopoverPanel,
 } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
-import { UserGeneralDetailsInterface } from "@interfaces/API/UserInterface";
+import {
+    CartGeneralInterface,
+    PaymentGeneralInterface,
+    UserGeneralDetailsInterface,
+} from "@interfaces/API/UserInterface";
 import Navbar from "@components/Navbar";
 
-import image1 from "../assets/image1.webp";
-import image2 from "../assets/image2.webp";
-import image3 from "../assets/image3.webp";
-
-const steps = [
-    { name: "Cart", href: "/cart", status: "complete" },
-    { name: "Billing Information", href: "/checkout", status: "current" },
-    { name: "Confirmation", href: "#", status: "upcoming" },
-];
-const products = [
-    {
-        id: 1,
-        name: "KitchenAid ® Go ™ Cordless Hand Blender with Battery",
-        href: "#",
-        price: "RM 69.99",
-        color: "Black",
-        inStock: true,
-        size: "15 inch",
-        imageSrc: image1,
-        imageAlt: "Front of men's Basic Tee in sienna.",
-    },
-    {
-        id: 2,
-        name: "KitchenAid ® Go ™ Cordless Personal Blender 16-Oz",
-        href: "#",
-        price: "RM 89.99",
-        color: "Black",
-        inStock: false,
-        leadTime: "3–4 weeks",
-        size: "12 inch",
-        imageSrc: image2,
-        imageAlt: "Front of men's Basic Tee in black.",
-    },
-    {
-        id: 3,
-        name: "KitchenAid ® Steel Blender",
-        href: "#",
-        price: "RM 129.99",
-        color: "Steel Blue",
-        inStock: true,
-        imageSrc: image3,
-        imageAlt: "Insulated bottle with white base and black snap lid.",
-    },
-];
+import handleApiCall from "@utils/handleApiCall";
+import AsyncImage from "@components/AsyncImage";
 
 interface CheckoutProps {
     currentUserGeneralDetails: UserGeneralDetailsInterface | null;
     isLogin: boolean;
+    carts: CartGeneralInterface[] | null;
 }
 
 const Checkout: React.FC<CheckoutProps> = ({
     currentUserGeneralDetails,
     isLogin,
+    carts,
 }) => {
+    const [subtotal, setSubtotal] = React.useState(0);
+    const [shippingTotal, setShippingTotal] = React.useState(0);
+    const [taxTotal, setTaxTotal] = React.useState(0);
+
+    const [currentUserPaymentDetails, setCurrentUserPaymentDetails] = useState<
+        PaymentGeneralInterface[]
+    >([]);
+    const [currentUserShippingAddresses, setCurrentUserShippingAddresses] =
+        useState<string[]>([]);
+    const [currentUserBillingAddresses, setCurrentUserBillingAddresses] =
+        useState<string[]>([]);
+
+    const [selectedShippingAddress, setSelectedShippingAddress] = useState("");
+    const [newShippingAddress, setNewShippingAddress] = useState("");
+    const [selectedBillingAddress, setSelectedBillingAddress] = useState("");
+    const [newBillingAddress, setNewBillingAddress] = useState("");
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
+    const [newPaymentMethod, setNewPaymentMethod] = useState({
+        paymentMethod: "",
+        cardNumber: "",
+        expiryDate: "",
+        cvv: "",
+    });
+    const [currentPaymentID, setCurrentPaymentID] = useState(-1);
+
+    const [error, setError] = React.useState("");
+
     const navigate = useNavigate();
-    if (!isLogin) {
-        navigate("/login");
-    }
+    useEffect(() => {
+        if (!isLogin) {
+            navigate("/login");
+        } else {
+            viewCurrentUserPaymentDetailsMethod();
+            viewCurrentUserShippingAddressesMethod();
+            viewCurrentUserBillingAddressesMethod();
+        }
+    }, [isLogin]);
+
+    useEffect(() => {
+        console.log("carts", carts);
+        console.log("carts length", carts?.length);
+        if (carts && carts.length > 0) {
+            let subtotal = 0;
+            carts.forEach((cart) => {
+                subtotal += cart.price * cart.quantity;
+            });
+            setSubtotal(subtotal);
+			if (subtotal < 150 && subtotal > 0) {
+                setShippingTotal(5);
+            }
+            if (subtotal >= 150 || subtotal === 0) {
+                setShippingTotal(0);
+            }
+            setTaxTotal(subtotal * 0.06);
+        } else {
+            Swal.fire({
+                title: "Error",
+                text: "No items in cart",
+                icon: "error",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            }).then((result) => {
+				if (result.isConfirmed) {
+					navigate("/main");
+				}
+			});
+        }
+    }, [carts]);
+
+    useEffect(() => {
+        console.log("currentUserPaymentDetails", currentUserPaymentDetails);
+    }, [currentUserPaymentDetails]);
+
+    useEffect(() => {
+        console.log("selectedPaymentMethod", selectedPaymentMethod);
+    }, [selectedPaymentMethod]);
+
+    const [isSameAsShipping, setIsSameAsShipping] = useState(false);
+
+    const handleCheckboxChange = () => {
+        setIsSameAsShipping(!isSameAsShipping);
+    };
+
+    useEffect(() => {
+        if (isSameAsShipping) {
+            setSelectedBillingAddress(selectedShippingAddress);
+        }
+    }, [isSameAsShipping]);
+
+    const viewCurrentUserPaymentDetailsMethod = async () => {
+        await handleApiCall(
+            `users/paymentDetails?email=${currentUserGeneralDetails?.email}`,
+            "GET",
+            null,
+            async (result) => {
+                if ((await result.status) === "Success") {
+                    const paymentDetailsArray = result.paymentDetails.map(
+                        (paymentDetail: string) => JSON.parse(paymentDetail)
+                    );
+                    console.log(paymentDetailsArray);
+                    setCurrentUserPaymentDetails(paymentDetailsArray);
+                } else {
+                    setError(
+                        "\n Error viewing payment details: " + result.message
+                    );
+                }
+            },
+            (error) => setError("\n Error viewing payment details: " + error)
+        );
+    };
+
+    const addPaymentDetailMethod = async (
+        paymentMethod: string,
+        cardNumber: string,
+        expiryDate?: string,
+        cvv?: string
+    ): Promise<number> => {
+        return new Promise(async (resolve, reject) => {
+            await handleApiCall(
+                "users/paymentDetails/add",
+                "POST",
+                {
+                    email: currentUserGeneralDetails?.email,
+                    paymentMethod,
+                    cardNumber,
+                    expiryDate,
+                    cvv,
+                },
+                async (result) => {
+                    console.log(result);
+                    if ((await result.status) == "Success") {
+                        const parsedPaymentDetails = result.paymentDetails.map(
+                            (paymentDetail: string) => JSON.parse(paymentDetail)
+                        );
+                        setCurrentUserPaymentDetails(parsedPaymentDetails);
+                        resolve(
+                            parsedPaymentDetails[
+                                parsedPaymentDetails.length - 1
+                            ].paymentID
+                        );
+                    } else {
+                        setError(
+                            "\n Error adding payment detail: " + result.message
+                        );
+                        reject(result.message);
+                    }
+                },
+                (error) => {
+                    setError("\n Error adding payment detail: " + error);
+                    reject(error);
+                }
+            );
+        });
+    };
+
+    const viewCurrentUserShippingAddressesMethod = async () => {
+        await handleApiCall(
+            `users/shippingAddresses?email=${currentUserGeneralDetails?.email}`,
+            "GET",
+            null,
+            async (result) => {
+                if ((await result.status) === "Success") {
+                    setCurrentUserShippingAddresses(
+                        JSON.parse(result.shippingAddresses)
+                    );
+                } else {
+                    setError(
+                        "\n Error viewing shipping addresses: " + result.message
+                    );
+                }
+            },
+            (error) => setError("\n Error viewing shipping addresses: " + error)
+        );
+    };
+
+    const addShippingAddressMethod = async (newShippingAddress: string) => {
+        setNewShippingAddress(newShippingAddress);
+        await handleApiCall(
+            "users/shippingAddresses/add",
+            "POST",
+            {
+                email: currentUserGeneralDetails?.email,
+                newShippingAddress,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setCurrentUserShippingAddresses(
+                        JSON.parse(result.shippingAddresses)
+                    );
+                    console.log(
+                        "addShippingAddressMethod",
+                        result.shippingAddresses
+                    );
+                } else {
+                    setError(
+                        "\n Error adding shipping address: " + result.message
+                    );
+                }
+            },
+            (error) => setError("\n Error adding shipping address: " + error)
+        );
+    };
+
+    const viewCurrentUserBillingAddressesMethod = async () => {
+        await handleApiCall(
+            `users/billingAddresses?email=${currentUserGeneralDetails?.email}`,
+            "GET",
+            null,
+            async (result) => {
+                if ((await result.status) === "Success") {
+                    setCurrentUserBillingAddresses(
+                        JSON.parse(result.billingAddresses)
+                    );
+                } else {
+                    setError(
+                        "\n Error viewing billing addresses: " + result.message
+                    );
+                }
+            },
+            (error) => setError("\n Error viewing billing addresses: " + error)
+        );
+    };
+
+    const addBillingAddressMethod = async (newBillingAddress: string) => {
+        setNewBillingAddress(newBillingAddress);
+        await handleApiCall(
+            "users/billingAddresses/add",
+            "POST",
+            {
+                email: currentUserGeneralDetails?.email,
+                newBillingAddress,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setCurrentUserBillingAddresses(
+                        JSON.parse(result.billingAddresses)
+                    );
+                } else {
+                    setError(
+                        "\n Error adding billing address: " + result.message
+                    );
+                }
+            },
+            (error) => setError("\n Error adding billing address: " + error)
+        );
+    };
+
+    const addToOrder = async (
+        shippingAddress: string,
+        billingAddress: string,
+        paymentID: number
+    ) => {
+        await handleApiCall(
+            `users/orders/add`,
+            "POST",
+            {
+                email: currentUserGeneralDetails?.email,
+                shippingAddress,
+                billingAddress,
+                paymentID,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    Swal.fire("Success", "Added to order!", "success");
+                } else {
+                    setError("\n Error adding to order: " + result.message);
+                }
+            },
+            (error) => setError("\n Error adding to order: " + error)
+        );
+    };
+
+    const handleCheckout = async () => {
+        if (
+            (!selectedShippingAddress && !newShippingAddress) ||
+            (!selectedBillingAddress && !newBillingAddress) ||
+            (!selectedPaymentMethod && !newPaymentMethod.cardNumber)
+        ) {
+            Swal.fire("Error", "Please select all required fields.", "error");
+            return;
+        }
+
+        if (newShippingAddress) {
+            await addShippingAddressMethod(newShippingAddress);
+        }
+
+        if (newBillingAddress) {
+            await addBillingAddressMethod(newBillingAddress);
+        }
+
+        let paymentID = currentPaymentID;
+        if (selectedPaymentMethod === "new") {
+            paymentID = await addPaymentDetailMethod(
+                newPaymentMethod.paymentMethod,
+                newPaymentMethod.cardNumber,
+                newPaymentMethod.expiryDate,
+                newPaymentMethod.cvv
+            );
+        } else {
+            paymentID = parseInt(selectedPaymentMethod);
+        }
+
+        const shippingAddress =
+            selectedShippingAddress == "new"
+                ? newShippingAddress
+                : selectedShippingAddress;
+        const billingAddress =
+            selectedBillingAddress == "new"
+                ? newBillingAddress
+                : selectedBillingAddress;
+
+        await addToOrder(shippingAddress, billingAddress, paymentID);
+
+        // Implement checkout functionality here
+        Swal.fire({
+            title: "Success",
+            text: "Checkout successful!",
+            icon: "success",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                navigate("/main");
+            }
+        });
+    };
 
     return (
         <div className="bg-white">
@@ -77,7 +364,7 @@ const Checkout: React.FC<CheckoutProps> = ({
                 setIsLogin={() => {}}
                 setCurrentUserGeneralDetails={() => {}}
             />
-            <div className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
+            <div className="mx-auto max-w-2xl px-4 pb-24 pt-12 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div className="relative top-12">
                     {/* Background color split screen for large screens */}
                     <div
@@ -89,68 +376,12 @@ const Checkout: React.FC<CheckoutProps> = ({
                         className="fixed right-0 top-0 hidden h-full w-1/2 bg-gray-50 lg:block"
                     />
 
-                    <header className="relative border-b border-gray-200 bg-white text-sm font-medium text-gray-700">
-                        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-                            <div className="relative flex justify-end sm:justify-center">
-                                <a
-                                    href="#"
-                                    className="absolute left-0 top-1/2 -mt-4"
-                                >
-                                    <span className="sr-only">
-                                        Your Company
-                                    </span>
-                                    <img
-                                        alt=""
-                                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                                        className="h-8 w-auto"
-                                    />
-                                </a>
-                                <nav
-                                    aria-label="Progress"
-                                    className="hidden sm:block"
-                                >
-                                    <ol role="list" className="flex space-x-4">
-                                        {steps.map((step, stepIdx) => (
-                                            <li
-                                                key={step.name}
-                                                className="flex items-center"
-                                            >
-                                                {step.status === "current" ? (
-                                                    <a
-                                                        href={step.href}
-                                                        aria-current="page"
-                                                        className="text-indigo-700"
-                                                    >
-                                                        {step.name}
-                                                    </a>
-                                                ) : (
-                                                    <a href={step.href}>
-                                                        {step.name}
-                                                    </a>
-                                                )}
-
-                                                {stepIdx !==
-                                                steps.length - 1 ? (
-                                                    <ChevronRightIcon
-                                                        aria-hidden="true"
-                                                        className="ml-4 h-5 w-5 text-gray-300"
-                                                    />
-                                                ) : null}
-                                            </li>
-                                        ))}
-                                    </ol>
-                                </nav>
-                                <p className="sm:hidden">Step 2 of 4</p>
-                            </div>
-                        </div>
-                    </header>
-
                     <main className="relative mx-auto grid max-w-7xl grid-cols-1 gap-x-16 lg:grid-cols-2 lg:px-8 xl:gap-x-48">
                         <h1 className="sr-only">Order information</h1>
 
                         <section
                             aria-labelledby="summary-heading"
-                            className="bg-gray-50 px-4 pb-10 pt-16 sm:px-6 lg:col-start-2 lg:row-start-1 lg:bg-transparent lg:px-0 lg:pb-16"
+                            className="bg-gray-50 px-4 pb-10 pt-5 sm:px-6 lg:col-start-2 lg:row-start-1 lg:bg-transparent lg:px-0 lg:pb-16"
                         >
                             <div className="mx-auto max-w-lg lg:max-w-none">
                                 <h2
@@ -162,73 +393,95 @@ const Checkout: React.FC<CheckoutProps> = ({
 
                                 <ul
                                     role="list"
-                                    className="divide-y divide-gray-200 text-sm font-medium text-gray-900"
+                                    className="divide-y divide-gray-200 text-base font-medium text-gray-700"
                                 >
-                                    {products.map((product) => (
-                                        <li
-                                            key={product.id}
-                                            className="flex items-start space-x-4 py-6"
-                                        >
-                                            <img
-                                                alt={product.imageAlt}
-                                                src={product.imageSrc}
-                                                className="h-20 w-20 flex-none rounded-md object-cover object-center"
-                                            />
-                                            <div className="flex-auto space-y-1">
-                                                <h3>{product.name}</h3>
-                                                <p className="text-gray-500">
-                                                    {product.color}
+                                    {carts &&
+                                        carts.map((product) => (
+                                            <li
+                                                key={product.productID}
+                                                className="flex items-start space-x-4 py-6"
+                                            >
+                                                <AsyncImage
+                                                    alt={product.name}
+                                                    productID={
+                                                        product.productID
+                                                    }
+                                                    color={product.color}
+                                                    number={0}
+                                                    className="h-20 w-20 flex-none rounded-md object-cover object-center"
+                                                />
+                                                <div className="flex-auto space-y-1">
+                                                    <h3>{product.name}</h3>
+                                                    <p className="text-gray-500">
+                                                        {product.color}
+                                                    </p>
+                                                    <p className="text-gray-500">
+                                                        {product.size}
+                                                    </p>
+                                                </div>
+                                                <p className="flex-none text-base font-medium">
+                                                    {product.price}
                                                 </p>
-                                                <p className="text-gray-500">
-                                                    {product.size}
-                                                </p>
-                                            </div>
-                                            <p className="flex-none text-base font-medium">
-                                                {product.price}
-                                            </p>
-                                        </li>
-                                    ))}
+                                            </li>
+                                        ))}
                                 </ul>
 
-                                <dl className="hidden space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-gray-900 lg:block">
+                                <dl className="hidden space-y-6 border-t border-gray-200 pt-6 text-base font-medium text-gray-700 lg:block">
                                     <div className="flex items-center justify-between">
                                         <dt className="text-gray-600">
                                             Subtotal
                                         </dt>
-                                        <dd>$320.00</dd>
+                                        <dd>RM {subtotal.toFixed(2)}</dd>
                                     </div>
 
                                     <div className="flex items-center justify-between">
                                         <dt className="text-gray-600">
                                             Shipping
                                         </dt>
-                                        <dd>$15.00</dd>
+                                        <dd>RM {shippingTotal.toFixed(2)}</dd>
                                     </div>
 
                                     <div className="flex items-center justify-between">
-                                        <dt className="text-gray-600">Taxes</dt>
-                                        <dd>$26.80</dd>
+                                        <dt className="text-gray-600">Tax</dt>
+                                        <dd>RM {taxTotal.toFixed(2)}</dd>
                                     </div>
 
                                     <div className="flex items-center justify-between border-t border-gray-200 pt-6">
                                         <dt className="text-base">Total</dt>
-                                        <dd className="text-base">$361.80</dd>
+                                        <dd className="text-base">
+                                            RM{" "}
+                                            {(
+                                                subtotal +
+                                                shippingTotal +
+                                                taxTotal
+                                            ).toFixed(2)}
+                                        </dd>
+                                    </div>
+
+                                    <div className="mt-10 border-t border-gray-200 pt-6 sm:flex sm:items-center sm:justify-between">
+                                        <button
+                                            type="submit"
+                                            className="w-full rounded-lg border border-transparent bg-gray-800 text-white shadow-sm focus:ring-offset-gray-50 sm:order-last m:w-auto hover:bg-black hover:shadow-md px-4 py-3"
+                                            onClick={handleCheckout}
+                                        >
+                                            Proceed to Payment
+                                        </button>
                                     </div>
                                 </dl>
 
-                                <Popover className="fixed inset-x-0 bottom-0 flex flex-col-reverse text-sm font-medium text-gray-900 lg:hidden">
+                                <Popover className="fixed inset-x-0 bottom-0 flex flex-col-reverse text-base font-medium text-gray-200 lg:hidden">
                                     <div className="relative z-10 border-t border-gray-200 bg-white px-4 sm:px-6">
                                         <div className="mx-auto max-w-lg">
-                                            <PopoverButton className="flex w-full items-center py-6 font-medium">
+                                            <PopoverButton className="flex w-full items-center py-6 bg-gray-900 font-medium">
                                                 <span className="mr-auto text-base">
                                                     Total
                                                 </span>
-                                                <span className="mr-2 text-base">
+                                                <span className="mr-3 text-base">
                                                     $361.80
                                                 </span>
                                                 <ChevronUpIcon
                                                     aria-hidden="true"
-                                                    className="h-5 w-5 text-gray-500"
+                                                    className="h-5 w-7 text-gray-200"
                                                 />
                                             </PopoverButton>
                                         </div>
@@ -248,21 +501,27 @@ const Checkout: React.FC<CheckoutProps> = ({
                                                 <dt className="text-gray-600">
                                                     Subtotal
                                                 </dt>
-                                                <dd>$320.00</dd>
+                                                <dd className="text-gray-700">
+                                                    $320.00
+                                                </dd>
                                             </div>
 
                                             <div className="flex items-center justify-between">
                                                 <dt className="text-gray-600">
                                                     Shipping
                                                 </dt>
-                                                <dd>$15.00</dd>
+                                                <dd className="text-gray-700">
+                                                    $15.00
+                                                </dd>
                                             </div>
 
                                             <div className="flex items-center justify-between">
                                                 <dt className="text-gray-600">
                                                     Taxes
                                                 </dt>
-                                                <dd>$26.80</dd>
+                                                <dd className="text-gray-700">
+                                                    $26.80
+                                                </dd>
                                             </div>
                                         </dl>
                                     </PopoverPanel>
@@ -270,7 +529,7 @@ const Checkout: React.FC<CheckoutProps> = ({
                             </div>
                         </section>
 
-                        <form className="px-4 pb-36 pt-16 sm:px-6 lg:col-start-1 lg:row-start-1 lg:px-0 lg:pb-16">
+                        <form className="px-4 pb-36 pt-5 sm:px-6 lg:col-start-1 lg:row-start-1 lg:px-0 lg:pb-16">
                             <div className="mx-auto max-w-lg lg:max-w-none">
                                 <section aria-labelledby="contact-info-heading">
                                     <h2
@@ -293,7 +552,10 @@ const Checkout: React.FC<CheckoutProps> = ({
                                                 name="email-address"
                                                 type="email"
                                                 autoComplete="email"
-                                                className="block w-full rounded-md border-gray-900 focus:border-indigo-600 focus:ring-indigo-500 sm:text-base px-4 py-3 font-serif"
+                                                defaultValue={
+                                                    currentUserGeneralDetails?.email
+                                                }
+                                                className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
                                             />
                                         </div>
                                     </div>
@@ -311,7 +573,10 @@ const Checkout: React.FC<CheckoutProps> = ({
                                                 name="contact-number"
                                                 type="tel"
                                                 autoComplete="tel"
-                                                className="block w-full rounded-md border-gray-900 shadow-sm focus:border-indigo-600 focus:ring-indigo-500 sm:text-base px-4 py-3 font-serif"
+                                                defaultValue={
+                                                    currentUserGeneralDetails?.phoneNo
+                                                }
+                                                className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
                                             />
                                         </div>
                                     </div>
@@ -328,77 +593,178 @@ const Checkout: React.FC<CheckoutProps> = ({
                                         Payment details
                                     </h2>
 
-                                    <div className="mt-6 grid grid-cols-3 gap-x-4 gap-y-6 sm:grid-cols-4">
-                                        <div className="col-span-3 sm:col-span-4">
+                                    <div className="mt-6 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-3">
+                                        <div className="sm:col-span-3">
                                             <label
-                                                htmlFor="name-on-card"
+                                                htmlFor="payment-method"
                                                 className="block text-sm font-medium text-gray-700"
                                             >
-                                                Name on card
+                                                Payment Method
                                             </label>
-                                            <div className="mt-2">
-                                                <input
-                                                    id="name-on-card"
-                                                    name="name-on-card"
-                                                    type="text"
-                                                    autoComplete="cc-name"
-                                                    className="block w-full rounded-md border-gray-900 shadow-sm focus:border-indigo-600 focus:ring-indigo-500 sm:text-base px-4 py-3 font-serif"
-                                                />
+                                            <div className="mt-2 relative">
+                                                <select
+                                                    id="payment-method"
+                                                    name="payment-method"
+                                                    value={
+                                                        selectedPaymentMethod
+                                                    }
+                                                    onChange={(e) => {
+                                                        setSelectedPaymentMethod(
+                                                            e.target.value
+                                                        );
+                                                        if (
+                                                            e.target.value !==
+                                                            "new"
+                                                        ) {
+                                                            setCurrentPaymentID(
+                                                                parseInt(
+                                                                    e.target
+                                                                        .value
+                                                                )
+                                                            );
+                                                        }
+                                                    }}
+                                                    className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md appearance-none"
+                                                >
+                                                    <option value="">
+                                                        Select Payment Method
+                                                    </option>
+                                                    {currentUserPaymentDetails.map(
+                                                        (method, index) => (
+                                                            <option
+                                                                key={
+                                                                    method.paymentID
+                                                                }
+                                                                value={
+                                                                    method.paymentID
+                                                                }
+                                                            >
+                                                                {
+                                                                    method.paymentMethod
+                                                                }{" "}
+                                                                -{" "}
+                                                                {
+                                                                    method.cardNumber
+                                                                }
+                                                            </option>
+                                                        )
+                                                    )}
+                                                    <option value="new">
+                                                        New Payment Method
+                                                    </option>
+                                                </select>
+                                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                                    <svg
+                                                        className="fill-current h-4 w-4"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 20 20"
+                                                    >
+                                                        <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                                                    </svg>
+                                                </div>
                                             </div>
-                                        </div>
-
-                                        <div className="col-span-3 sm:col-span-4">
-                                            <label
-                                                htmlFor="card-number"
-                                                className="block text-sm font-medium text-gray-700"
-                                            >
-                                                Card number
-                                            </label>
-                                            <div className="mt-2">
-                                                <input
-                                                    id="card-number"
-                                                    name="card-number"
-                                                    type="text"
-                                                    autoComplete="cc-number"
-                                                    className="block w-full rounded-md border-gray-900 shadow-sm focus:border-indigo-600 focus:ring-indigo-500 sm:text-base px-4 py-3 font-serif"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div className="col-span-2 sm:col-span-3">
-                                            <label
-                                                htmlFor="expiration-date"
-                                                className="block text-sm font-medium text-gray-700"
-                                            >
-                                                Expiration date (MM/YY)
-                                            </label>
-                                            <div className="mt-2">
-                                                <input
-                                                    id="expiration-date"
-                                                    name="expiration-date"
-                                                    type="text"
-                                                    autoComplete="cc-exp"
-                                                    className="block w-full rounded-md border-gray-900 shadow-sm focus:border-indigo-600 focus:ring-indigo-500 sm:text-base px-4 py-3 font-serif"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <label
-                                                htmlFor="cvc"
-                                                className="block text-sm font-medium text-gray-700"
-                                            >
-                                                CVC
-                                            </label>
-                                            <div className="mt-2">
-                                                <input
-                                                    id="cvc"
-                                                    name="cvc"
-                                                    type="text"
-                                                    autoComplete="csc"
-                                                    className="block w-full rounded-md border-gray-900 shadow-sm focus:border-indigo-600 focus:ring-indigo-500 sm:text-base px-4 py-3 font-serif"
-                                                />
-                                            </div>
+                                            {selectedPaymentMethod ===
+                                                "new" && (
+                                                <div className="mt-2 space-y-4">
+                                                    <select
+                                                        id="new-payment-method"
+                                                        name="new-payment-method"
+                                                        value={
+                                                            newPaymentMethod.paymentMethod
+                                                        }
+                                                        onChange={(e) =>
+                                                            setNewPaymentMethod(
+                                                                {
+                                                                    ...newPaymentMethod,
+                                                                    paymentMethod:
+                                                                        e.target
+                                                                            .value,
+                                                                }
+                                                            )
+                                                        }
+                                                        className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
+                                                    >
+                                                        <option value="">
+                                                            Select Payment
+                                                            Method
+                                                        </option>
+                                                        <option value="debit_card">
+                                                            Debit Card
+                                                        </option>
+                                                        <option value="credit_card">
+                                                            Credit Card
+                                                        </option>
+                                                        <option value="paypal">
+                                                            PayPal
+                                                        </option>
+                                                        <option value="visa">
+                                                            Visa
+                                                        </option>
+                                                    </select>
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Enter card number"
+                                                        value={
+                                                            newPaymentMethod.cardNumber
+                                                        }
+                                                        onChange={(e) =>
+                                                            setNewPaymentMethod(
+                                                                {
+                                                                    ...newPaymentMethod,
+                                                                    cardNumber:
+                                                                        e.target
+                                                                            .value,
+                                                                }
+                                                            )
+                                                        }
+                                                        className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
+                                                    />
+                                                    {(newPaymentMethod.paymentMethod ===
+                                                        "debit_card" ||
+                                                        newPaymentMethod.paymentMethod ===
+                                                            "credit_card") && (
+                                                        <div className="flex space-x-4">
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Expiry date (MM/YY)"
+                                                                value={
+                                                                    newPaymentMethod.expiryDate
+                                                                }
+                                                                onChange={(e) =>
+                                                                    setNewPaymentMethod(
+                                                                        {
+                                                                            ...newPaymentMethod,
+                                                                            expiryDate:
+                                                                                e
+                                                                                    .target
+                                                                                    .value,
+                                                                        }
+                                                                    )
+                                                                }
+                                                                className="block w-50 rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
+                                                            />
+                                                            <input
+                                                                type="text"
+                                                                placeholder="CVV (3 digits)"
+                                                                value={
+                                                                    newPaymentMethod.cvv
+                                                                }
+                                                                onChange={(e) =>
+                                                                    setNewPaymentMethod(
+                                                                        {
+                                                                            ...newPaymentMethod,
+                                                                            cvv: e
+                                                                                .target
+                                                                                .value,
+                                                                        }
+                                                                    )
+                                                                }
+                                                                className="block w-50 rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
+                                                            />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </section>
@@ -413,112 +779,64 @@ const Checkout: React.FC<CheckoutProps> = ({
                                     >
                                         Shipping address
                                     </h2>
-
                                     <div className="mt-6 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-3">
                                         <div className="sm:col-span-3">
                                             <label
-                                                htmlFor="company"
+                                                htmlFor="shipping-address"
                                                 className="block text-sm font-medium text-gray-700"
                                             >
-                                                Company
+                                                Shipping Address
                                             </label>
                                             <div className="mt-2">
-                                                <input
-                                                    id="company"
-                                                    name="company"
-                                                    type="text"
-                                                    className="block w-full rounded-md border-gray-900 shadow-sm focus:border-indigo-600 focus:ring-indigo-500 sm:text-base px-4 py-3 font-serif"
-                                                />
+                                                <select
+                                                    id="shipping-address"
+                                                    name="shipping-address"
+                                                    value={
+                                                        selectedShippingAddress
+                                                    }
+                                                    onChange={(e) =>
+                                                        setSelectedShippingAddress(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
+                                                >
+                                                    <option value="">
+                                                        Select Shipping Address
+                                                    </option>
+                                                    {currentUserShippingAddresses.map(
+                                                        (address, index) => (
+                                                            <option
+                                                                key={index}
+                                                                value={address}
+                                                            >
+                                                                {address}
+                                                            </option>
+                                                        )
+                                                    )}
+                                                    <option value="new">
+                                                        New Address
+                                                    </option>
+                                                </select>
                                             </div>
-                                        </div>
-
-                                        <div className="sm:col-span-3">
-                                            <label
-                                                htmlFor="address"
-                                                className="block text-sm font-medium text-gray-700"
-                                            >
-                                                Address
-                                            </label>
-                                            <div className="mt-2">
-                                                <input
-                                                    id="address"
-                                                    name="address"
-                                                    type="text"
-                                                    autoComplete="street-address"
-                                                    className="block w-full rounded-md border-gray-900 shadow-sm focus:border-indigo-600 focus:ring-indigo-500 sm:text-base px-4 py-3 font-serif"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div className="sm:col-span-3">
-                                            <label
-                                                htmlFor="apartment"
-                                                className="block text-sm font-medium text-gray-700"
-                                            >
-                                                Apartment, suite, etc.
-                                            </label>
-                                            <div className="mt-2">
-                                                <input
-                                                    id="apartment"
-                                                    name="apartment"
-                                                    type="text"
-                                                    className="block w-full rounded-md border-gray-900 shadow-sm focus:border-indigo-600 focus:ring-indigo-500 sm:text-base px-4 py-3 font-serif"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <label
-                                                htmlFor="city"
-                                                className="block text-sm font-medium text-gray-700"
-                                            >
-                                                City
-                                            </label>
-                                            <div className="mt-2">
-                                                <input
-                                                    id="city"
-                                                    name="city"
-                                                    type="text"
-                                                    autoComplete="address-level2"
-                                                    className="block w-full rounded-md border-gray-900 shadow-sm focus:border-indigo-600 focus:ring-indigo-500 sm:text-base px-4 py-3 font-serif"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <label
-                                                htmlFor="region"
-                                                className="block text-sm font-medium text-gray-700"
-                                            >
-                                                State / Province
-                                            </label>
-                                            <div className="mt-2">
-                                                <input
-                                                    id="region"
-                                                    name="region"
-                                                    type="text"
-                                                    autoComplete="address-level1"
-                                                    className="block w-full rounded-md border-gray-900 shadow-sm focus:border-indigo-600 focus:ring-indigo-500 sm:text-base px-4 py-3 font-serif"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <label
-                                                htmlFor="postal-code"
-                                                className="block text-sm font-medium text-gray-700"
-                                            >
-                                                Postal code
-                                            </label>
-                                            <div className="mt-2">
-                                                <input
-                                                    id="postal-code"
-                                                    name="postal-code"
-                                                    type="text"
-                                                    autoComplete="postal-code"
-                                                    className="block w-full rounded-md border-gray-900 shadow-sm focus:border-indigo-600 focus:ring-indigo-500 sm:text-base px-4 py-3 font-serif"
-                                                />
-                                            </div>
+                                            {selectedShippingAddress ===
+                                                "new" && (
+                                                <div className="mt-2">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Enter new shipping address"
+                                                        value={
+                                                            newShippingAddress
+                                                        }
+                                                        onChange={(e) =>
+                                                            setNewShippingAddress(
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
+                                                    />
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </section>
@@ -536,34 +854,91 @@ const Checkout: React.FC<CheckoutProps> = ({
 
                                     <div className="mt-6 flex items-center">
                                         <input
-                                            defaultChecked
                                             id="same-as-shipping"
                                             name="same-as-shipping"
                                             type="checkbox"
-                                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                            className="h-5 w-5 rounded-md border border-gray-300"
+                                            checked={isSameAsShipping}
+                                            onChange={handleCheckboxChange}
                                         />
-                                        <div className="ml-2">
-                                            <label
-                                                htmlFor="same-as-shipping"
-                                                className="text-sm font-medium text-gray-900"
-                                            >
-                                                Same as shipping information
-                                            </label>
-                                        </div>
+                                        <label
+                                            htmlFor="same-as-shipping"
+                                            className="ml-2 text-sm font-medium text-gray-900 cursor-pointer"
+                                        >
+                                            Same as shipping address
+                                        </label>
                                     </div>
                                 </section>
-
-                                <div className="mt-10 border-t border-gray-200 pt-6 sm:flex sm:items-center sm:justify-between">
+                                {!isSameAsShipping && (
+                                    <div className="mt-6 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-3">
+                                        <div className="sm:col-span-3">
+                                            <label
+                                                htmlFor="billing-address"
+                                                className="block text-sm font-medium text-gray-700"
+                                            >
+                                                Billing Address
+                                            </label>
+                                            <div className="mt-2">
+                                                <select
+                                                    id="billing-address"
+                                                    name="billing-address"
+                                                    value={
+                                                        selectedBillingAddress
+                                                    }
+                                                    onChange={(e) =>
+                                                        setSelectedBillingAddress(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
+                                                >
+                                                    <option value="">
+                                                        Select Billing Address
+                                                    </option>
+                                                    {currentUserBillingAddresses.map(
+                                                        (address, index) => (
+                                                            <option
+                                                                key={index}
+                                                                value={address}
+                                                            >
+                                                                {address}
+                                                            </option>
+                                                        )
+                                                    )}
+                                                    <option value="new">
+                                                        New Address
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            {selectedBillingAddress ===
+                                                "new" && (
+                                                <div className="mt-2">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Enter new billing address"
+                                                        value={
+                                                            newBillingAddress
+                                                        }
+                                                        onChange={(e) =>
+                                                            setNewBillingAddress(
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+                                <div className="mt-10 border-t border-gray-200 pt-6 sm:flex sm:items-center sm:justify-between lg:hidden">
                                     <button
                                         type="submit"
-                                        className="w-full rounded-md border border-transparent bg-indigo-700 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:order-last sm:ml-6 sm:w-auto"
+                                        className="w-full rounded-lg border border-gray-300 bg-gray-900 px-4 py-3 text-white shadow-md hover:bg-black focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 sm:order-last sm:w-auto"
+                                        onClick={handleCheckout}
                                     >
-                                        Continue
+                                        Proceed to Payment
                                     </button>
-                                    <p className="mt-4 text-center text-sm text-gray-500 sm:mt-0 sm:text-left">
-                                        You won't be charged until the next
-                                        step.
-                                    </p>
                                 </div>
                             </div>
                         </form>

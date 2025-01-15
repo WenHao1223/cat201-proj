@@ -45,7 +45,7 @@ mvn test
 ```
 
 ## Directory Structure
-
+c
 -   `src/main/java/com/chefsAura` - Main application code
 -   `src/test/java/com/chefsAura` - Test code
 -   `src/main/resources` - Configuration files and resources

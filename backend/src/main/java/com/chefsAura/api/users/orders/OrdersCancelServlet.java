@@ -58,6 +58,10 @@ public class OrdersCancelServlet extends HttpServlet {
             User user = UserCollection.getUserByEmail(email);
             if (user != null) {
                 try {
+                    if (!user.getRole().equals("user")) {
+                        throw new IllegalArgumentException("User is not a customer");
+                    }
+                    
                     List<Order> orders = user.getOrders();
                     boolean orderFound = false;
 
@@ -75,7 +79,7 @@ public class OrdersCancelServlet extends HttpServlet {
                             // get payment details
                             try {
                                 JsonObject paymentJson = new JsonObject();
-                                Payment payment = user.getPaymentDetails().get(order.getPaymentID());
+                                Payment payment =user.getPaymentDetailsByID(order.getPaymentID());
                                 paymentJson.addProperty("paymentID", payment.getPaymentID());
                                 paymentJson.addProperty("paymentMethod", payment.getPaymentMethod().getMethod());
                                 paymentJson.addProperty("cardNumber", payment.getLastFourDigits());
@@ -160,7 +164,7 @@ public class OrdersCancelServlet extends HttpServlet {
                                 // get payment details
                                 try {
                                     JsonObject paymentJson = new JsonObject();
-                                    Payment payment = user.getPaymentDetails().get(orderItem.getPaymentID());
+                                    Payment payment = user.getPaymentDetailsByID(orderItem.getPaymentID());
                                     paymentJson.addProperty("paymentID", payment.getPaymentID());
                                     paymentJson.addProperty("paymentMethod", payment.getPaymentMethod().getMethod());
                                     paymentJson.addProperty("cardNumber", payment.getLastFourDigits());
@@ -242,6 +246,9 @@ public class OrdersCancelServlet extends HttpServlet {
                         jsonResponse.addProperty("message", "Order not found.");
                     }
 
+                } catch (IllegalArgumentException e) {
+                    jsonResponse.addProperty("status", "Error");
+                    jsonResponse.addProperty("message", e.getMessage());
                 } catch (Exception e) {
                     jsonResponse.addProperty("status", "Error");
                     jsonResponse.addProperty("message", "Exception occurred: " + e);

@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import Product from "./pages/Product";
 import Admin from "./pages/Admin";
 import "./App.css";
 
@@ -14,6 +15,7 @@ import {
     CartGeneralInterface,
     UserGeneralDetailsInterface,
 } from "@interfaces/API/UserInterface";
+import Profile from "@pages/Profile";
 
 const App: React.FC = () => {
     const [currentUserGeneralDetails, setCurrentUserGeneralDetails] =
@@ -134,6 +136,35 @@ const App: React.FC = () => {
                                     currentUserGeneralDetails!
                                 }
                                 isLogin={isLogin}
+                                carts={carts}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/profile"
+                        element={
+                            <Profile
+                                currentUserGeneralDetails={
+                                    currentUserGeneralDetails
+                                }
+                                setCurrentUserGeneralDetails={
+                                    setCurrentUserGeneralDetails
+                                }
+                                isLogin={isLogin}
+                                setIsLogin={setIsLogin}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/product/:productID"
+                        element={
+                            <Product
+                                currentUserGeneralDetails={
+                                    currentUserGeneralDetails
+                                }
+                                isLogin={isLogin}
+                                carts={carts}
+                                setCarts={setCarts}
                             />
                         }
                     />

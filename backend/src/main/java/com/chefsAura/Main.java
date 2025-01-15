@@ -348,6 +348,7 @@ public class Main {
                     userObject.getString("phoneNo"),
                     (short) userObject.getInt("gender"),
                     userObject.getString("dob"),
+                    userObject.getString("role"),
                     userObject.getBoolean("agreeToTerms"),
                     shippingAddresses,
                     billingAddresses,

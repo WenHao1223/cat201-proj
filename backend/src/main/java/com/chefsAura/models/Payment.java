@@ -73,6 +73,9 @@ public class Payment {
     public String getLastFourDigits() {
         StringBuilder masked = new StringBuilder();
         int length = cardNumber.length();
+        if (length <= 4) {
+            return cardNumber;
+        }
         if (this.paymentMethod == PaymentMethodEnum.PAYPAL) {
             return cardNumber.substring(0, 2) + "x".repeat(length - 8) + cardNumber.substring(length - 6);
         } else {

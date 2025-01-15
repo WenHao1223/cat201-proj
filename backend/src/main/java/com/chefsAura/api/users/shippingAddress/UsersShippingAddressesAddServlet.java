@@ -26,9 +26,9 @@ public class UsersShippingAddressesAddServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setHeader("Access-Control-Allow-Methods", "PUT, OPTIONS");
+        response.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
 
         // Read request body
         StringBuilder sb = new StringBuilder();
@@ -43,7 +43,7 @@ public class UsersShippingAddressesAddServlet extends HttpServlet {
         Gson gson = new Gson();
         JsonObject jsonObject = gson.fromJson(sb.toString(), JsonObject.class);
         System.out.println(
-                "UsersShippingAddressesAddServlet PUT request received with parameters: " + jsonObject.toString());
+                "UsersShippingAddressesAddServlet POST request received with parameters: " + jsonObject.toString());
         String email = jsonObject.get("email").getAsString();
         String newShippingAddress = jsonObject.get("newShippingAddress").getAsString();
 
@@ -54,6 +54,10 @@ public class UsersShippingAddressesAddServlet extends HttpServlet {
 
             if (user != null) {
                 try {
+                    if (!user.getRole().equals("user")) {
+                        throw new IllegalArgumentException("User is not a customer");
+                    }
+                    
                     user.addShippingAddress(newShippingAddress);
                     List<String> shippingAddresses = user.getShippingAddresses();
 
@@ -63,6 +67,9 @@ public class UsersShippingAddressesAddServlet extends HttpServlet {
                     // Create JSON response
                     jsonResponse.addProperty("status", "Success");
                     jsonResponse.addProperty("shippingAddresses", jsonShippingAddresses.toString());
+                } catch (IllegalArgumentException e) {
+                    jsonResponse.addProperty("status", "Error");
+                    jsonResponse.addProperty("message", e.getMessage());
                 } catch (Exception e) {
                     jsonResponse.addProperty("status", "Error");
                     jsonResponse.addProperty("message", e.getMessage());

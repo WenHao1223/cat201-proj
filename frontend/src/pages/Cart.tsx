@@ -45,9 +45,11 @@ const Cart: React.FC<CartProps> = ({
     const [error, setError] = React.useState("");
 
     const navigate = useNavigate();
-    if (!isLogin) {
-        navigate("/login");
-    }
+    useEffect(() => {
+        if (!isLogin) {
+            navigate("/login");
+        }
+    }, [isLogin]);
 
     useEffect(() => {
         if (currentUserGeneralDetails) {
@@ -62,8 +64,11 @@ const Cart: React.FC<CartProps> = ({
                 subtotal += cart.price * cart.quantity;
             });
             setSubtotal(subtotal);
-            if (subtotal < 150) {
+            if (subtotal < 150 && subtotal > 0) {
                 setShippingTotal(5);
+            }
+            if (subtotal >= 150 || subtotal === 0) {
+                setShippingTotal(0);
             }
             setTaxTotal(subtotal * 0.06);
         }
@@ -192,7 +197,7 @@ const Cart: React.FC<CartProps> = ({
     const checkout = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         navigate("/checkout");
-    }
+    };
 
     return (
         <div className="bg-white">
@@ -222,7 +227,7 @@ const Cart: React.FC<CartProps> = ({
                                 role="list"
                                 className="divide-y divide-gray-200 border-b border-t border-gray-200"
                             >
-                                {carts ? (
+                                {carts && carts.length > 0 ? (
                                     carts.map((product) => (
                                         <li
                                             key={product.productID}
@@ -434,7 +439,12 @@ const Cart: React.FC<CartProps> = ({
                             <div className="mt-6">
                                 <button
                                     type="submit"
-                                    className="w-full rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                                    className={`w-full rounded-md border border-transparent px-4 py-3 text-base font-medium text-white shadow-sm ${
+                                        carts && carts.length === 0
+                                            ? "bg-gray-400 cursor-not-allowed"
+                                            : "bg-gray-900 hover:bg-black"
+                                    } focus:outline-none`}
+                                    disabled={!carts || carts.length === 0}
                                 >
                                     Checkout
                                 </button>

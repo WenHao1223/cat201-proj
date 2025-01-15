@@ -1,7 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { ShoppingCartIcon } from "@heroicons/react/20/solid";
+import { UserIcon, ShoppingCartIcon } from "@heroicons/react/20/solid";
+import logo from "@assets/ChefAuraLogo.webp";
 
 interface NavbarProps {
     isLogin: boolean;
@@ -35,6 +36,7 @@ const Navbar: React.FC<NavbarProps> = ({
         <nav className="fixed w-screen bg-white shadow-md md:px-8 xs:px-4 px-2 py-4 flex justify-between items-center z-50">
             <Link to="/">
                 <div className="text-2xl font-bold text-gray-800">
+                <img src={logo} alt="Chef's Aura Logo" className="inline-block mr-2 small-logo" />
                     Chef's Aura
                 </div>
             </Link>
@@ -42,14 +44,14 @@ const Navbar: React.FC<NavbarProps> = ({
                 {isLogin ? (
                     <>
                         <Link to="/cart">
-                            <ShoppingCartIcon className="h-6 w-6 text-gray-800" />
-                        </Link>
-                        <Link to="/checkout">
-                            <button className="btn btn-warning">Checkout</button>
+                            <ShoppingCartIcon className="h-6 w-8 text-gray-800" />
+                        </Link>                        
+                        <Link to="/profile">
+                            <UserIcon className="h-6 w-8 text-gray-800" />
                         </Link>
                         <button
                             onClick={handleLogout}
-                            className="btn btn-light"
+                            className="btn btn-light hover:bg-slate-500 hover:text-white"
                         >
                             Logout
                         </button>
@@ -57,10 +59,10 @@ const Navbar: React.FC<NavbarProps> = ({
                 ) : (
                     <>
                         <Link to="/login">
-                            <button className="btn btn-light">Login</button>
+                            <button className="btn btn-light hover:bg-slate-500">Login</button>
                         </Link>
                         <Link to="/register">
-                            <button className="btn btn-warning">Register</button>
+                            <button className="btn btn-gray-800">Register</button>
                         </Link>
                     </>
                 )}

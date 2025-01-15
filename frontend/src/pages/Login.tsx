@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import "@styles/LoginRegister.css";
@@ -73,12 +73,14 @@ const Login: React.FC<LoginProps> = ({
         validateUserLoginMethod(email, password);
     };
 
-    if (isLogin) {
-        navigate("/main");
-    }
+    useEffect(() => {
+        if (!isLogin) {
+            navigate("/login");
+        }
+    }, [isLogin]);
 
     return (
-        <div className= "bg-white text-black min-h-screen flex items-center justify-center">
+        <div className="bg-white text-black min-h-screen flex items-center justify-center">
             <div className="container">
                 <Link to="/">
                     <div className="header">
@@ -130,9 +132,9 @@ const Login: React.FC<LoginProps> = ({
                             <div className="button-container">
                                 <button
                                     type="submit"
-                                    className="btn btn-full-width btn-warning ms-2"
+                                    className="btn btn-full-width bg-gray-500 text-white ms-2"
                                 >
-                                    Submit form
+                                    Submit
                                 </button>
                             </div>
                             <div className="text sign-up-text pt-4">

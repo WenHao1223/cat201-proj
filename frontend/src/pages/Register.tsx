@@ -301,8 +301,9 @@ const Register: React.FC<RegisterProps> = ({ isLogin }) => {
                                     type="checkbox"
                                     id="agreeToTerms"
                                     required
+                                    className="h-5 w-5"
                                 />
-                                <label htmlFor="agreeToTerms">
+                                <label htmlFor="agreeToTerms" className="ml-1 mt-2">
                                     I agree to the terms and conditions
                                 </label>
                             </div>
@@ -319,12 +320,12 @@ const Register: React.FC<RegisterProps> = ({ isLogin }) => {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="btn btn-warning btn-lg ms-2"
+                                    className="btn bg-gray-500 text-white btn-lg ms-2"
                                 >
                                     Submit form
                                 </button>
                             </div>
-                            <div className="text sign-up-text">
+                            <div className="text sign-up-text mt-4">
                                 Already have an account?{" "}
                                 <Link to="/login">Log in now</Link>
                             </div>
