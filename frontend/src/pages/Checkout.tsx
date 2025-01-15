@@ -99,6 +99,12 @@ const Checkout: React.FC<CheckoutProps> = ({
         setIsSameAsShipping(!isSameAsShipping);
     };
 
+	useEffect(() => {
+		if (isSameAsShipping) {
+			setSelectedBillingAddress(selectedShippingAddress);
+		}
+	}, [isSameAsShipping]);
+
     const viewCurrentUserPaymentDetailsMethod = async () => {
         await handleApiCall(
             `users/paymentDetails?email=${currentUserGeneralDetails?.email}`,
