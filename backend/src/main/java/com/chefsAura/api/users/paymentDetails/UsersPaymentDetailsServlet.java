@@ -56,7 +56,11 @@ public class UsersPaymentDetailsServlet extends HttpServlet {
                     JsonObject paymentJson = new JsonObject();
                     paymentJson.addProperty("paymentID", payment.getPaymentID());
                     paymentJson.addProperty("paymentMethod", payment.getPaymentMethod().toString());
-                    paymentJson.addProperty("cardNumber", payment.getLastFourDigits());
+                    if(payment.getCardNumber().length() > 4) {
+                        paymentJson.addProperty("cardNumber", payment.getCardNumber().substring(payment.getCardNumber().length() - 4));
+                    } else {
+                        paymentJson.addProperty("cardNumber", payment.getCardNumber());
+                    }
                     jsonPaymentDetails.add(paymentJson.toString());
                 }
                 // Create JSON response

@@ -93,6 +93,7 @@ const Checkout: React.FC<CheckoutProps> = ({
         expiryDate: "",
         cvv: "",
     });
+    const [currentPaymentID, setCurrentPaymentID] = useState(-1);
 
     const [error, setError] = React.useState("");
 
@@ -149,36 +150,42 @@ const Checkout: React.FC<CheckoutProps> = ({
         );
     };
 
-	const addPaymentDetailMethod = async (
+    const addPaymentDetailMethod = async (
         paymentMethod: string,
         cardNumber: string,
         expiryDate?: string,
         cvv?: string
-    ) => {
-        await handleApiCall(
-            "users/paymentDetails/add",
-            "POST",
-            {
-                email: currentUserGeneralDetails?.email,
-                paymentMethod,
-                cardNumber,
-                expiryDate,
-                cvv,
-            },
-            async (result) => {
-                if ((await result.status) == "Success") {
-                    const parsedPaymentDetails = result.paymentDetails.map(
-                        (paymentDetail: string) => JSON.parse(paymentDetail)
-                    );
-                    setCurrentUserPaymentDetails(parsedPaymentDetails);
-                } else {
-                    setError(
-                        "\n Error adding payment detail: " + result.message
-                    );
+    ): Promise<number> => {
+        return new Promise(async (resolve, reject) => {
+            await handleApiCall(
+                "users/paymentDetails/add",
+                "POST",
+                {
+                    email: currentUserGeneralDetails?.email,
+                    paymentMethod,
+                    cardNumber,
+                    expiryDate,
+                    cvv,
+                },
+                async (result) => {
+					console.log(result)
+                    if ((await result.status) == "Success") {
+                        const parsedPaymentDetails = result.paymentDetails.map(
+                            (paymentDetail: string) => JSON.parse(paymentDetail)
+                        );
+                        setCurrentUserPaymentDetails(parsedPaymentDetails);
+                        resolve(parsedPaymentDetails[parsedPaymentDetails.length - 1].paymentID);
+                    } else {
+                        setError("\n Error adding payment detail: " + result.message);
+                        reject(result.message);
+                    }
+                },
+                (error) => {
+                    setError("\n Error adding payment detail: " + error);
+                    reject(error);
                 }
-            },
-            (error) => setError("\n Error adding payment detail: " + error)
-        );
+            );
+        });
     };
 
     const viewCurrentUserShippingAddressesMethod = async () => {
@@ -201,7 +208,7 @@ const Checkout: React.FC<CheckoutProps> = ({
         );
     };
 
-	const addShippingAddressMethod = async (newShippingAddress: string) => {
+    const addShippingAddressMethod = async (newShippingAddress: string) => {
         setNewShippingAddress(newShippingAddress);
         await handleApiCall(
             "users/shippingAddresses/add",
@@ -214,6 +221,10 @@ const Checkout: React.FC<CheckoutProps> = ({
                 if ((await result.status) == "Success") {
                     setCurrentUserShippingAddresses(
                         JSON.parse(result.shippingAddresses)
+                    );
+                    console.log(
+                        "addShippingAddressMethod",
+                        result.shippingAddresses
                     );
                 } else {
                     setError(
@@ -245,7 +256,7 @@ const Checkout: React.FC<CheckoutProps> = ({
         );
     };
 
-	const addBillingAddressMethod = async (newBillingAddress: string) => {
+    const addBillingAddressMethod = async (newBillingAddress: string) => {
         setNewBillingAddress(newBillingAddress);
         await handleApiCall(
             "users/billingAddresses/add",
@@ -269,11 +280,36 @@ const Checkout: React.FC<CheckoutProps> = ({
         );
     };
 
+    const addToOrder = async (
+        shippingAddress: string,
+        billingAddress: string,
+        paymentID: number
+    ) => {
+        await handleApiCall(
+            `users/orders/add`,
+            "POST",
+            {
+                email: currentUserGeneralDetails?.email,
+                shippingAddress,
+                billingAddress,
+                paymentID,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    Swal.fire("Success", "Added to order!", "success");
+                } else {
+                    setError("\n Error adding to order: " + result.message);
+                }
+            },
+            (error) => setError("\n Error adding to order: " + error)
+        );
+    };
+
     const handleCheckout = async () => {
         if (
             (!selectedShippingAddress && !newShippingAddress) ||
             (!selectedBillingAddress && !newBillingAddress) ||
-            (!selectedPaymentMethod && !newPaymentMethod.cardNumber)
+            (selectedPaymentMethod == "" || !newPaymentMethod.cardNumber)
         ) {
             Swal.fire("Error", "Please select all required fields.", "error");
             return;
@@ -287,17 +323,35 @@ const Checkout: React.FC<CheckoutProps> = ({
             await addBillingAddressMethod(newBillingAddress);
         }
 
-        if (newPaymentMethod.cardNumber) {
-            await addPaymentDetailMethod(
+		let paymentID: number = -1;
+        if (selectedPaymentMethod === "new") {
+            paymentID = await addPaymentDetailMethod(
                 newPaymentMethod.paymentMethod,
                 newPaymentMethod.cardNumber,
                 newPaymentMethod.expiryDate,
                 newPaymentMethod.cvv
             );
+			console.log("paymentID", paymentID);
+			setCurrentPaymentID(paymentID);
         }
 
+        const shippingAddress = selectedShippingAddress || newShippingAddress;
+        const billingAddress = selectedBillingAddress || newBillingAddress;
+
+        await addToOrder(shippingAddress, billingAddress, currentPaymentID == -1 ? paymentID : currentPaymentID);
+
         // Implement checkout functionality here
-        Swal.fire("Success", "Checkout successful!", "success");
+        Swal.fire({
+            title: "Success",
+            text: "Checkout successful!",
+            icon: "success",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                navigate("/main");
+            }
+        });
     };
 
     return (
@@ -548,9 +602,7 @@ const Checkout: React.FC<CheckoutProps> = ({
                                                 <select
                                                     id="payment-method"
                                                     name="payment-method"
-                                                    value={
-                                                        selectedPaymentMethod
-                                                    }
+                                                    value={selectedPaymentMethod}
                                                     onChange={(e) =>
                                                         setSelectedPaymentMethod(
                                                             e.target.value
@@ -593,8 +645,7 @@ const Checkout: React.FC<CheckoutProps> = ({
                                                     </svg>
                                                 </div>
                                             </div>
-                                            {selectedPaymentMethod ===
-                                                "new" && (
+                                            {selectedPaymentMethod === "new" && (
                                                 <div className="mt-2 space-y-4">
                                                     <select
                                                         id="new-payment-method"
