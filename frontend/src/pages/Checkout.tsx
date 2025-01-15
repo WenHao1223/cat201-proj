@@ -23,12 +23,14 @@ interface CheckoutProps {
     currentUserGeneralDetails: UserGeneralDetailsInterface | null;
     isLogin: boolean;
     carts: CartGeneralInterface[] | null;
+	isAdmin: boolean;
 }
 
 const Checkout: React.FC<CheckoutProps> = ({
     currentUserGeneralDetails,
     isLogin,
     carts,
+	isAdmin,
 }) => {
     const [subtotal, setSubtotal] = React.useState(0);
     const [shippingTotal, setShippingTotal] = React.useState(0);
@@ -69,15 +71,29 @@ const Checkout: React.FC<CheckoutProps> = ({
     }, [isLogin]);
 
     useEffect(() => {
-        console.log("carts", carts);
-        console.log("carts length", carts?.length);
+        if (isAdmin) {
+            Swal.fire({
+                title: "Error",
+                text: "You are not authorized to view this page",
+                icon: "error",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    navigate("/main");
+                }
+            });
+        }
+    }, [isAdmin]);
+
+    useEffect(() => {
         if (carts && carts.length > 0) {
             let subtotal = 0;
             carts.forEach((cart) => {
                 subtotal += cart.price * cart.quantity;
             });
             setSubtotal(subtotal);
-			if (subtotal < 150 && subtotal > 0) {
+            if (subtotal < 150 && subtotal > 0) {
                 setShippingTotal(5);
             }
             if (subtotal >= 150 || subtotal === 0) {
@@ -92,20 +108,12 @@ const Checkout: React.FC<CheckoutProps> = ({
                 allowOutsideClick: false,
                 allowEscapeKey: false,
             }).then((result) => {
-				if (result.isConfirmed) {
-					navigate("/main");
-				}
-			});
+                if (result.isConfirmed) {
+                    navigate("/main");
+                }
+            });
         }
     }, [carts]);
-
-    useEffect(() => {
-        console.log("currentUserPaymentDetails", currentUserPaymentDetails);
-    }, [currentUserPaymentDetails]);
-
-    useEffect(() => {
-        console.log("selectedPaymentMethod", selectedPaymentMethod);
-    }, [selectedPaymentMethod]);
 
     const [isSameAsShipping, setIsSameAsShipping] = useState(false);
 
@@ -129,7 +137,6 @@ const Checkout: React.FC<CheckoutProps> = ({
                     const paymentDetailsArray = result.paymentDetails.map(
                         (paymentDetail: string) => JSON.parse(paymentDetail)
                     );
-                    console.log(paymentDetailsArray);
                     setCurrentUserPaymentDetails(paymentDetailsArray);
                 } else {
                     setError(
@@ -159,7 +166,6 @@ const Checkout: React.FC<CheckoutProps> = ({
                     cvv,
                 },
                 async (result) => {
-                    console.log(result);
                     if ((await result.status) == "Success") {
                         const parsedPaymentDetails = result.paymentDetails.map(
                             (paymentDetail: string) => JSON.parse(paymentDetail)
@@ -218,10 +224,6 @@ const Checkout: React.FC<CheckoutProps> = ({
                 if ((await result.status) == "Success") {
                     setCurrentUserShippingAddresses(
                         JSON.parse(result.shippingAddresses)
-                    );
-                    console.log(
-                        "addShippingAddressMethod",
-                        result.shippingAddresses
                     );
                 } else {
                     setError(
@@ -363,6 +365,7 @@ const Checkout: React.FC<CheckoutProps> = ({
                 isLogin={isLogin}
                 setIsLogin={() => {}}
                 setCurrentUserGeneralDetails={() => {}}
+				isAdmin={isAdmin}
             />
             <div className="mx-auto max-w-2xl px-4 pb-24 pt-12 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div className="relative top-12">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { isValidElement } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { UserIcon, ShoppingCartIcon } from "@heroicons/react/20/solid";
@@ -8,12 +8,14 @@ interface NavbarProps {
     isLogin: boolean;
     setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
     setCurrentUserGeneralDetails: React.Dispatch<React.SetStateAction<any>>;
+    isAdmin: boolean;
 }
 
 const Navbar: React.FC<NavbarProps> = ({
     isLogin,
     setIsLogin,
     setCurrentUserGeneralDetails,
+    isAdmin,
 }) => {
     const navigate = useNavigate();
 
@@ -32,23 +34,40 @@ const Navbar: React.FC<NavbarProps> = ({
         });
     };
 
+    console.log(isAdmin);
     return (
         <nav className="fixed w-screen bg-white shadow-md md:px-8 xs:px-4 px-2 py-4 flex justify-between items-center z-50">
             <Link to="/">
                 <div className="text-2xl font-bold text-gray-800">
-                <img src={logo} alt="Chef's Aura Logo" className="inline-block mr-2 small-logo" />
+                    <img
+                        src={logo}
+                        alt="Chef's Aura Logo"
+                        className="inline-block mr-2 small-logo"
+                    />
                     Chef's Aura
                 </div>
             </Link>
             <div className="flex items-center space-x-4">
                 {isLogin ? (
                     <>
-                        <Link to="/cart">
-                            <ShoppingCartIcon className="h-6 w-8 text-gray-800" />
-                        </Link>                        
-                        <Link to="/profile">
-                            <UserIcon className="h-6 w-8 text-gray-800" />
-                        </Link>
+                        {isAdmin ? (
+                            <>
+                                <Link to="/admin">
+                                    <button className="btn btn-gray-800">
+                                        Admin
+                                    </button>
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link to="/cart">
+                                    <ShoppingCartIcon className="h-6 w-8 text-gray-800" />
+                                </Link>
+                                <Link to="/profile">
+                                    <UserIcon className="h-6 w-8 text-gray-800" />
+                                </Link>
+                            </>
+                        )}
                         <button
                             onClick={handleLogout}
                             className="btn btn-light hover:bg-slate-500 hover:text-white"
@@ -59,10 +78,14 @@ const Navbar: React.FC<NavbarProps> = ({
                 ) : (
                     <>
                         <Link to="/login">
-                            <button className="btn btn-light hover:bg-slate-500">Login</button>
+                            <button className="btn btn-light hover:bg-slate-500">
+                                Login
+                            </button>
                         </Link>
                         <Link to="/register">
-                            <button className="btn btn-gray-800">Register</button>
+                            <button className="btn btn-gray-800">
+                                Register
+                            </button>
                         </Link>
                     </>
                 )}

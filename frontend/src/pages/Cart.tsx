@@ -29,6 +29,7 @@ interface CartProps {
     >;
     isLogin: boolean;
     setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+    isAdmin: boolean;
 }
 
 const Cart: React.FC<CartProps> = ({
@@ -38,6 +39,7 @@ const Cart: React.FC<CartProps> = ({
     setCurrentUserGeneralDetails,
     isLogin,
     setIsLogin,
+    isAdmin,
 }) => {
     const [subtotal, setSubtotal] = React.useState(0);
     const [shippingTotal, setShippingTotal] = React.useState(0);
@@ -50,6 +52,22 @@ const Cart: React.FC<CartProps> = ({
             navigate("/login");
         }
     }, [isLogin]);
+
+    useEffect(() => {
+        if(isAdmin) {
+            Swal.fire({
+                title: "Error",
+                text: "You are not authorized to view this page",
+                icon: "error",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    navigate("/main");
+                }
+            });
+        }
+    }, [isAdmin]);
 
     useEffect(() => {
         if (currentUserGeneralDetails) {
@@ -80,9 +98,7 @@ const Cart: React.FC<CartProps> = ({
             "GET",
             null,
             async (result) => {
-                console.log(result);
                 if ((await result.status) == "Success") {
-                    console.log("result.carts", result.carts);
                     setCarts(
                         result.carts.map((cart: string) => JSON.parse(cart))
                     );
@@ -115,9 +131,7 @@ const Cart: React.FC<CartProps> = ({
                 colorIndex: colorIndex,
             },
             async (result) => {
-                console.log(result);
                 if ((await result.status) == "Success") {
-                    console.log("result.carts", result.carts);
                     setCarts(
                         result.carts.map((cart: string) => JSON.parse(cart))
                     );
@@ -162,9 +176,7 @@ const Cart: React.FC<CartProps> = ({
                 colorIndex: colorIndex,
             },
             async (result) => {
-                console.log(result);
                 if ((await result.status) == "Success") {
-                    console.log("result.carts", result.carts);
                     setCarts(
                         result.carts.map((cart: string) => JSON.parse(cart))
                     );
@@ -205,6 +217,7 @@ const Cart: React.FC<CartProps> = ({
                 isLogin={isLogin}
                 setIsLogin={setIsLogin}
                 setCurrentUserGeneralDetails={setCurrentUserGeneralDetails}
+                isAdmin={isAdmin}
             />
             <div className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div className="relative top-12">

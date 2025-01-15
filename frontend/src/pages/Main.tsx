@@ -13,6 +13,7 @@ interface MainProps {
     >;
     isLogin: boolean;
     setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+    isAdmin: boolean;
 }
 
 const navigation = [
@@ -66,9 +67,6 @@ const navigation = [
     },
 ];
 
-import image1 from "../assets/image1.webp";
-import image2 from "../assets/image2.webp";
-import image3 from "../assets/image3.webp";
 import { ProductInterface } from "@interfaces/API/ProductInterface";
 import handleApiCall from "@utils/handleApiCall";
 import AsyncImage from "@components/AsyncImage";
@@ -78,6 +76,7 @@ const Main: React.FC<MainProps> = ({
     setCurrentUserGeneralDetails,
     isLogin,
     setIsLogin,
+    isAdmin,
 }) => {
     const navigate = useNavigate();
     const [error, setError] = React.useState("");
@@ -90,7 +89,6 @@ const Main: React.FC<MainProps> = ({
             null,
             (result) => {
                 setProducts(result);
-                console.log(result);
             },
             (error) => setError("\n Error fetching product data: " + error)
         );
@@ -106,6 +104,7 @@ const Main: React.FC<MainProps> = ({
                 isLogin={isLogin}
                 setIsLogin={setIsLogin}
                 setCurrentUserGeneralDetails={setCurrentUserGeneralDetails}
+                isAdmin={isAdmin}
             />
             <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
                 <h2 className="sr-only">Products</h2>

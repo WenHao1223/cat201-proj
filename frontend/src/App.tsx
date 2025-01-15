@@ -20,6 +20,7 @@ import Profile from "@pages/Profile";
 const App: React.FC = () => {
     const [currentUserGeneralDetails, setCurrentUserGeneralDetails] =
         useState<UserGeneralDetailsInterface | null>(null);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
     const [carts, setCarts] = useState<CartGeneralInterface[] | null>(null);
 
@@ -37,9 +38,6 @@ const App: React.FC = () => {
         if (isLoginString) {
             setIsLogin(JSON.parse(isLoginString));
         }
-
-        // console.log("currentUserGeneralDetails", currentUserGeneralDetails);
-        // console.log("isLogin", isLogin);
     }, []);
 
     useEffect(() => {
@@ -55,10 +53,6 @@ const App: React.FC = () => {
             localStorage.setItem("isLogin", JSON.stringify(isLogin));
         }
     }, [isLogin]);
-
-    useEffect(() => {
-        console.log("carts", carts);
-    }, [carts]);
 
     return (
         <Router>
@@ -76,6 +70,7 @@ const App: React.FC = () => {
                                 }
                                 isLogin={isLogin}
                                 setIsLogin={setIsLogin}
+                                isAdmin={isAdmin}
                             />
                         }
                     />
@@ -89,6 +84,7 @@ const App: React.FC = () => {
                                 }
                                 isLogin={isLogin}
                                 setIsLogin={setIsLogin}
+                                setIsAdmin={setIsAdmin}
                             />
                         }
                     />
@@ -108,6 +104,7 @@ const App: React.FC = () => {
                                 }
                                 isLogin={isLogin}
                                 setIsLogin={setIsLogin}
+                                isAdmin={isAdmin}
                             />
                         }
                     />
@@ -125,6 +122,7 @@ const App: React.FC = () => {
                                 }
                                 isLogin={isLogin}
                                 setIsLogin={setIsLogin}
+                                isAdmin={isAdmin}
                             />
                         }
                     />
@@ -137,6 +135,7 @@ const App: React.FC = () => {
                                 }
                                 isLogin={isLogin}
                                 carts={carts}
+                                isAdmin={isAdmin}
                             />
                         }
                     />
@@ -152,6 +151,7 @@ const App: React.FC = () => {
                                 }
                                 isLogin={isLogin}
                                 setIsLogin={setIsLogin}
+                                isAdmin={isAdmin}
                             />
                         }
                     />
@@ -165,6 +165,7 @@ const App: React.FC = () => {
                                 isLogin={isLogin}
                                 carts={carts}
                                 setCarts={setCarts}
+                                isAdmin={isAdmin}
                             />
                         }
                     />

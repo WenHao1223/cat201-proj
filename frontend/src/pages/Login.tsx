@@ -9,12 +9,14 @@ interface LoginProps {
     setCurrentUserGeneralDetails: React.Dispatch<React.SetStateAction<any>>;
     isLogin: boolean;
     setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Login: React.FC<LoginProps> = ({
     setCurrentUserGeneralDetails,
     isLogin,
     setIsLogin,
+    setIsAdmin,
 }) => {
     const navigate = useNavigate();
 
@@ -39,12 +41,11 @@ const Login: React.FC<LoginProps> = ({
             "POST",
             { email, password },
             async (result) => {
-                console.log(result);
                 if (await result.loginStatus) {
-                    console.log("Login successful");
                     setError(null);
                     setIsLogin(true);
                     setCurrentUserGeneralDetails(JSON.parse(result.user));
+                    setIsAdmin(JSON.parse(result.user).role === "admin");
                     Swal.fire({
                         title: "Login successful!",
                         icon: "success",
@@ -67,9 +68,6 @@ const Login: React.FC<LoginProps> = ({
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // Handle login logic here
-        console.log("Email:", email);
-        console.log("Password:", password);
         validateUserLoginMethod(email, password);
     };
 

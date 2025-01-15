@@ -6,7 +6,6 @@ interface UsersServletProps {
 }
 
 const UsersServlet: React.FC<UsersServletProps> = ({ users }) => {
-    console.log(users);
     return (
         <div>
             <h2>User Data</h2>

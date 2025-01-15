@@ -20,6 +20,7 @@ interface ProfileProps {
     >;
     isLogin: boolean;
     setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+    isAdmin: boolean;
 }
 
 const Profile: React.FC<ProfileProps> = ({
@@ -27,6 +28,7 @@ const Profile: React.FC<ProfileProps> = ({
     setCurrentUserGeneralDetails,
     isLogin,
     setIsLogin,
+    isAdmin,
 }) => {
     const [currentUserPaymentDetails, setCurrentUserPaymentDetails] = useState<
         PaymentGeneralInterface[]
@@ -54,6 +56,22 @@ const Profile: React.FC<ProfileProps> = ({
     }, [isLogin]);
 
     useEffect(() => {
+        if (isAdmin) {
+            Swal.fire({
+                title: "Error",
+                text: "You are not authorized to view this page",
+                icon: "error",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    navigate("/main");
+                }
+            });
+        }
+    }, [isAdmin]);
+
+    useEffect(() => {
         if (currentUserGeneralDetails) {
             setEditableUserDetails({ ...currentUserGeneralDetails });
         }
@@ -69,7 +87,6 @@ const Profile: React.FC<ProfileProps> = ({
                     const paymentDetailsArray = result.paymentDetails.map(
                         (paymentDetail: string) => JSON.parse(paymentDetail)
                     );
-                    console.log(paymentDetailsArray);
                     setCurrentUserPaymentDetails(paymentDetailsArray);
                 } else {
                     setError(
@@ -647,6 +664,7 @@ const Profile: React.FC<ProfileProps> = ({
                 isLogin={isLogin}
                 setIsLogin={setIsLogin}
                 setCurrentUserGeneralDetails={setCurrentUserGeneralDetails}
+                isAdmin={isAdmin}
             />
             <div className="mx-auto bg-gray-100 max-w-2xl pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div className="profile-page p-6 flex flex-col items-center overflow-hidden">

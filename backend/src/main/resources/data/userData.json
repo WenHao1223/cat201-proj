@@ -560,22 +560,5 @@
         ]
       }
     ]
-  },
-  {
-    "username": "jdoe",
-    "email": "testRegistering@example.com",
-    "password": "password123",
-    "nationality": "Singapore",
-    "firstName": "John",
-    "lastName": "Doe",
-    "phoneNo": "+6012-345 6789",
-    "gender": 1,
-    "dob": "1990-01-01",
-    "agreeToTerms": true,
-    "shippingAddresses": [],
-    "billingAddresses": [],
-    "paymentDetails": [],
-    "carts": [],
-    "orders": []
   }
 ]

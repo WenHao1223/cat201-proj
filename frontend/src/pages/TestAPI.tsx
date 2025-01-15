@@ -307,7 +307,6 @@ const TestAPI: React.FC = () => {
             "POST",
             null,
             (result) => {
-                console.log(result);
                 if (result == null) {
                     setError("\n No user data found");
                 } else {
@@ -988,7 +987,6 @@ const TestAPI: React.FC = () => {
             },
             async (result) => {
                 if ((await result.status) == "Success") {
-                    console.log(result);
                     setOrders(
                         result.orders.map((order: string) => JSON.parse(order))
                     );

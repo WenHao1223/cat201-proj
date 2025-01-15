@@ -16,6 +16,7 @@ interface ProductProps {
     setCarts: React.Dispatch<
         React.SetStateAction<CartGeneralInterface[] | null>
     >;
+    isAdmin: boolean;
 }
 
 const Product: React.FC<ProductProps> = ({
@@ -23,6 +24,7 @@ const Product: React.FC<ProductProps> = ({
     isLogin,
     carts,
     setCarts,
+    isAdmin,
 }) => {
     const { productID } = useParams<{ productID: string }>();
     const [specificProduct, setSpecificProduct] =
@@ -175,6 +177,7 @@ const Product: React.FC<ProductProps> = ({
                     isLogin={isLogin}
                     setIsLogin={() => {}}
                     setCurrentUserGeneralDetails={() => {}}
+                    isAdmin={isAdmin}
                 />
                 <div className="product-page">
                     <style>
