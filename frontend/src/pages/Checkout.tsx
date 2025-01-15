@@ -308,8 +308,8 @@ const Checkout: React.FC<CheckoutProps> = ({
             paymentID = parseInt(selectedPaymentMethod);
         }
 
-        const shippingAddress = selectedShippingAddress || newShippingAddress;
-        const billingAddress = selectedBillingAddress || newBillingAddress;
+        const shippingAddress = selectedShippingAddress == "new" ? newShippingAddress : selectedShippingAddress;
+		const billingAddress = selectedBillingAddress == "new" ? newBillingAddress : selectedBillingAddress
 
         await addToOrder(shippingAddress, billingAddress, paymentID);
 
