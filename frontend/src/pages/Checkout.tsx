@@ -122,6 +122,14 @@ const Checkout: React.FC<CheckoutProps> = ({
         }
     }, [carts]);
 
+    useEffect(() => {
+        console.log("currentUserPaymentDetails", currentUserPaymentDetails);
+    }, [currentUserPaymentDetails]);
+
+    useEffect(() => {
+        console.log("selectedPaymentMethod", selectedPaymentMethod);
+    }, [selectedPaymentMethod]);
+
     const [isSameAsShipping, setIsSameAsShipping] = useState(false);
 
     const handleCheckboxChange = () => {
@@ -168,13 +176,15 @@ const Checkout: React.FC<CheckoutProps> = ({
                     cvv,
                 },
                 async (result) => {
-					console.log(result)
+                    console.log(result);
                     if ((await result.status) == "Success") {
                         const parsedPaymentDetails = result.paymentDetails.map(
                             (paymentDetail: string) => JSON.parse(paymentDetail)
                         );
                         setCurrentUserPaymentDetails(parsedPaymentDetails);
-                        resolve(parsedPaymentDetails[parsedPaymentDetails.length - 1].paymentID);
+                        resolve(
+                            parsedPaymentDetails[parsedPaymentDetails.length - 1].paymentID
+                        );
                     } else {
                         setError("\n Error adding payment detail: " + result.message);
                         reject(result.message);
@@ -309,7 +319,7 @@ const Checkout: React.FC<CheckoutProps> = ({
         if (
             (!selectedShippingAddress && !newShippingAddress) ||
             (!selectedBillingAddress && !newBillingAddress) ||
-            (selectedPaymentMethod == "" || !newPaymentMethod.cardNumber)
+            (!selectedPaymentMethod && !newPaymentMethod.cardNumber)
         ) {
             Swal.fire("Error", "Please select all required fields.", "error");
             return;
@@ -323,7 +333,7 @@ const Checkout: React.FC<CheckoutProps> = ({
             await addBillingAddressMethod(newBillingAddress);
         }
 
-		let paymentID: number = -1;
+        let paymentID = currentPaymentID;
         if (selectedPaymentMethod === "new") {
             paymentID = await addPaymentDetailMethod(
                 newPaymentMethod.paymentMethod,
@@ -331,14 +341,14 @@ const Checkout: React.FC<CheckoutProps> = ({
                 newPaymentMethod.expiryDate,
                 newPaymentMethod.cvv
             );
-			console.log("paymentID", paymentID);
-			setCurrentPaymentID(paymentID);
+        } else {
+            paymentID = parseInt(selectedPaymentMethod);
         }
 
         const shippingAddress = selectedShippingAddress || newShippingAddress;
         const billingAddress = selectedBillingAddress || newBillingAddress;
 
-        await addToOrder(shippingAddress, billingAddress, currentPaymentID == -1 ? paymentID : currentPaymentID);
+        await addToOrder(shippingAddress, billingAddress, paymentID);
 
         // Implement checkout functionality here
         Swal.fire({
@@ -603,11 +613,16 @@ const Checkout: React.FC<CheckoutProps> = ({
                                                     id="payment-method"
                                                     name="payment-method"
                                                     value={selectedPaymentMethod}
-                                                    onChange={(e) =>
+                                                    onChange={(e) => {
                                                         setSelectedPaymentMethod(
                                                             e.target.value
-                                                        )
-                                                    }
+                                                        );
+                                                        if (e.target.value !== "new") {
+                                                            setCurrentPaymentID(
+                                                                parseInt(e.target.value)
+                                                            );
+                                                        }
+                                                    }}
                                                     className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md appearance-none"
                                                 >
                                                     <option value="">
@@ -616,7 +631,7 @@ const Checkout: React.FC<CheckoutProps> = ({
                                                     {currentUserPaymentDetails.map(
                                                         (method, index) => (
                                                             <option
-                                                                key={index}
+                                                                key={method.paymentID}
                                                                 value={
                                                                     method.paymentID
                                                                 }
@@ -645,7 +660,8 @@ const Checkout: React.FC<CheckoutProps> = ({
                                                     </svg>
                                                 </div>
                                             </div>
-                                            {selectedPaymentMethod === "new" && (
+                                            {selectedPaymentMethod ===
+                                                "new" && (
                                                 <div className="mt-2 space-y-4">
                                                     <select
                                                         id="new-payment-method"
