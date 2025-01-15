@@ -77,8 +77,11 @@ const Checkout: React.FC<CheckoutProps> = ({
                 subtotal += cart.price * cart.quantity;
             });
             setSubtotal(subtotal);
-            if (subtotal < 150 && subtotal > 0) {
+			if (subtotal < 150 && subtotal > 0) {
                 setShippingTotal(5);
+            }
+            if (subtotal >= 150 || subtotal === 0) {
+                setShippingTotal(0);
             }
             setTaxTotal(subtotal * 0.06);
         } else {

@@ -67,6 +67,9 @@ const Cart: React.FC<CartProps> = ({
             if (subtotal < 150 && subtotal > 0) {
                 setShippingTotal(5);
             }
+            if (subtotal >= 150 || subtotal === 0) {
+                setShippingTotal(0);
+            }
             setTaxTotal(subtotal * 0.06);
         }
     }, [carts]);
