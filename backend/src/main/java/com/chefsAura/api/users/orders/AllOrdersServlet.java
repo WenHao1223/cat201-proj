@@ -37,7 +37,9 @@ public class AllOrdersServlet extends HttpServlet {
             orderJson.addProperty("orderDate", order.getOrderDate());
             orderJson.addProperty("shippingAddress", order.getShippingAddress());
             orderJson.addProperty("billingAddress", order.getBillingAddress());
-
+            orderJson.addProperty("orderStatus", order.getOrderStatus().getStatus());
+            orderJson.addProperty("paymentID", order.getPaymentID());
+            orderJson.addProperty("orderTotal", order.getOrderTotal());
             jsonOrder.add(orderJson);
         }
 

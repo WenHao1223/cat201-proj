@@ -4,13 +4,10 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 const Admin: React.FC = () => {
-    const [orderStatus, setOrderStatus] = useState<string>("Ordered");
     const [orders, setOrders] = useState<OrderInterface[]>([]);
+    const [shippingFee, setShippingFee] = useState<number>(0);
+    const [tax, setTax] = useState<number>(0);
     const [error, setError] = useState<string | null>(null);
-
-    const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setOrderStatus(event.target.value);
-    };
 
     const viewOrders = async () => {
         await handleApiCall(
@@ -18,11 +15,9 @@ const Admin: React.FC = () => {
             "POST",
             null,
             async (result) => {
-                console.log(result)
+                console.log(result);
                 if ((await result.status) == "Success") {
-                    setOrders(
-                        result.orders.map((order: string) => JSON.parse(order))
-                    );
+                    setOrders(result.orders);
                 } else {
                     setError("\n Error viewing orders: " + result.message);
                 }
@@ -33,19 +28,16 @@ const Admin: React.FC = () => {
 
     useEffect(() => {
         viewOrders();
-        console.log(orders);
     }, []);
 
-    const showOrderDetails = (orderId: number) => {
+    const showOrderDetails = (order: OrderInterface) => {
         Swal.fire({
             title: 'Order Details',
             html: `
                 <div style="text-align: left;">
-                    <p><strong>Order ID:</strong> ${orderId}</p>
-                    <p><strong>Order Date:</strong> 2023-10-01</p>
-                    <p><strong>Payment Method:</strong> Credit Card</p>
-                    <p><strong>Card Number:</strong> **** **** **** 1234</p>
-                    <p><strong>Order Status:</strong> <span style="color: ${orderStatus === 'Ordered' ? 'red' : 'green'}">${orderStatus}</span></p>
+                    <p><strong>Order ID:</strong> ${order.orderID}</p>
+                    <p><strong>Order Date:</strong> ${order.orderDate}</p>
+                    <p><strong>Order Status:</strong> ${order.orderStatus}</p>
                 </div>
                 <ul role="list" class="divide-y divide-gray-200 text-sm font-medium text-gray-900">
                     <li class="flex items-start space-x-4 py-6 border-b border-gray-200">
@@ -88,15 +80,15 @@ const Admin: React.FC = () => {
                 <dl class="space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-gray-900">
                     <div class="flex items-center justify-between">
                         <dt class="text-gray-600">Subtotal</dt>
-                        <dd>$45.00</dd>
+                        <dd>RM ${order.orderTotal}</dd>
                     </div>
                     <div class="flex items-center justify-between">
                         <dt class="text-gray-600">Shipping</dt>
-                        <dd>$5.00</dd>
+                        <dd>RM ${shippingFee}</dd>
                     </div>
                     <div class="flex items-center justify-between">
                         <dt class="text-gray-600">Taxes</dt>
-                        <dd>$4.50</dd>
+                        <dd>RM ${tax}</dd>
                     </div>
                     <div class="flex items-center justify-between border-t border-gray-200 pt-6">
                         <dt class="text-base">Total</dt>
@@ -108,20 +100,19 @@ const Admin: React.FC = () => {
         });
     };
 
-    const confirmOrder = () => {
+    const confirmOrder = (order: OrderInterface) => {
         Swal.fire({
             title: "Confirm Order?",
             html: `
-                <p><strong>Billing Address:</strong> 123 Main St, Kuala Lumpur</p>
-                <p><strong>Shipping Address:</strong> 123 Main St, Kuala Lumpur</p>
+                <p><strong>Billing Address:</strong> ${order.billingAddress}</p>
+                <p><strong>Shipping Address:</strong> ${order.shippingAddress}</p>
             `,
             showDenyButton: true,
             confirmButtonText: "Confirm",
             denyButtonText: `Cancel`,
-            denyButtonColor: '#6c757d', // Grey color for the cancel button
+            denyButtonColor: "#6c757d", // Grey color for the cancel button
         }).then((result) => {
             if (result.isConfirmed) {
-                setOrderStatus("Delivered");
                 Swal.fire("Delivered!", "", "success");
             }
         });
@@ -135,58 +126,67 @@ const Admin: React.FC = () => {
                         Administrative
                     </h1>
                     <div className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
-                        <section aria-labelledby="order-details-heading" className="lg:col-span-7">
-                            <h2 id="order-details-heading" className="sr-only">
-                                Order Details
-                            </h2>
-                            <div className="bg-gray-50 px-4 py-6 sm:p-6 lg:p-8 rounded-lg shadow-md">
-                                <p className="mb-2"><strong>Order ID:</strong> 1</p>
-                                <p className="mb-2"><strong>Order Date:</strong> 2023-10-01</p>
-                                <p className="mb-4"><strong>Order Status:</strong> <span style={{ color: orderStatus === 'Ordered' ? 'red' : 'green' }}>{orderStatus}</span></p>
-                                <div className="mt-4 flex justify-end space-x-4">
-                                    <button
-                                        onClick={() => showOrderDetails(1)}
-                                        className="px-4 py-2 bg-blue-500 text-white rounded"
-                                    >
-                                        View Order
-                                    </button>
-                                    {orderStatus !== "Delivered" && (
-                                        <button
-                                            onClick={confirmOrder}
-                                            className="px-4 py-2 bg-green-500 text-white rounded"
+                        {orders.map((order) => (
+                            <section
+                                key={order.orderID}
+                                aria-labelledby="order-details-heading"
+                                className="lg:col-span-7 mt-8"
+                            >
+                                <h2
+                                    id="order-details-heading"
+                                    className="sr-only"
+                                >
+                                    Order Details
+                                </h2>
+                                <div className="bg-gray-50 px-4 py-6 sm:p-6 lg:p-8 rounded-lg shadow-md">
+                                    <p className="mb-2">
+                                        <strong>Order ID:</strong>{" "}
+                                        {order.orderID}
+                                    </p>
+                                    <p className="mb-2">
+                                        <strong>Order Date:</strong>{" "}
+                                        {order.orderDate}
+                                    </p>
+                                    <p className="mb-4">
+                                        <strong>Order Status:</strong>{" "}
+                                        <span
+                                            style={{
+                                                color:
+                                                    order.orderStatus ===
+                                                    "Ordered"
+                                                        ? "red"
+                                                        : order.orderStatus ===
+                                                          "Cancelled"
+                                                        ? "gray"
+                                                        : "green",
+                                            }}
                                         >
-                                            Confirm Order
-                                        </button>
-                                    )}
-                                </div>
-                            </div>
-                        </section>
-                        <section aria-labelledby="order-details-heading" className="lg:col-span-7 mt-8">
-                            <h2 id="order-details-heading" className="sr-only">
-                                Order Details
-                            </h2>
-                            <div className="bg-gray-50 px-4 py-6 sm:p-6 lg:p-8 rounded-lg shadow-md">
-                                <p className="mb-2"><strong>Order ID:</strong> 2</p>
-                                <p className="mb-2"><strong>Order Date:</strong> 2023-10-02</p>
-                                <p className="mb-4"><strong>Order Status:</strong> <span style={{ color: orderStatus === 'Ordered' ? 'red' : 'green' }}>{orderStatus}</span></p>
-                                <div className="mt-4 flex justify-end space-x-4">
-                                    <button
-                                        onClick={() => showOrderDetails(2)}
-                                        className="px-4 py-2 bg-blue-500 text-white rounded"
-                                    >
-                                        View Order
-                                    </button>
-                                    {orderStatus !== "Delivered" && (
+                                            {order.orderStatus}
+                                        </span>
+                                    </p>
+                                    <div className="mt-4 flex justify-end space-x-4">
                                         <button
-                                            onClick={confirmOrder}
-                                            className="px-4 py-2 bg-green-500 text-white rounded"
+                                            onClick={() =>
+                                                showOrderDetails(order)
+                                            }
+                                            className="px-4 py-2 bg-blue-500 text-white rounded"
                                         >
-                                            Confirm Order
+                                            View Order
                                         </button>
-                                    )}
+                                        {order.orderStatus === "Ordered" && (
+                                            <button
+                                                onClick={() =>
+                                                    confirmOrder(order)
+                                                }
+                                                className="px-4 py-2 bg-green-500 text-white rounded"
+                                            >
+                                                Confirm Order
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        </section>
+                            </section>
+                        ))}
                     </div>
                 </div>
             </div>
