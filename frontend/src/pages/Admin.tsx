@@ -2,6 +2,7 @@ import { OrderInterface } from "@interfaces/API/UserInterface";
 import handleApiCall from "@utils/handleApiCall";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import AsyncImage from "@components/AsyncImage";
 
 const Admin: React.FC = () => {
     const [orders, setOrders] = useState<OrderInterface[]>([]);
@@ -87,17 +88,19 @@ const Admin: React.FC = () => {
                     <p><strong>Order ID:</strong> ${order.orderID}</p>
                     <p><strong>Order Date:</strong> ${order.orderDate}</p>
                     <p><strong>Order Status:</strong> <span style="color: ${
-                        order.orderStatus === "Ordered" ? "red" : "green"
+                        order.orderStatus === "Ordered"
+                            ? "red"
+                            : order.orderStatus === "Cancelled"
+                            ? "gray"
+                            : "green"
                     }">${order.orderStatus}</span></p>
                 </div>
                 <ul role="list" class="divide-y divide-gray-200 text-sm font-medium text-gray-900">
                     ${order.cartProducts
                         .map(
-                            (product) => `
+                            (product, index) => `
                         <li class="flex items-start space-x-4 py-6 border-b border-gray-200">
-                            <img src="https://placeholder.pics/svg/300x300" alt="${
-                                product.name
-                            }" class="h-20 w-20 flex-none rounded-md object-cover object-center" />
+                            <div id="async-image-${index}" class="h-20 w-20 flex-none rounded-md object-cover object-center"></div>
                             <div class="flex-auto space-y-1" style="text-align: left;">
                                 <h3>${product.name}</h3>
                                 <p class="text-gray-500">${product.color}</p>
@@ -142,6 +145,26 @@ const Admin: React.FC = () => {
                 </dl>
             `,
             showCloseButton: true,
+            didOpen: () => {
+                order.cartProducts.forEach((product, index) => {
+                    const container = document.getElementById(`async-image-${index}`);
+                    if (container) {
+                        const imgElement = document.createElement('img');
+                        import(
+                            `../assets/images/${product.productID}/${product.color
+                                .toLowerCase()
+                                .replace(" ", "")}-${0}.webp`
+                        ).then((module) => {
+                            imgElement.src = module.default;
+                        }).catch((error) => {
+                            console.error("Error loading image:", error);
+                        });
+                        imgElement.alt = product.name;
+                        imgElement.className = 'h-20 w-20 flex-none rounded-md object-cover object-center';
+                        container.appendChild(imgElement);
+                    }
+                });
+            }
         });
     };
 
