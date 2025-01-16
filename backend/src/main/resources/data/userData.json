@@ -83,7 +83,7 @@
         "orderID": 1,
         "shippingAddress": "123 Main St, Kuala Lumpur",
         "billingAddress": "123 Main St, Kuala Lumpur",
-        "paymentID": 1,
+        "paymentID": 2,
         "orderDate": "2023-10-01",
         "orderStatus": "Cancelled",
         "cartProducts": [

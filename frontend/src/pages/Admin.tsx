@@ -9,9 +9,31 @@ const Admin: React.FC = () => {
         null
     );
 
-    const [shippingFee, setShippingFee] = useState<number>(0);
-    const [tax, setTax] = useState<number>(0);
+    const [shippingTotal, setShippingTotal] = useState<number>(0);
+    const [taxTotal, setTaxTotal] = useState<number>(0);
+
     const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (
+            specificOrder?.cartProducts &&
+            specificOrder?.cartProducts.length > 0
+        ) {
+            if (
+                specificOrder?.orderTotal < 150 &&
+                specificOrder?.orderTotal > 0
+            ) {
+                setShippingTotal(5);
+            }
+            if (
+                specificOrder?.orderTotal >= 150 ||
+                specificOrder?.orderTotal === 0
+            ) {
+                setShippingTotal(0);
+            }
+            setTaxTotal(specificOrder?.orderTotal * 0.06);
+        }
+    }, [specificOrder]);
 
     const viewOrders = async () => {
         await handleApiCall(
@@ -37,6 +59,7 @@ const Admin: React.FC = () => {
             null,
             async (result) => {
                 if ((await result.status) == "Success") {
+                    console.log(JSON.parse(result.order[0]));
                     setSpecificOrder(JSON.parse(result.order[0]));
                 } else {
                     setError(
@@ -54,68 +77,70 @@ const Admin: React.FC = () => {
 
     const showOrderDetails = async (order: OrderInterface) => {
         await viewSpecificOrder(order.orderID, order.email!);
+        if (!specificOrder) return;
+
         Swal.fire({
-            title: 'Order Details',
+            title: "Order Details",
             html: `
                 <div style="text-align: left;">
-                    <p><strong>Order ID:</strong> ${order.orderID}</p>
-                    <p><strong>Order Date:</strong> ${order.orderDate}</p>
-                    <p><strong>Order Status:</strong> ${order.orderStatus}</p>
+                    <p><strong>Order ID:</strong> ${specificOrder.orderID}</p>
+                    <p><strong>Order Date:</strong> ${
+                        specificOrder.orderDate
+                    }</p>
+                    <p><strong>Order Status:</strong> <span style="color: ${
+                        specificOrder.orderStatus === "Ordered"
+                            ? "red"
+                            : "green"
+                    }">${specificOrder.orderStatus}</span></p>
                 </div>
                 <ul role="list" class="divide-y divide-gray-200 text-sm font-medium text-gray-900">
-                    <li class="flex items-start space-x-4 py-6 border-b border-gray-200">
-                        <img src="https://placeholder.pics/svg/300x300" alt="Product 1" class="h-20 w-20 flex-none rounded-md object-cover object-center" />
-                        <div class="flex-auto space-y-1" style="text-align: left;">
-                            <h3>Product 1</h3>
-                            <p class="text-gray-500">Red</p>
-                            <p class="text-gray-500">Medium</p>
-                        </div>
-                        <div class="flex flex-col items-end">
-                            <p class="text-gray-900">$20.00</p>
-                            ${2 > 1 ? '<p class="text-gray-500 self-end">x2</p>' : ''}
-                        </div>
-                    </li>
-                    <li class="flex items-start space-x-4 py-6 border-b border-gray-200">
-                        <img src="https://placeholder.pics/svg/300x300" alt="Product 2" class="h-20 w-20 flex-none rounded-md object-cover object-center" />
-                        <div class="flex-auto space-y-1" style="text-align: left;">
-                            <h3>Product 2</h3>
-                            <p class="text-gray-500">Blue</p>
-                            <p class="text-gray-500">Large</p>
-                        </div>
-                        <div class="flex flex-col items-end">
-                            <p class="text-gray-900">$15.00</p>
-                            ${1 > 1 ? '<p class="text-gray-500 self-end">x1</p>' : ''}
-                        </div>
-                    </li>
-                    <li class="flex items-start space-x-4 py-6 border-b border-gray-200">
-                        <img src="https://placeholder.pics/svg/300x300" alt="Product 3" class="h-20 w-20 flex-none rounded-md object-cover object-center" />
-                        <div class="flex-auto space-y-1" style="text-align: left;">
-                            <h3>Product 3</h3>
-                            <p class="text-gray-500">Green</p>
-                            <p class="text-gray-500">Small</p>
-                        </div>
-                        <div class="flex flex-col items-end">
-                            <p class="text-gray-900">$10.00</p>
-                            ${3 > 1 ? '<p class="text-gray-500 self-end">x3</p>' : ''}
-                        </div>
-                    </li>
+                    ${specificOrder.cartProducts
+                        .map(
+                            (product) => `
+                        <li class="flex items-start space-x-4 py-6 border-b border-gray-200">
+                            <img src="https://placeholder.pics/svg/300x300" alt="${
+                                product.name
+                            }" class="h-20 w-20 flex-none rounded-md object-cover object-center" />
+                            <div class="flex-auto space-y-1" style="text-align: left;">
+                                <h3>${product.name}</h3>
+                                <p class="text-gray-500">${product.color}</p>
+                                <p class="text-gray-500">${product.size}</p>
+                            </div>
+                            <div class="flex flex-col items-end">
+                                <p class="text-gray-900">RM ${product.price.toFixed(
+                                    2
+                                )}</p>
+                                ${
+                                    product.quantity > 1
+                                        ? `<p class="text-gray-500 self-end">x${product.quantity}</p>`
+                                        : ""
+                                }
+                            </div>
+                        </li>
+                    `
+                        )
+                        .join("")}
                 </ul>
                 <dl class="space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-gray-900">
                     <div class="flex items-center justify-between">
                         <dt class="text-gray-600">Subtotal</dt>
-                        <dd>RM ${order.orderTotal}</dd>
+                        <dd>RM ${specificOrder.orderTotal.toFixed(2)}</dd>
                     </div>
                     <div class="flex items-center justify-between">
                         <dt class="text-gray-600">Shipping</dt>
-                        <dd>RM ${shippingFee}</dd>
+                        <dd>RM ${shippingTotal.toFixed(2)}</dd>
                     </div>
                     <div class="flex items-center justify-between">
                         <dt class="text-gray-600">Taxes</dt>
-                        <dd>RM ${tax}</dd>
+                        <dd>RM ${taxTotal.toFixed(2)}</dd>
                     </div>
                     <div class="flex items-center justify-between border-t border-gray-200 pt-6">
                         <dt class="text-base">Total</dt>
-                        <dd class="text-base">$54.50</dd>
+                        <dd class="text-base">RM ${(
+                            specificOrder.orderTotal +
+                            shippingTotal +
+                            taxTotal
+                        ).toFixed(2)}</dd>
                     </div>
                 </dl>
             `,
