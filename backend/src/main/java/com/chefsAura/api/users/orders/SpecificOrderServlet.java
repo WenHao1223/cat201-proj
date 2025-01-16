@@ -83,7 +83,6 @@ public class SpecificOrderServlet extends HttpServlet {
                     throw new IllegalArgumentException("Exception occurred: " + e);
                 }
 
-                orderJson.addProperty("orderDate", order.getOrderDate());
                 orderJson.addProperty("orderStatus", order.getOrderStatus().getStatus());
                 orderJson.addProperty("orderTotal", order.getOrderTotal());
 

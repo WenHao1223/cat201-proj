@@ -43,6 +43,7 @@ const Admin: React.FC = () => {
             async (result) => {
                 console.log(result);
                 if ((await result.status) == "Success") {
+                    console.log(result.orders);
                     setOrders(result.orders);
                 } else {
                     setError("\n Error viewing orders: " + result.message);
@@ -83,18 +84,14 @@ const Admin: React.FC = () => {
             title: "Order Details",
             html: `
                 <div style="text-align: left;">
-                    <p><strong>Order ID:</strong> ${specificOrder.orderID}</p>
-                    <p><strong>Order Date:</strong> ${
-                        specificOrder.orderDate
-                    }</p>
+                    <p><strong>Order ID:</strong> ${order.orderID}</p>
+                    <p><strong>Order Date:</strong> ${order.orderDate}</p>
                     <p><strong>Order Status:</strong> <span style="color: ${
-                        specificOrder.orderStatus === "Ordered"
-                            ? "red"
-                            : "green"
-                    }">${specificOrder.orderStatus}</span></p>
+                        order.orderStatus === "Ordered" ? "red" : "green"
+                    }">${order.orderStatus}</span></p>
                 </div>
                 <ul role="list" class="divide-y divide-gray-200 text-sm font-medium text-gray-900">
-                    ${specificOrder.cartProducts
+                    ${order.cartProducts
                         .map(
                             (product) => `
                         <li class="flex items-start space-x-4 py-6 border-b border-gray-200">
@@ -124,7 +121,7 @@ const Admin: React.FC = () => {
                 <dl class="space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-gray-900">
                     <div class="flex items-center justify-between">
                         <dt class="text-gray-600">Subtotal</dt>
-                        <dd>RM ${specificOrder.orderTotal.toFixed(2)}</dd>
+                        <dd>RM ${order.orderTotal.toFixed(2)}</dd>
                     </div>
                     <div class="flex items-center justify-between">
                         <dt class="text-gray-600">Shipping</dt>
@@ -137,7 +134,7 @@ const Admin: React.FC = () => {
                     <div class="flex items-center justify-between border-t border-gray-200 pt-6">
                         <dt class="text-base">Total</dt>
                         <dd class="text-base">RM ${(
-                            specificOrder.orderTotal +
+                            order.orderTotal +
                             shippingTotal +
                             taxTotal
                         ).toFixed(2)}</dd>
