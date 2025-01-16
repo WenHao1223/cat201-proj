@@ -5,6 +5,10 @@ import Swal from "sweetalert2";
 
 const Admin: React.FC = () => {
     const [orders, setOrders] = useState<OrderInterface[]>([]);
+    const [specificOrder, setSpecificOrder] = useState<OrderInterface | null>(
+        null
+    );
+
     const [shippingFee, setShippingFee] = useState<number>(0);
     const [tax, setTax] = useState<number>(0);
     const [error, setError] = useState<string | null>(null);
@@ -26,11 +30,30 @@ const Admin: React.FC = () => {
         );
     };
 
+    const viewSpecificOrder = async (orderID: number, email: string) => {
+        await handleApiCall(
+            `users/orders/${orderID}?email=${email}`,
+            "GET",
+            null,
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    setSpecificOrder(JSON.parse(result.order[0]));
+                } else {
+                    setError(
+                        "\n Error viewing specific order: " + result.message
+                    );
+                }
+            },
+            (error) => setError("\n Error viewing specific order: " + error)
+        );
+    };
+
     useEffect(() => {
         viewOrders();
     }, []);
 
-    const showOrderDetails = (order: OrderInterface) => {
+    const showOrderDetails = async (order: OrderInterface) => {
+        await viewSpecificOrder(order.orderID, order.email!);
         Swal.fire({
             title: 'Order Details',
             html: `

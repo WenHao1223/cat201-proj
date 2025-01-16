@@ -78,6 +78,18 @@ public class Order {
         return largestOrderID;
     }
 
+    // get email
+    public String getEmail() {
+        for (User user : UserCollection.getAllUsers()) {
+            for (Order order : user.getOrders()) {
+                if (order.getOrderID() == orderID) {
+                    return user.getEmail();
+                }
+            }
+        }
+        return "";
+    }
+
     // get order ID
     public int getOrderID() {
         return orderID;

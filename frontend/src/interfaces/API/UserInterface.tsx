@@ -66,6 +66,7 @@ export interface CartGeneralInterface {
 }
 
 export interface OrderInterface {
+    email?: string;
     orderID: number;
     shippingAddress: string;
     billingAddress: string;

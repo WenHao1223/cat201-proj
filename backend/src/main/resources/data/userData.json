@@ -203,7 +203,7 @@
         "orderStatus": "Delivered",
         "cartProducts": [
           {
-            "productID": "U001",
+            "productID": "B001",
             "quantity": 3,
             "sizeIndex": 0,
             "colorIndex": 0
@@ -257,7 +257,7 @@
         "orderStatus": "Delivered",
         "cartProducts": [
           {
-            "productID": "U002",
+            "productID": "B002",
             "quantity": 1,
             "sizeIndex": 0,
             "colorIndex": 0

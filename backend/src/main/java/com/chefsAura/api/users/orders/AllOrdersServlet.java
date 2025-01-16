@@ -33,6 +33,7 @@ public class AllOrdersServlet extends HttpServlet {
 
         for (Order order : orders) {
             JsonObject orderJson = new JsonObject();
+            orderJson.addProperty("email", order.getEmail());
             orderJson.addProperty("orderID", order.getOrderID());
             orderJson.addProperty("orderDate", order.getOrderDate());
             orderJson.addProperty("shippingAddress", order.getShippingAddress());
