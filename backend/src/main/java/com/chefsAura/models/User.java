@@ -345,6 +345,31 @@ public class User {
         return newOrder.getOrderID();
     }
 
+    // deliver order
+    public void deliverOrder(int orderID) {
+        for (Order order : this.orders) {
+            if (order.getOrderID() == orderID) {
+                if (order.getOrderStatus() == OrderStatusEnum.CANCELLED) {
+                    System.err.println("Order already cancelled");
+                    throw  new IllegalArgumentException("Order already cancelled");
+                }
+                order.setOrderStatus(OrderStatusEnum.DELIVERED);
+
+                // add quantity back to inventory
+                for (Cart cart : order.getCartProducts()) {
+                    Inventory.getProduct(cart.getProductID()).addQuantity(cart.getSizeIndex(), cart.getColorIndex(),
+                            cart.getQuantity());
+                }
+
+                System.out.println("Order delivered successfully");
+                return;
+            }
+        }
+        // return error
+        System.err.println("Order not found");
+        throw new IllegalArgumentException("Order not found");
+    }
+
     // cancel order
     public void cancelOrder(int orderID) {
         for (Order order : this.orders) {

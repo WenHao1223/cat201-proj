@@ -147,24 +147,31 @@ const Admin: React.FC = () => {
             showCloseButton: true,
             didOpen: () => {
                 order.cartProducts.forEach((product, index) => {
-                    const container = document.getElementById(`async-image-${index}`);
+                    const container = document.getElementById(
+                        `async-image-${index}`
+                    );
                     if (container) {
-                        const imgElement = document.createElement('img');
+                        const imgElement = document.createElement("img");
                         import(
-                            `../assets/images/${product.productID}/${product.color
+                            `../assets/images/${
+                                product.productID
+                            }/${product.color
                                 .toLowerCase()
                                 .replace(" ", "")}-${0}.webp`
-                        ).then((module) => {
-                            imgElement.src = module.default;
-                        }).catch((error) => {
-                            console.error("Error loading image:", error);
-                        });
+                        )
+                            .then((module) => {
+                                imgElement.src = module.default;
+                            })
+                            .catch((error) => {
+                                console.error("Error loading image:", error);
+                            });
                         imgElement.alt = product.name;
-                        imgElement.className = 'h-20 w-20 flex-none rounded-md object-cover object-center';
+                        imgElement.className =
+                            "h-20 w-20 flex-none rounded-md object-cover object-center";
                         container.appendChild(imgElement);
                     }
                 });
-            }
+            },
         });
     };
 
@@ -179,13 +186,30 @@ const Admin: React.FC = () => {
             confirmButtonText: "Confirm",
             denyButtonText: `Cancel`,
             denyButtonColor: "#6c757d", // Grey color for the cancel button
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                Swal.fire("Delivered!", "", "success");
+                await handleApiCall(
+                    `users/orders/deliver`,
+                    "PUT",
+                    {
+                        email: order?.email,
+                        orderID: order?.orderID,
+                    },
+                    async (result) => {
+                        if ((await result.status) == "Success") {
+                            console.log(result.orders);
+                            viewOrders();
+                        } else {
+                            setError(
+                                "\n Error cancelling order: " + result.message
+                            );
+                        }
+                    },
+                    (error) => setError("\n Error cancelling order: " + error)
+                );
             }
         });
     };
-
     return (
         <div className="bg-white">
             <div className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
