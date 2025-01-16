@@ -1,12 +1,40 @@
-import React, { useState } from "react";
+import { OrderInterface } from "@interfaces/API/UserInterface";
+import handleApiCall from "@utils/handleApiCall";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 const Admin: React.FC = () => {
     const [orderStatus, setOrderStatus] = useState<string>("Ordered");
+    const [orders, setOrders] = useState<OrderInterface[]>([]);
+    const [error, setError] = useState<string | null>(null);
 
     const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setOrderStatus(event.target.value);
     };
+
+    const viewOrders = async () => {
+        await handleApiCall(
+            `users/allOrders`,
+            "POST",
+            null,
+            async (result) => {
+                console.log(result)
+                if ((await result.status) == "Success") {
+                    setOrders(
+                        result.orders.map((order: string) => JSON.parse(order))
+                    );
+                } else {
+                    setError("\n Error viewing orders: " + result.message);
+                }
+            },
+            (error) => setError("\n Error viewing orders: " + error)
+        );
+    };
+
+    useEffect(() => {
+        viewOrders();
+        console.log(orders);
+    }, []);
 
     const showOrderDetails = (orderId: number) => {
         Swal.fire({

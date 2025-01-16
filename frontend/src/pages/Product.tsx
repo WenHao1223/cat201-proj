@@ -16,7 +16,6 @@ interface ProductProps {
     setCarts: React.Dispatch<
         React.SetStateAction<CartGeneralInterface[] | null>
     >;
-    isAdmin: boolean;
 }
 
 const Product: React.FC<ProductProps> = ({
@@ -24,7 +23,6 @@ const Product: React.FC<ProductProps> = ({
     isLogin,
     carts,
     setCarts,
-    isAdmin,
 }) => {
     const { productID } = useParams<{ productID: string }>();
     const [specificProduct, setSpecificProduct] =
@@ -172,22 +170,14 @@ const Product: React.FC<ProductProps> = ({
 
     return (
         specificProduct && (
-            <div>
-                <Navbar
-                    isLogin={isLogin}
-                    setIsLogin={() => {}}
-                    setCurrentUserGeneralDetails={() => {}}
-                    isAdmin={isAdmin}
-                />
-                <div className="product-page">
-                    <style>
-                        {`
+            <div className="product-page">
+                <style>
+                    {`
           .product-page {
             font-family: 'Helvetica Neue', sans-serif;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            padding-top: 100px;
             display: flex;
             flex-direction: column;
             gap: 40px;
@@ -313,107 +303,104 @@ const Product: React.FC<ProductProps> = ({
             background-color: #0056b3;
           }
         `}
-                    </style>
-                    <div className="image-gallery">
-                        <img
-                            src={selectedImage || images[0]}
-                            alt="Product Image"
-                            className="main-image"
-                        />
-                        <div className="thumbnail-container overflow-x-auto">
-                            {images.map((img, index) => (
-                                <img
-                                    key={index}
-                                    src={img}
-                                    alt={`Thumbnail ${index + 1}`}
-                                    className={`thumbnail ${
-                                        selectedImage === img ? "selected" : ""
-                                    }`}
-                                    onClick={() => setSelectedImage(img)}
-                                />
-                            ))}
+                </style>
+                <Navbar
+                    isLogin={isLogin}
+                    setIsLogin={() => {}}
+                    setCurrentUserGeneralDetails={() => {}}
+                />
+                <div className="image-gallery">
+                    <img
+                        src={selectedImage || images[0]}
+                        alt="Product Image"
+                        className="main-image"
+                    />
+                    <div className="thumbnail-container overflow-x-auto">
+                        {images.map((img, index) => (
+                            <img
+                                key={index}
+                                src={img}
+                                alt={`Thumbnail ${index + 1}`}
+                                className={`thumbnail ${
+                                    selectedImage === img ? "selected" : ""
+                                }`}
+                                onClick={() => setSelectedImage(img)}
+                            />
+                        ))}
+                    </div>
+                </div>
+                <div className="product-details">
+                    <h1 className="product-name">{specificProduct!.name}</h1>
+                    <p className="product-description">
+                        {specificProduct!.description}
+                    </p>
+                    <p className="product-price">
+                        RM{specificProduct!.price.toFixed(2)}
+                    </p>
+                    <p className="product-id">
+                        <strong>Product ID:</strong> {productID}
+                    </p>
+                    <p className="product-category">
+                        <strong>Category:</strong> {specificProduct!.category}
+                    </p>
+                    <p className="product-brand">
+                        <strong>Brand:</strong> {specificProduct!.brand}
+                    </p>
+                    <div className="selectors">
+                        <div className="selector">
+                            <label htmlFor="color">Colour:</label>
+                            <select
+                                id="color"
+                                value={selectedColor}
+                                onChange={(
+                                    e: React.ChangeEvent<HTMLSelectElement>
+                                ) => setSelectedColor(e.target.value)}
+                            >
+                                <option value="">Select Colour</option>
+                                {specificProduct!.colors.map((color, index) => (
+                                    <option key={index} value={color}>
+                                        {color}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="selector">
+                            <label htmlFor="size">Size:</label>
+                            <select
+                                id="size"
+                                value={selectedSize}
+                                onChange={(
+                                    e: React.ChangeEvent<HTMLSelectElement>
+                                ) => setSelectedSize(e.target.value)}
+                            >
+                                <option value="">Select Size</option>
+                                {specificProduct!.sizes.map((size, index) => (
+                                    <option key={index} value={size}>
+                                        {size}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="selector">
+                            <label htmlFor="quantity">Quantity:</label>
+                            <input
+                                type="number"
+                                id="quantity"
+                                min="1"
+                                max={getMaxQuantity()}
+                                value={quantity}
+                                onChange={(
+                                    e: React.ChangeEvent<HTMLInputElement>
+                                ) => setQuantity(Number(e.target.value))}
+                            />
                         </div>
                     </div>
-                    <div className="product-details">
-                        <h1 className="product-name">
-                            {specificProduct!.name}
-                        </h1>
-                        <p className="product-description">
-                            {specificProduct!.description}
-                        </p>
-                        <p className="product-price">
-                            RM{specificProduct!.price.toFixed(2)}
-                        </p>
-                        <p className="product-id">
-                            <strong>Product ID:</strong> {productID}
-                        </p>
-                        <p className="product-category">
-                            <strong>Category:</strong>{" "}
-                            {specificProduct!.category}
-                        </p>
-                        <p className="product-brand">
-                            <strong>Brand:</strong> {specificProduct!.brand}
-                        </p>
-                        <div className="selectors">
-                            <div className="selector">
-                                <label htmlFor="color">Colour:</label>
-                                <select
-                                    id="color"
-                                    value={selectedColor}
-                                    onChange={(
-                                        e: React.ChangeEvent<HTMLSelectElement>
-                                    ) => setSelectedColor(e.target.value)}
-                                >
-                                    <option value="">Select Colour</option>
-                                    {specificProduct!.colors.map(
-                                        (color, index) => (
-                                            <option key={index} value={color}>
-                                                {color}
-                                            </option>
-                                        )
-                                    )}
-                                </select>
-                            </div>
-                            <div className="selector">
-                                <label htmlFor="size">Size:</label>
-                                <select
-                                    id="size"
-                                    value={selectedSize}
-                                    onChange={(
-                                        e: React.ChangeEvent<HTMLSelectElement>
-                                    ) => setSelectedSize(e.target.value)}
-                                >
-                                    <option value="">Select Size</option>
-                                    {specificProduct!.sizes.map(
-                                        (size, index) => (
-                                            <option key={index} value={size}>
-                                                {size}
-                                            </option>
-                                        )
-                                    )}
-                                </select>
-                            </div>
-                            <div className="selector">
-                                <label htmlFor="quantity">Quantity:</label>
-                                <input
-                                    type="number"
-                                    id="quantity"
-                                    min="1"
-                                    max={getMaxQuantity()}
-                                    value={quantity}
-                                    onChange={(
-                                        e: React.ChangeEvent<HTMLInputElement>
-                                    ) => setQuantity(Number(e.target.value))}
-                                />
-                            </div>
-                        </div>
-                        <button
-                            className="add-to-cart-button"
-                            onClick={handleAddToCart}
-                        >
-                            Add to Cart
-                        </button>
-                    </div>
+                    <button
+                        className="add-to-cart-button"
+                        onClick={handleAddToCart}
+                    >
+                        Add to Cart
+                    </button>
                 </div>
             </div>
         )

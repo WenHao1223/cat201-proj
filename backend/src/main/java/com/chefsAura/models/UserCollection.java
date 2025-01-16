@@ -32,6 +32,15 @@ public class UserCollection {
         return users;
     }
 
+    // get all orders
+    public static ArrayList<Order> getAllOrders() {
+        ArrayList<Order> orders = new ArrayList<>();
+        for (User user : users) {
+            orders.addAll(user.getOrders());
+        }
+        return orders;
+    }
+
     // register user
     public static String registerUser(String username, String email, String password,
             String nationality, String firstName, String lastName,
