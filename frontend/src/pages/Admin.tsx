@@ -4,8 +4,17 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import AsyncImage from "@components/AsyncImage";
 import { ProductInterface } from "@interfaces/API/ProductInterface";
+import Navbar from "@components/Navbar";
 
-const Admin: React.FC = () => {
+interface AdminProps {
+    isLogin: boolean;
+    isAdmin: boolean;
+}
+
+const Admin: React.FC<AdminProps> = ({
+    isLogin,
+    isAdmin,
+}) => {
     const [orders, setOrders] = useState<OrderInterface[]>([]);
     const [specificOrder, setSpecificOrder] = useState<OrderInterface | null>(
         null
@@ -317,6 +326,12 @@ const Admin: React.FC = () => {
 
     return (
         <div className="bg-white">
+            <Navbar
+                isLogin={isLogin}
+                setIsLogin={() => {}}
+                setCurrentUserGeneralDetails={() => {}}
+                isAdmin={isAdmin}
+            />
             <div className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div className="relative top-12">
                     <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">

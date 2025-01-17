@@ -169,7 +169,10 @@ const App: React.FC = () => {
                             />
                         }
                     />
-                    <Route path="/admin" element={<Admin />} />
+                    <Route path="/admin" element={<Admin
+                        isLogin={isLogin}
+                        isAdmin={isAdmin}
+                    />} />
                 </Routes>
             </div>
         </Router>
