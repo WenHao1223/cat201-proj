@@ -53,9 +53,7 @@ const Admin: React.FC = () => {
             "POST",
             null,
             async (result) => {
-                console.log(result);
                 if ((await result.status) == "Success") {
-                    console.log(result.orders);
                     setOrders(result.orders);
                 } else {
                     setError("\n Error viewing orders: " + result.message);
@@ -72,7 +70,6 @@ const Admin: React.FC = () => {
             null,
             async (result) => {
                 if ((await result.status) == "Success") {
-                    console.log(JSON.parse(result.order[0]));
                     setSpecificOrder(JSON.parse(result.order[0]));
                 } else {
                     setError(
@@ -204,7 +201,6 @@ const Admin: React.FC = () => {
                     },
                     async (result) => {
                         if ((await result.status) == "Success") {
-                            console.log(result.orders);
                             viewOrders();
                         } else {
                             setError(
@@ -269,7 +265,6 @@ const Admin: React.FC = () => {
             },
             async (result) => {
                 if ((await result.status) == "Success") {
-                    console.log(JSON.parse(result.products));
                     setProducts(JSON.parse(result.products));
                 } else {
                     setError("\n Error adding quantity: " + result.message);
@@ -310,7 +305,6 @@ const Admin: React.FC = () => {
             null,
             (result) => {
                 setProducts(result);
-                console.log(result);
             },
             (error) => setError("\n Error fetching product data: " + error)
         );

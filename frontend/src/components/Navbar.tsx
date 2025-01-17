@@ -34,7 +34,6 @@ const Navbar: React.FC<NavbarProps> = ({
         });
     };
 
-    console.log(isAdmin);
     return (
         <nav className="fixed w-screen bg-white shadow-md md:px-8 xs:px-4 px-2 py-4 flex justify-between items-center z-50">
             <Link to="/">
