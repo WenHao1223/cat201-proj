@@ -263,7 +263,7 @@ const Admin: React.FC = () => {
                             name="my_tabs_2"
                             role="tab"
                             className="tab"
-                            aria-label="Tab 1"
+                            aria-label="Review Order Status"
                             defaultChecked
                             onClick={() => setSelectedTab("Tab 1")}
                         />
@@ -350,7 +350,7 @@ const Admin: React.FC = () => {
                             name="my_tabs_2"
                             role="tab"
                             className="tab"
-                            aria-label="Tab 2"
+                            aria-label="Order Product"
                             onClick={() => setSelectedTab("Tab 2")}
                         />
                         <div
