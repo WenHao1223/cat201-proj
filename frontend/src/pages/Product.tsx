@@ -173,7 +173,7 @@ const Product: React.FC<ProductProps> = ({
 
     return (
         specificProduct && (
-            <div>
+            <div className="bg-white">
                 <Navbar
                     isLogin={isLogin}
                     setIsLogin={() => {}}
