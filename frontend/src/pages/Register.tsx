@@ -31,6 +31,7 @@ const Register: React.FC<RegisterProps> = ({ isLogin }) => {
     const [error, setError] = useState("" as string | null);
 
     const [nationality, setNationality] = useState<string>("");
+    const today = new Date().toISOString().split("T")[0];
 
     const handleNationalityChange = (
         event: React.ChangeEvent<HTMLSelectElement>
@@ -257,6 +258,7 @@ const Register: React.FC<RegisterProps> = ({ isLogin }) => {
                                     <input
                                         type="date"
                                         id="dob"
+                                        max={today}
                                         placeholder="Date of Birth"
                                         required
                                     />

@@ -43,6 +43,7 @@ const Profile: React.FC<ProfileProps> = ({
         useState<UserGeneralDetailsInterface | null>(null);
 
     const countryOptions = getNames().sort();
+    const today = new Date().toISOString().split("T")[0];
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -51,7 +52,7 @@ const Profile: React.FC<ProfileProps> = ({
         } else {
             viewCurrentUserPaymentDetailsMethod();
             viewCurrentUserShippingAddressesMethod();
-            viewCurrentUserBillingAddressesMethod();
+            viewCurrentUserBillingAddressesMethod(); 
         }
     }, [isLogin]);
 
@@ -870,6 +871,7 @@ const Profile: React.FC<ProfileProps> = ({
                                         <input
                                             type="date"
                                             value={editableUserDetails?.dob}
+                                            max={today}
                                             onChange={(e) =>
                                                 handleInputChange(
                                                     "dob",
