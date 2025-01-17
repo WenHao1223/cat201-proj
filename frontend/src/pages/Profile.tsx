@@ -1,4 +1,5 @@
 import {
+    CartGeneralInterface,
     PaymentGeneralInterface,
     UserGeneralDetailsInterface,
 } from "@interfaces/API/UserInterface";
@@ -21,6 +22,7 @@ interface ProfileProps {
     isLogin: boolean;
     setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
     isAdmin: boolean;
+    carts: CartGeneralInterface[] | null;
 }
 
 const Profile: React.FC<ProfileProps> = ({
@@ -29,6 +31,7 @@ const Profile: React.FC<ProfileProps> = ({
     isLogin,
     setIsLogin,
     isAdmin,
+    carts,
 }) => {
     const [currentUserPaymentDetails, setCurrentUserPaymentDetails] = useState<
         PaymentGeneralInterface[]
@@ -666,6 +669,7 @@ const Profile: React.FC<ProfileProps> = ({
                 setIsLogin={setIsLogin}
                 setCurrentUserGeneralDetails={setCurrentUserGeneralDetails}
                 isAdmin={isAdmin}
+                carts={carts}
             />
             <div className="mx-auto bg-gray-100 max-w-2xl pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div className="profile-page p-6 flex flex-col items-center overflow-hidden">

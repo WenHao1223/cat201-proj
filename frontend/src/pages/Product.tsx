@@ -179,6 +179,7 @@ const Product: React.FC<ProductProps> = ({
                     setIsLogin={() => {}}
                     setCurrentUserGeneralDetails={() => {}}
                     isAdmin={isAdmin}
+                    carts={carts}
                 />
                 <div className="product-page relative top-24 bg-white">
                     <div className="image-gallery">

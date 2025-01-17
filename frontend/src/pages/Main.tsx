@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 
 import Navbar from "@components/Navbar";
 
-import { UserGeneralDetailsInterface } from "@interfaces/API/UserInterface";
+import { CartGeneralInterface, UserGeneralDetailsInterface } from "@interfaces/API/UserInterface";
 
 interface MainProps {
     currentUserGeneralDetails: UserGeneralDetailsInterface | null;
@@ -14,6 +14,7 @@ interface MainProps {
     isLogin: boolean;
     setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
     isAdmin: boolean;
+    carts: CartGeneralInterface[] | null;
 }
 
 const navigation = [
@@ -77,6 +78,7 @@ const Main: React.FC<MainProps> = ({
     isLogin,
     setIsLogin,
     isAdmin,
+    carts,
 }) => {
     const navigate = useNavigate();
     const [error, setError] = React.useState("");
@@ -105,6 +107,7 @@ const Main: React.FC<MainProps> = ({
                 setIsLogin={setIsLogin}
                 setCurrentUserGeneralDetails={setCurrentUserGeneralDetails}
                 isAdmin={isAdmin}
+                carts={carts}
             />
             <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
                 <h2 className="sr-only">Products</h2>

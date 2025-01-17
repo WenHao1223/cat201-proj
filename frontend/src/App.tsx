@@ -72,6 +72,7 @@ const App: React.FC = () => {
                                 isLogin={isLogin}
                                 setIsLogin={setIsLogin}
                                 isAdmin={isAdmin}
+                                carts={carts}
                             />
                         }
                     />
@@ -106,6 +107,7 @@ const App: React.FC = () => {
                                 isLogin={isLogin}
                                 setIsLogin={setIsLogin}
                                 isAdmin={isAdmin}
+                                carts={carts}
                             />
                         }
                     />
@@ -163,6 +165,7 @@ const App: React.FC = () => {
                                 }
                                 isLogin={isLogin}
                                 isAdmin={isAdmin}
+                                carts={carts}
                             />
                         }
                     />
@@ -179,6 +182,7 @@ const App: React.FC = () => {
                                 isLogin={isLogin}
                                 setIsLogin={setIsLogin}
                                 isAdmin={isAdmin}
+                                carts={carts}
                             />
                         }
                     />

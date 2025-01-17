@@ -1,5 +1,6 @@
 import Navbar from "@components/Navbar";
 import {
+    CartGeneralInterface,
     OrderInterface,
     UserGeneralDetailsInterface,
 } from "@interfaces/API/UserInterface";
@@ -12,12 +13,14 @@ interface OrderHistoryProps {
     currentUserGeneralDetails: UserGeneralDetailsInterface | null;
     isLogin: boolean;
     isAdmin: boolean;
+    carts: CartGeneralInterface[] | null;
 }
 
 const OrderHistory: React.FC<OrderHistoryProps> = ({
     currentUserGeneralDetails,
     isLogin,
     isAdmin,
+    carts,
 }) => {
     const [orders, setOrders] = useState<OrderInterface[]>([]);
     const [specificOrder, setSpecificOrder] = useState<OrderInterface | null>(
@@ -259,6 +262,7 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({
                 isAdmin={isAdmin}
                 setIsLogin={() => {}}
                 setCurrentUserGeneralDetails={() => {}}
+                carts={carts}
             />
             <div className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div className="relative top-12">

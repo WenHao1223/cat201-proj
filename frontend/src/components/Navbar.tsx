@@ -1,14 +1,20 @@
 import React, { isValidElement } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { UserIcon, ShoppingCartIcon, TruckIcon } from "@heroicons/react/20/solid";
+import {
+    UserIcon,
+    ShoppingCartIcon,
+    TruckIcon,
+} from "@heroicons/react/20/solid";
 import logo from "@assets/ChefAuraLogo.webp";
+import { CartGeneralInterface } from "@interfaces/API/UserInterface";
 
 interface NavbarProps {
     isLogin: boolean;
     setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
     setCurrentUserGeneralDetails: React.Dispatch<React.SetStateAction<any>>;
     isAdmin: boolean;
+    carts: CartGeneralInterface[] | null;
 }
 
 const Navbar: React.FC<NavbarProps> = ({
@@ -16,6 +22,7 @@ const Navbar: React.FC<NavbarProps> = ({
     setIsLogin,
     setCurrentUserGeneralDetails,
     isAdmin,
+    carts,
 }) => {
     const navigate = useNavigate();
 
@@ -60,7 +67,16 @@ const Navbar: React.FC<NavbarProps> = ({
                         ) : (
                             <>
                                 <Link to="/cart">
-                                    <ShoppingCartIcon className="h-6 w-8 text-gray-800" />
+                                    <div className="h-8 w-8 justify-center relative">
+                                        <ShoppingCartIcon className="h-6 w-8 text-gray-800" />
+                                        <div className="badge badge-secondary absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2">
+                                            {carts && carts?.length > 0
+                                                ? carts?.length > 99
+                                                    ? "99+"
+                                                    : carts?.length
+                                                : 0}
+                                        </div>
+                                    </div>
                                 </Link>
                                 <Link to="/orderHistory">
                                     <TruckIcon className="h-6 w-8 text-gray-800" />
