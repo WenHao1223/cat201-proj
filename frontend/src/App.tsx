@@ -9,6 +9,7 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Product from "./pages/Product";
 import Admin from "./pages/Admin";
+import AdminNew from "./pages/AdminNew";
 import "./App.css";
 
 import {
@@ -170,6 +171,7 @@ const App: React.FC = () => {
                         }
                     />
                     <Route path="/admin" element={<Admin />} />
+                    <Route path="/admin/new" element={<AdminNew />} />
                 </Routes>
             </div>
         </Router>
