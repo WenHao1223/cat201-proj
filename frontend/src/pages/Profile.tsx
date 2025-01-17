@@ -103,7 +103,7 @@ const Profile: React.FC<ProfileProps> = ({
         Swal.fire({
             title: "Add Payment Method",
             html: `
-                <select id="paymentMethodType" class="swal2-select">
+                <select id="paymentMethodType" class="swal2-select w-[80%]">
                     <option value="debit_card">Debit Card</option>
                     <option value="credit_card">Credit Card</option>
                     <option value="paypal">PayPal</option>
