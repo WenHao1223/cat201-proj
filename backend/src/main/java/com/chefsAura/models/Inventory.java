@@ -30,6 +30,16 @@ public class Inventory {
         return products;
     }
 
+    // add product quantity
+    public static void addProductQuantity(String productID, int sizeIndex, int colorIndex, int quantity) {
+        Product product = getProduct(productID);
+        if (product == null) {
+            System.err.println("Product not found");
+            return;
+        }
+        product.addQuantity(sizeIndex, colorIndex, quantity);
+    }
+
     public static Product getProduct(String productID) {
         for (Product product : products) {
             if (product.productID.equals(productID)) {

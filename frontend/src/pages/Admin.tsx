@@ -218,24 +218,65 @@ const Admin: React.FC = () => {
         });
     };
 
-    const orderQuantity = (productName: string) => {
+    const addQuantity = (product: ProductInterface) => {
         Swal.fire({
-            title: `${productName}`,
+            title: `${product.name}`,
             html: `
                 New Quantity:
                 <input type="number" id="quantity" class="swal2-input" min="1" step="1">
             `,
             showCancelButton: true,
-            confirmButtonText: "Order",
+            confirmButtonText: "Add",
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                const quantity = (
-                    document.getElementById("quantity") as HTMLInputElement
-                ).value;
-                // Handle the Update Quantity logic here
-                console.log(`Ordered ${quantity} of ${productName}`);
+                const quantity = parseInt(
+                    (document.getElementById("quantity") as HTMLInputElement)
+                        .value
+                );
+                if (!quantity) {
+                    Swal.showValidationMessage("Quantity is required");
+                }
+                const sizeIndex = product.sizes.indexOf(
+                    selectedSize[product.productID] || product.sizes[0]
+                );
+                const colorIndex = product.colors.indexOf(
+                    selectedColor[product.productID] || product.colors[0]
+                );
+                productAddQuantity(
+                    product.productID,
+                    sizeIndex,
+                    colorIndex,
+                    quantity
+                );
             },
         });
+    };
+
+    const productAddQuantity = async (
+        productID: string,
+        sizeIndex: number,
+        colorIndex: number,
+        quantity: number
+    ) => {
+        await handleApiCall(
+            `products/addQuantity`,
+            "PUT",
+            {
+                productID,
+                sizeIndex,
+                colorIndex,
+                quantity,
+            },
+            async (result) => {
+                if ((await result.status) == "Success") {
+                    console.log(JSON.parse(result.products));
+                    setProducts(JSON.parse(result.products));
+                } else {
+                    setError("\n Error adding quantity: " + result.message);
+                }
+            },
+            (error) => setError("\n Error adding quantity: " + error)
+        );
     };
 
     const handleStatusChange = (
@@ -490,9 +531,7 @@ const Admin: React.FC = () => {
                                                 </div>
                                                 <button
                                                     onClick={() =>
-                                                        orderQuantity(
-                                                            product.name
-                                                        )
+                                                        addQuantity(product)
                                                     }
                                                     className="absolute bottom-4 right-4 px-4 py-2 bg-blue-500 text-white rounded"
                                                 >
