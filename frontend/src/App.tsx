@@ -16,6 +16,7 @@ import {
     UserGeneralDetailsInterface,
 } from "@interfaces/API/UserInterface";
 import Profile from "@pages/Profile";
+import OrderHistory from "@pages/OrderHistory";
 
 const App: React.FC = () => {
     const [currentUserGeneralDetails, setCurrentUserGeneralDetails] =
@@ -109,6 +110,20 @@ const App: React.FC = () => {
                         }
                     />
                     <Route
+                        path="/product/:productID"
+                        element={
+                            <Product
+                                currentUserGeneralDetails={
+                                    currentUserGeneralDetails
+                                }
+                                isLogin={isLogin}
+                                carts={carts}
+                                setCarts={setCarts}
+                                isAdmin={isAdmin}
+                            />
+                        }
+                    />
+                    <Route
                         path="/cart"
                         element={
                             <Cart
@@ -140,6 +155,18 @@ const App: React.FC = () => {
                         }
                     />
                     <Route
+                        path="/orderHistory"
+                        element={
+                            <OrderHistory
+                                currentUserGeneralDetails={
+                                    currentUserGeneralDetails
+                                }
+                                isLogin={isLogin}
+                                isAdmin={isAdmin}
+                            />
+                        }
+                    />
+                    <Route
                         path="/profile"
                         element={
                             <Profile
@@ -151,20 +178,6 @@ const App: React.FC = () => {
                                 }
                                 isLogin={isLogin}
                                 setIsLogin={setIsLogin}
-                                isAdmin={isAdmin}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/product/:productID"
-                        element={
-                            <Product
-                                currentUserGeneralDetails={
-                                    currentUserGeneralDetails
-                                }
-                                isLogin={isLogin}
-                                carts={carts}
-                                setCarts={setCarts}
                                 isAdmin={isAdmin}
                             />
                         }

@@ -132,7 +132,7 @@ public class OrdersServlet extends HttpServlet {
                         throw new IllegalArgumentException("Exception occurred: " + e);
                     }
 
-                    jsonOrder.add(orderJson.toString());
+                    jsonOrder.add(orderJson);
                 }
 
                 // Create JSON response

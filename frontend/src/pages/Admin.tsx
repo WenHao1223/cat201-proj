@@ -213,11 +213,11 @@ const Admin: React.FC<AdminProps> = ({
                             viewOrders();
                         } else {
                             setError(
-                                "\n Error cancelling order: " + result.message
+                                "\n Error confirming order: " + result.message
                             );
                         }
                     },
-                    (error) => setError("\n Error cancelling order: " + error)
+                    (error) => setError("\n Error confirming order: " + error)
                 );
             }
         });

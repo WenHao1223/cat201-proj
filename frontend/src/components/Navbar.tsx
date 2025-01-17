@@ -1,7 +1,7 @@
 import React, { isValidElement } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { UserIcon, ShoppingCartIcon } from "@heroicons/react/20/solid";
+import { UserIcon, ShoppingCartIcon, TruckIcon } from "@heroicons/react/20/solid";
 import logo from "@assets/ChefAuraLogo.webp";
 
 interface NavbarProps {
@@ -61,6 +61,9 @@ const Navbar: React.FC<NavbarProps> = ({
                             <>
                                 <Link to="/cart">
                                     <ShoppingCartIcon className="h-6 w-8 text-gray-800" />
+                                </Link>
+                                <Link to="/orderHistory">
+                                    <TruckIcon className="h-6 w-8 text-gray-800" />
                                 </Link>
                                 <Link to="/profile">
                                     <UserIcon className="h-6 w-8 text-gray-800" />
