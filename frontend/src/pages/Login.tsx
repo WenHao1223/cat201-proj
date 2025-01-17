@@ -5,6 +5,8 @@ import "@styles/LoginRegister.css";
 import handleApiCall from "@utils/handleApiCall";
 import Swal from "sweetalert2";
 
+import logo from "@assets/ChefAuraLogo.webp";
+
 interface LoginProps {
     setCurrentUserGeneralDetails: React.Dispatch<React.SetStateAction<any>>;
     isLogin: boolean;
@@ -82,7 +84,7 @@ const Login: React.FC<LoginProps> = ({
             <div className="container">
                 <Link to="/">
                     <div className="header">
-                        <i className="fas fa-kitchen-set"></i> Chef's Aura
+                        Chef's Aura
                     </div>
                 </Link>
                 <div className="form-container">
@@ -105,20 +107,18 @@ const Login: React.FC<LoginProps> = ({
                         <header style={{ textAlign: "center" }}>Login</header>
                         <form onSubmit={handleSubmit} className="form">
                             <div className="input-box">
-                                <i className="fas fa-envelope"></i> Email
                                 <input
                                     type="email"
-                                    placeholder="Enter your email"
+                                    placeholder="Email"
                                     value={email}
                                     onChange={handleEmailChange}
                                     required
                                 />
                             </div>
                             <div className="input-box">
-                                <i className="fas fa-lock"></i> Password
                                 <input
                                     type="password"
-                                    placeholder="Enter your password"
+                                    placeholder="Password"
                                     value={password}
                                     onChange={handlePasswordChange}
                                     required
