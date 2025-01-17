@@ -16,8 +16,8 @@ const Admin: React.FC = () => {
     const [products, setProducts] = useState<ProductInterface[]>([]);
 
     const [orderStatus, setOrderStatus] = useState<string>("Ordered");
-    const [selectedColor, setSelectedColor] = useState<string | null>();
-    const [selectedSize, setSelectedSize] = useState<string | null>();
+    const [selectedColor, setSelectedColor] = useState<{ [key: string]: string }>({});
+    const [selectedSize, setSelectedSize] = useState<{ [key: string]: string }>({});
     const [selectedTab, setSelectedTab] = useState<string>("Tab 1");
 
     const [error, setError] = useState<string | null>(null);
@@ -239,12 +239,18 @@ const Admin: React.FC = () => {
         setOrderStatus(event.target.value);
     };
 
-    const handleColorChange = (color: string) => {
-        setSelectedColor(color);
+    const handleColorChange = (productID: string, color: string) => {
+        setSelectedColor((prev) => ({ ...prev, [productID]: color }));
     };
 
-    const handleSizeChange = (size: string) => {
-        setSelectedSize(size);
+    const handleSizeChange = (productID: string, size: string) => {
+        setSelectedSize((prev) => ({ ...prev, [productID]: size }));
+    };
+
+    const getStockOnHand = (product: ProductInterface) => {
+        const sizeIndex = product.sizes.indexOf(selectedSize[product.productID] || product.sizes[0]);
+        const colorIndex = product.colors.indexOf(selectedColor[product.productID] || product.colors[0]);
+        return product.quantities[sizeIndex][colorIndex];
     };
 
     const fetchProductData = async () => {
@@ -402,11 +408,12 @@ const Admin: React.FC = () => {
                                                     <h3>{product.name}</h3>
                                                     <select
                                                         value={
-                                                            selectedColor ??
+                                                            selectedColor[product.productID] ||
                                                             product.colors[0]
                                                         }
                                                         onChange={(e) =>
                                                             handleColorChange(
+                                                                product.productID,
                                                                 e.target.value
                                                             )
                                                         }
@@ -427,11 +434,12 @@ const Admin: React.FC = () => {
                                                     </select>
                                                     <select
                                                         value={
-                                                            selectedSize ??
+                                                            selectedSize[product.productID] ||
                                                             product.sizes[0]
                                                         }
                                                         onChange={(e) =>
                                                             handleSizeChange(
+                                                                product.productID,
                                                                 e.target.value
                                                             )
                                                         }
@@ -452,23 +460,7 @@ const Admin: React.FC = () => {
                                                 <div className="flex flex-col items-end">
                                                     <p className="text-gray-900">
                                                         Stock On Hand:{" "}
-                                                        {
-                                                            (
-                                                                product
-                                                                    .quantities[
-                                                                    product.colors.indexOf(
-                                                                        selectedColor ?? product.colors[0]
-                                                                    )
-                                                                ] as unknown as Record<
-                                                                    string,
-                                                                    number
-                                                                >
-                                                            )[
-                                                                product.sizes.indexOf(
-                                                                    selectedSize ?? product.sizes[0]
-                                                                )
-                                                            ] as unknown as number
-                                                        }
+                                                        {getStockOnHand(product)}
                                                     </p>
                                                 </div>
                                                 <button
