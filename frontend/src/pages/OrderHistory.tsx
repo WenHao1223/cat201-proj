@@ -26,10 +26,6 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({
     const [shippingTotal, setShippingTotal] = useState<number>(0);
     const [taxTotal, setTaxTotal] = useState<number>(0);
 
-    const [orderStatus, setOrderStatus] = useState<string>("Ordered");
-    const [selectedColor, setSelectedColor] = useState<string>("Red");
-    const [selectedSize, setSelectedSize] = useState<string>("Medium");
-
     const [error, setError] = useState<string | null>(null);
 
     const navigate = useNavigate();
@@ -237,7 +233,7 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({
                     `users/orders/cancel`,
                     "DELETE",
                     {
-                        email: order?.email,
+                        email: currentUserGeneralDetails?.email,
                         orderID: order?.orderID,
                     },
                     async (result) => {
