@@ -265,7 +265,7 @@ const Cart: React.FC<CartProps> = ({
                                                             <h3 className="text-sm">
                                                                 <Link
                                                                     className="font-medium text-gray-700 hover:text-gray-800 hover:underline"
-                                                                    to={`/carts/${product.productID}`}
+                                                                    to={`/product/${product.productID}`}
                                                                 >
                                                                     {
                                                                         product.name
