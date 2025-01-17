@@ -422,9 +422,14 @@ const Checkout: React.FC<CheckoutProps> = ({
                                                         {product.size}
                                                     </p>
                                                 </div>
-                                                <p className="flex-none text-base font-medium">
-                                                    {product.price}
-                                                </p>
+                                                <div className="flex-none">
+                                                    <p className="text-base font-medium">
+                                                        {product.price}
+                                                    </p>
+                                                    <p className="mt-3 text-base text-gray-500 font-medium text-right">
+                                                        x {product.quantity}
+                                                    </p>
+                                                </div>
                                             </li>
                                         ))}
                                 </ul>
