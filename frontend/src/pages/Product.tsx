@@ -274,12 +274,14 @@ const Product: React.FC<ProductProps> = ({
                                 />
                             </div>
                         </div>
-                        <button
-                            className="add-to-cart-button"
-                            onClick={handleAddToCart}
-                        >
-                            Add to Cart
-                        </button>
+                        {!isAdmin && (
+                            <button
+                                className="add-to-cart-button"
+                                onClick={handleAddToCart}
+                            >
+                                Add to Cart
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
