@@ -3,6 +3,7 @@ import handleApiCall from "@utils/handleApiCall";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import AsyncImage from "@components/AsyncImage";
+import { ProductInterface } from "@interfaces/API/ProductInterface";
 
 const Admin: React.FC = () => {
     const [orders, setOrders] = useState<OrderInterface[]>([]);
@@ -12,9 +13,11 @@ const Admin: React.FC = () => {
     const [shippingTotal, setShippingTotal] = useState<number>(0);
     const [taxTotal, setTaxTotal] = useState<number>(0);
 
+    const [products, setProducts] = useState<ProductInterface[]>([]);
+
     const [orderStatus, setOrderStatus] = useState<string>("Ordered");
-    const [selectedColor, setSelectedColor] = useState<string>("Red");
-    const [selectedSize, setSelectedSize] = useState<string>("Medium");
+    const [selectedColor, setSelectedColor] = useState<string | null>();
+    const [selectedSize, setSelectedSize] = useState<string | null>();
     const [selectedTab, setSelectedTab] = useState<string>("Tab 1");
 
     const [error, setError] = useState<string | null>(null);
@@ -76,24 +79,6 @@ const Admin: React.FC = () => {
             (error) => setError("\n Error viewing specific order: " + error)
         );
     };
-
-    const handleStatusChange = (
-        event: React.ChangeEvent<HTMLSelectElement>
-    ) => {
-        setOrderStatus(event.target.value);
-    };
-
-    const handleColorChange = (color: string) => {
-        setSelectedColor(color);
-    };
-
-    const handleSizeChange = (size: string) => {
-        setSelectedSize(size);
-    };
-
-    useEffect(() => {
-        viewOrders();
-    }, []);
 
     const showOrderDetails = async (order: OrderInterface) => {
         await viewSpecificOrder(order.orderID, order.email!);
@@ -248,6 +233,38 @@ const Admin: React.FC = () => {
         });
     };
 
+    const handleStatusChange = (
+        event: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+        setOrderStatus(event.target.value);
+    };
+
+    const handleColorChange = (color: string) => {
+        setSelectedColor(color);
+    };
+
+    const handleSizeChange = (size: string) => {
+        setSelectedSize(size);
+    };
+
+    const fetchProductData = async () => {
+        await handleApiCall(
+            "products",
+            "GET",
+            null,
+            (result) => {
+                setProducts(result);
+                console.log(result);
+            },
+            (error) => setError("\n Error fetching product data: " + error)
+        );
+    };
+
+    useEffect(() => {
+        viewOrders();
+        fetchProductData();
+    }, []);
+
     return (
         <div className="bg-white">
             <div className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -357,170 +374,117 @@ const Admin: React.FC = () => {
                             role="tabpanel"
                             className="tab-content bg-white border-base-300 rounded-box p-6"
                         >
-                            <ul
-                                role="list"
-                                className="divide-y divide-gray-200 text-sm font-medium text-gray-900"
-                            >
-                                <li className="bg-gray-50 px-4 py-6 sm:p-6 lg:p-8 rounded-lg shadow-md flex items-start space-x-4 border-b border-gray-200 relative">
-                                    <img
-                                        src="https://placeholder.pics/svg/300x300"
-                                        alt="Product 1"
-                                        className="h-20 w-20 flex-none rounded-md object-cover object-center"
-                                    />
-                                    <div
-                                        className="flex-auto space-y-1"
-                                        style={{ textAlign: "left" }}
-                                    >
-                                        <h3 className="font-bold">B001</h3>
-                                        <h3>Product 1</h3>
-                                        <select
-                                            value={selectedColor}
-                                            onChange={(e) =>
-                                                handleColorChange(
-                                                    e.target.value
-                                                )
-                                            }
-                                            className="px-2 py-1 bg-gray-300 text-black rounded"
-                                        >
-                                            <option value="Red">Red</option>
-                                            <option value="Blue">Blue</option>
-                                            <option value="Green">Green</option>
-                                        </select>
-                                        <select
-                                            value={selectedSize}
-                                            onChange={(e) =>
-                                                handleSizeChange(e.target.value)
-                                            }
-                                            className="px-2 py-1 bg-gray-300 text-black rounded"
-                                        >
-                                            <option value="Small">Small</option>
-                                            <option value="Medium">
-                                                Medium
-                                            </option>
-                                            <option value="Large">Large</option>
-                                        </select>
-                                    </div>
-                                    <div className="flex flex-col items-end">
-                                        <p className="text-gray-900">
-                                            Stock On Hand: 20
-                                        </p>
-                                    </div>
-                                    <button
-                                        onClick={() =>
-                                            orderQuantity("Product 1")
-                                        }
-                                        className="absolute bottom-4 right-4 px-4 py-2 bg-blue-500 text-white rounded"
-                                    >
-                                        Order Quantity
-                                    </button>
-                                </li>
-                                <li className="bg-gray-50 px-4 py-6 sm:p-6 lg:p-8 rounded-lg shadow-md flex items-start space-x-4 border-b border-gray-200 relative">
-                                    <img
-                                        src="https://placeholder.pics/svg/300x300"
-                                        alt="Product 2"
-                                        className="h-20 w-20 flex-none rounded-md object-cover object-center"
-                                    />
-                                    <div
-                                        className="flex-auto space-y-1"
-                                        style={{ textAlign: "left" }}
-                                    >
-                                        <h3 className="font-bold">B001</h3>
-                                        <h3>Product 2</h3>
-                                        <select
-                                            value={selectedColor}
-                                            onChange={(e) =>
-                                                handleColorChange(
-                                                    e.target.value
-                                                )
-                                            }
-                                            className="px-2 py-1 bg-gray-300 text-black rounded"
-                                        >
-                                            <option value="Red">Red</option>
-                                            <option value="Blue">Blue</option>
-                                            <option value="Green">Green</option>
-                                        </select>
-                                        <select
-                                            value={selectedSize}
-                                            onChange={(e) =>
-                                                handleSizeChange(e.target.value)
-                                            }
-                                            className="px-2 py-1 bg-gray-300 text-black rounded"
-                                        >
-                                            <option value="Small">Small</option>
-                                            <option value="Medium">
-                                                Medium
-                                            </option>
-                                            <option value="Large">Large</option>
-                                        </select>
-                                    </div>
-                                    <div className="flex flex-col items-end">
-                                        <p className="text-gray-900">
-                                            Stock On Hand: 15
-                                        </p>
-                                    </div>
-                                    <button
-                                        onClick={() =>
-                                            orderQuantity("Product 2")
-                                        }
-                                        className="absolute bottom-4 right-4 px-4 py-2 bg-blue-500 text-white rounded"
-                                    >
-                                        Order Quantity
-                                    </button>
-                                </li>
-                                <li className="bg-gray-50 px-4 py-6 sm:p-6 lg:p-8 rounded-lg shadow-md flex items-start space-x-4 border-b border-gray-200 relative">
-                                    <img
-                                        src="https://placeholder.pics/svg/300x300"
-                                        alt="Product 3"
-                                        className="h-20 w-20 flex-none rounded-md object-cover object-center"
-                                    />
-                                    <div
-                                        className="flex-auto space-y-1"
-                                        style={{ textAlign: "left" }}
-                                    >
-                                        <h3 className="font-bold">B001</h3>
-                                        <h3>Product 3</h3>
-                                        <select
-                                            value={selectedColor}
-                                            onChange={(e) =>
-                                                handleColorChange(
-                                                    e.target.value
-                                                )
-                                            }
-                                            className="px-2 py-1 bg-gray-300 text-black rounded"
-                                        >
-                                            <option value="Red">Red</option>
-                                            <option value="Blue">Blue</option>
-                                            <option value="Green">Green</option>
-                                        </select>
-                                        <select
-                                            value={selectedSize}
-                                            onChange={(e) =>
-                                                handleSizeChange(e.target.value)
-                                            }
-                                            className="px-2 py-1 bg-gray-300 text-black rounded"
-                                        >
-                                            <option value="Small">Small</option>
-                                            <option value="Medium">
-                                                Medium
-                                            </option>
-                                            <option value="Large">Large</option>
-                                        </select>
-                                    </div>
-                                    <div className="flex flex-col items-end">
-                                        <p className="text-gray-900">
-                                            Stock On Hand: 10
-                                        </p>
-                                    </div>
-                                    <button
-                                        onClick={() =>
-                                            orderQuantity("Product 3")
-                                        }
-                                        className="absolute bottom-4 right-4 px-4 py-2 bg-blue-500 text-white rounded"
-                                    >
-                                        Order Quantity
-                                    </button>
-                                </li>
-                            </ul>
+                            {selectedTab === "Tab 2" && (
+                                <ul
+                                    role="list"
+                                    className="divide-y divide-gray-200 text-sm font-medium text-gray-900"
+                                >
+                                    {products &&
+                                        products.map((product) => (
+                                            <li
+                                                key={product.productID}
+                                                className="bg-gray-50 px-4 py-6 sm:p-6 lg:p-8 rounded-lg shadow-md flex items-start space-x-4 border-b border-gray-200 relative"
+                                            >
+                                                <img
+                                                    src="https://placeholder.pics/svg/300x300"
+                                                    alt={product.name}
+                                                    className="h-20 w-20 flex-none rounded-md object-cover object-center"
+                                                />
+                                                <div
+                                                    className="flex-auto space-y-1"
+                                                    style={{
+                                                        textAlign: "left",
+                                                    }}
+                                                >
+                                                    <h3 className="font-bold">
+                                                        {product.productID}
+                                                    </h3>
+                                                    <h3>{product.name}</h3>
+                                                    <select
+                                                        value={
+                                                            selectedColor ??
+                                                            product.colors[0]
+                                                        }
+                                                        onChange={(e) =>
+                                                            handleColorChange(
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        className="px-2 py-1 bg-gray-300 text-black rounded"
+                                                    >
+                                                        {product.colors.map(
+                                                            (color) => (
+                                                                <option
+                                                                    key={color}
+                                                                    value={
+                                                                        color
+                                                                    }
+                                                                >
+                                                                    {color}
+                                                                </option>
+                                                            )
+                                                        )}
+                                                    </select>
+                                                    <select
+                                                        value={
+                                                            selectedSize ??
+                                                            product.sizes[0]
+                                                        }
+                                                        onChange={(e) =>
+                                                            handleSizeChange(
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        className="px-2 py-1 bg-gray-300 text-black rounded"
+                                                    >
+                                                        {product.sizes.map(
+                                                            (size) => (
+                                                                <option
+                                                                    key={size}
+                                                                    value={size}
+                                                                >
+                                                                    {size}
+                                                                </option>
+                                                            )
+                                                        )}
+                                                    </select>
+                                                </div>
+                                                <div className="flex flex-col items-end">
+                                                    <p className="text-gray-900">
+                                                        Stock On Hand:{" "}
+                                                        {
+                                                            (
+                                                                product
+                                                                    .quantities[
+                                                                    product.colors.indexOf(
+                                                                        selectedColor ?? product.colors[0]
+                                                                    )
+                                                                ] as unknown as Record<
+                                                                    string,
+                                                                    number
+                                                                >
+                                                            )[
+                                                                product.sizes.indexOf(
+                                                                    selectedSize ?? product.sizes[0]
+                                                                )
+                                                            ] as unknown as number
+                                                        }
+                                                    </p>
+                                                </div>
+                                                <button
+                                                    onClick={() =>
+                                                        orderQuantity(
+                                                            product.name
+                                                        )
+                                                    }
+                                                    className="absolute bottom-4 right-4 px-4 py-2 bg-blue-500 text-white rounded"
+                                                >
+                                                    Order Quantity
+                                                </button>
+                                            </li>
+                                        ))}
+                                </ul>
+                            )}
                         </div>
                     </div>
                 </div>
