@@ -23,14 +23,14 @@ interface CheckoutProps {
     currentUserGeneralDetails: UserGeneralDetailsInterface | null;
     isLogin: boolean;
     carts: CartGeneralInterface[] | null;
-	isAdmin: boolean;
+    isAdmin: boolean;
 }
 
 const Checkout: React.FC<CheckoutProps> = ({
     currentUserGeneralDetails,
     isLogin,
     carts,
-	isAdmin,
+    isAdmin,
 }) => {
     const [subtotal, setSubtotal] = React.useState(0);
     const [shippingTotal, setShippingTotal] = React.useState(0);
@@ -365,7 +365,7 @@ const Checkout: React.FC<CheckoutProps> = ({
                 isLogin={isLogin}
                 setIsLogin={() => {}}
                 setCurrentUserGeneralDetails={() => {}}
-				isAdmin={isAdmin}
+                isAdmin={isAdmin}
             />
             <div className="mx-auto max-w-2xl px-4 pb-24 pt-12 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div className="relative top-12">
@@ -627,7 +627,7 @@ const Checkout: React.FC<CheckoutProps> = ({
                                                             );
                                                         }
                                                     }}
-                                                    className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md appearance-none"
+                                                    className="block min-w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md appearance-none"
                                                 >
                                                     <option value="">
                                                         Select Payment Method
@@ -802,7 +802,7 @@ const Checkout: React.FC<CheckoutProps> = ({
                                                             e.target.value
                                                         )
                                                     }
-                                                    className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
+                                                    className="block min-w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
                                                 >
                                                     <option value="">
                                                         Select Shipping Address
@@ -893,7 +893,7 @@ const Checkout: React.FC<CheckoutProps> = ({
                                                             e.target.value
                                                         )
                                                     }
-                                                    className="block w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
+                                                    className="block min-w-full rounded-lg border border-gray-300 focus:ring-2 sm:text-base px-4 py-3 shadow-md"
                                                 >
                                                     <option value="">
                                                         Select Billing Address
