@@ -16,8 +16,12 @@ const Admin: React.FC = () => {
     const [products, setProducts] = useState<ProductInterface[]>([]);
 
     const [orderStatus, setOrderStatus] = useState<string>("Ordered");
-    const [selectedColor, setSelectedColor] = useState<{ [key: string]: string }>({});
-    const [selectedSize, setSelectedSize] = useState<{ [key: string]: string }>({});
+    const [selectedColor, setSelectedColor] = useState<{
+        [key: string]: string;
+    }>({});
+    const [selectedSize, setSelectedSize] = useState<{ [key: string]: string }>(
+        {}
+    );
     const [selectedTab, setSelectedTab] = useState<string>("Tab 1");
 
     const [error, setError] = useState<string | null>(null);
@@ -216,8 +220,9 @@ const Admin: React.FC = () => {
 
     const orderQuantity = (productName: string) => {
         Swal.fire({
-            title: `Order Quantity for ${productName}`,
+            title: `${productName}`,
             html: `
+                New Quantity:
                 <input type="number" id="quantity" class="swal2-input" min="1" step="1">
             `,
             showCancelButton: true,
@@ -227,7 +232,7 @@ const Admin: React.FC = () => {
                 const quantity = (
                     document.getElementById("quantity") as HTMLInputElement
                 ).value;
-                // Handle the order quantity logic here
+                // Handle the Update Quantity logic here
                 console.log(`Ordered ${quantity} of ${productName}`);
             },
         });
@@ -248,8 +253,12 @@ const Admin: React.FC = () => {
     };
 
     const getStockOnHand = (product: ProductInterface) => {
-        const sizeIndex = product.sizes.indexOf(selectedSize[product.productID] || product.sizes[0]);
-        const colorIndex = product.colors.indexOf(selectedColor[product.productID] || product.colors[0]);
+        const sizeIndex = product.sizes.indexOf(
+            selectedSize[product.productID] || product.sizes[0]
+        );
+        const colorIndex = product.colors.indexOf(
+            selectedColor[product.productID] || product.colors[0]
+        );
         return product.quantities[sizeIndex][colorIndex];
     };
 
@@ -278,7 +287,7 @@ const Admin: React.FC = () => {
                     <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
                         {selectedTab === "Tab 1"
                             ? "Review Order Status"
-                            : "Order Product"}
+                            : "Inventory"}
                     </h1>
                     <div role="tablist" className="tabs tabs-lifted mt-12">
                         <input
@@ -373,7 +382,7 @@ const Admin: React.FC = () => {
                             name="my_tabs_2"
                             role="tab"
                             className="tab"
-                            aria-label="Order Product"
+                            aria-label="Inventory"
                             onClick={() => setSelectedTab("Tab 2")}
                         />
                         <div
@@ -391,8 +400,16 @@ const Admin: React.FC = () => {
                                                 key={product.productID}
                                                 className="bg-gray-50 px-4 py-6 sm:p-6 lg:p-8 rounded-lg shadow-md flex items-start space-x-4 border-b border-gray-200 relative"
                                             >
-                                                <img
-                                                    src="https://placeholder.pics/svg/300x300"
+                                                <AsyncImage
+                                                    productID={
+                                                        product.productID
+                                                    }
+                                                    color={
+                                                        selectedColor[
+                                                            product.productID
+                                                        ] || product.colors[0]
+                                                    }
+                                                    number={0}
                                                     alt={product.name}
                                                     className="h-20 w-20 flex-none rounded-md object-cover object-center"
                                                 />
@@ -408,7 +425,10 @@ const Admin: React.FC = () => {
                                                     <h3>{product.name}</h3>
                                                     <select
                                                         value={
-                                                            selectedColor[product.productID] ||
+                                                            selectedColor[
+                                                                product
+                                                                    .productID
+                                                            ] ||
                                                             product.colors[0]
                                                         }
                                                         onChange={(e) =>
@@ -434,7 +454,10 @@ const Admin: React.FC = () => {
                                                     </select>
                                                     <select
                                                         value={
-                                                            selectedSize[product.productID] ||
+                                                            selectedSize[
+                                                                product
+                                                                    .productID
+                                                            ] ||
                                                             product.sizes[0]
                                                         }
                                                         onChange={(e) =>
@@ -460,7 +483,9 @@ const Admin: React.FC = () => {
                                                 <div className="flex flex-col items-end">
                                                     <p className="text-gray-900">
                                                         Stock On Hand:{" "}
-                                                        {getStockOnHand(product)}
+                                                        {getStockOnHand(
+                                                            product
+                                                        )}
                                                     </p>
                                                 </div>
                                                 <button
@@ -471,7 +496,7 @@ const Admin: React.FC = () => {
                                                     }
                                                     className="absolute bottom-4 right-4 px-4 py-2 bg-blue-500 text-white rounded"
                                                 >
-                                                    Order Quantity
+                                                    Update Quantity
                                                 </button>
                                             </li>
                                         ))}
