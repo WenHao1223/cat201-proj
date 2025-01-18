@@ -1,0 +1,1 @@
+web: cd backend && mvn clean package && java -jar target/cat201-proj-1.0-SNAPSHOT.war
