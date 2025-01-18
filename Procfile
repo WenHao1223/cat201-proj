@@ -1,1 +1,1 @@
-web: cd backend && mvn clean install && java -jar backend/target/cat201-proj-1.0-SNAPSHOT.war
+web: cd backend && mvn clean install && java -jar target/cat201-proj-1.0-SNAPSHOT.war
