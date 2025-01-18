@@ -1,22 +1,27 @@
 {
-  "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "jsx": "react-jsx",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "baseUrl": "./src",
-    "paths": {
-      "@assets/*": ["assets/*"],
-      "@components/*": ["components/*"],
-      "@interfaces/*": ["interfaces/*"],
-      "@pages/*": ["pages/*"],
-      "@utils/*": ["utils/*"],
-      "@styles/*": ["styles/*"]
-    }
-  },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "jsx": "react-jsx",
+        "strict": true,
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "baseUrl": "./src",
+        "paths": {
+            "@assets/*": ["assets/*"],
+            "@components/*": ["components/*"],
+            "@interfaces/*": ["interfaces/*"],
+            "@pages/*": ["pages/*"],
+            "@utils/*": ["utils/*"],
+            "@styles/*": ["styles/*"]
+        },
+        "typeRoots": ["node_modules/@types", "src/types"],
+        "outDir": "./dist", // Specify the output directory for compiled files
+        "rootDir": "./src" // Specify the root directory of your source files
+    },
+    "include": ["src"],
+    "exclude": ["node_modules", "dist"]
 }
