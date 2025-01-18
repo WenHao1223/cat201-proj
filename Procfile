@@ -1,1 +1,1 @@
-web: cd backend && mvn clean install && mvn tomcat7:run
+web: mvn -f backend/pom.xml clean package && mvn:tomcat7:run
