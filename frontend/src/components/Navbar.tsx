@@ -69,13 +69,13 @@ const Navbar: React.FC<NavbarProps> = ({
                                 <Link to="/cart">
                                     <div className="h-8 w-8 justify-center relative">
                                         <ShoppingCartIcon className="h-6 w-8 text-gray-800" />
-                                        <div className="badge badge-secondary absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2">
-                                            {carts && carts?.length > 0
-                                                ? carts?.length > 99
+                                        {carts && carts?.length > 0 && (
+                                            <div className="badge badge-secondary absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2">
+                                                {carts?.length > 99
                                                     ? "99+"
-                                                    : carts?.length
-                                                : 0}
-                                        </div>
+                                                    : carts?.length}
+                                            </div>
+                                        )}
                                     </div>
                                 </Link>
                                 <Link to="/orderHistory">
