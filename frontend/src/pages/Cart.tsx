@@ -314,6 +314,9 @@ const Cart: React.FC<CartProps> = ({
                                                                 updateCart
                                                             }
                                                         >
+                                                            <option value={product.quantity}>
+                                                                {product.quantity}
+                                                            </option>
                                                             <option value={1}>
                                                                 1
                                                             </option>
