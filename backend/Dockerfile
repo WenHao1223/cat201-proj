@@ -5,7 +5,7 @@ FROM tomcat:11.0-jdk21-temurin
 RUN rm -rf /usr/local/tomcat/webapps/*
 
 # Copy your WAR file to Tomcat's webapps directory
-COPY target/cat201-proj.war /usr/local/tomcat/webapps/ROOT.war
+COPY target/cat201-proj-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
 
 # Expose port
 EXPOSE 8080
