@@ -46,6 +46,13 @@
             <resource>
                 <directory>src/main/resources</directory>
             </resource>
+            <resource>
+                <directory>target/tomcat/conf</directory>
+                <targetPath>WEB-INF</targetPath>
+                <includes>
+                    <include>web.xml</include>
+                </includes>
+            </resource>
         </resources>
         <testResources>
             <testResource>
