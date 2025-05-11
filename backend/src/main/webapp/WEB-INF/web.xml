@@ -8,10 +8,282 @@
         <filter-name>CorsFilter</filter-name>
         <filter-class>com.chefsAura.api.CorsFilter</filter-class>
     </filter>
+
     <filter-mapping>
         <filter-name>CorsFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!-- Other servlet configurations if any -->
+    <servlet>
+        <servlet-name>ProductAddQuantityServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.products.ProductAddQuantityServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductsServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.products.ProductsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SpecificProductServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.products.SpecificProductServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersChangePassword</servlet-name>
+        <servlet-class>com.chefsAura.api.users.UsersChangePassword</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersCreateServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.UsersCreateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersEditProfileServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.UsersEditProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersGeneralDetails</servlet-name>
+        <servlet-class>com.chefsAura.api.users.UsersGeneralDetails</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersLoginServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.UsersLoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.UsersServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersBillingAddressesAddServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.billing.UsersBillingAddressesAddServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersBillingAddressesRemoveServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.billing.UsersBillingAddressesRemoveServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersBillingAddressesServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.billing.UsersBillingAddressesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersBillingAddressesUpdateServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.billing.UsersBillingAddressesUpdateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CartAddServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.carts.CartAddServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CartRemoveServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.carts.CartRemoveServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CartServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.carts.CartServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CartUpdateServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.carts.CartUpdateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AllOrdersServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.orders.AllOrdersServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrdersAddServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.orders.OrdersAddServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrdersCancelServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.orders.OrdersCancelServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrdersDeliverServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.orders.OrdersDeliverServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrdersServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.orders.OrdersServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SpecificOrderServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.orders.SpecificOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersPaymentDetailsAddServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.payment.UsersPaymentDetailsAddServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersPaymentDetailsRemoveServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.payment.UsersPaymentDetailsRemoveServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersPaymentDetailsServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.payment.UsersPaymentDetailsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersShippingAddressesAddServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.shipping.UsersShippingAddressesAddServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersShippingAddressesRemoveServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.shipping.UsersShippingAddressesRemoveServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersShippingAddressesServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.shipping.UsersShippingAddressesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersShippingAddressesUpdateServlet</servlet-name>
+        <servlet-class>com.chefsAura.api.users.shipping.UsersShippingAddressesUpdateServlet</servlet-class>
+    </servlet>
+
+
+    <!-- Servlet Mappings -->
+    <servlet-mapping>
+        <servlet-name>ProductAddQuantityServlet</servlet-name>
+        <url-pattern>/api/products/addQuantity</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ProductsServlet</servlet-name>
+        <url-pattern>/api/products</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>SpecificProductServlet</servlet-name>
+        <url-pattern>/api/products/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UsersChangePassword</servlet-name>
+        <url-pattern>/api/users/changePassword</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UsersCreateServlet</servlet-name>
+        <url-pattern>/api/users/create</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UsersEditProfileServlet</servlet-name>
+        <url-pattern>/api/users/editProfile</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UsersGeneralDetails</servlet-name>
+        <url-pattern>/api/users/generalDetails</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UsersLoginServlet</servlet-name>
+        <url-pattern>/api/users/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UsersServlet</servlet-name>
+        <url-pattern>/api/users</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UsersBillingAddressesAddServlet</servlet-name>
+        <url-pattern>/api/users/billingAddresses/add</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UsersBillingAddressesRemoveServlet</servlet-name>
+        <url-pattern>/api/users/billingAddresses/remove</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UsersBillingAddressesServlet</servlet-name>
+        <url-pattern>/api/users/billingAddresses</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UsersBillingAddressesUpdateServlet</servlet-name>
+        <url-pattern>/api/users/billingAddresses/update</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>CartAddServlet</servlet-name>
+        <url-pattern>/api/users/cart/add</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>CartRemoveServlet</servlet-name>
+        <url-pattern>/api/users/cart/remove</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>CartServlet</servlet-name>
+        <url-pattern>/api/users/cart</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>CartUpdateServlet</servlet-name>
+        <url-pattern>/api/users/cart/update</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AllOrdersServlet</servlet-name>
+        <url-pattern>/api/users/allOrders</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>OrdersAddServlet</servlet-name>
+        <url-pattern>/api/users/orders/add</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>OrdersCancelServlet</servlet-name>
+        <url-pattern>/api/users/orders/cancel</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>OrdersDeliverServlet</servlet-name>
+        <url-pattern>/api/users/orders/deliver</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>OrdersServlet</servlet-name>
+        <url-pattern>/api/users/orders</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>SpecificOrderServlet</servlet-name>
+        <url-pattern>/api/users/orders/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UsersPaymentDetailsAddServlet</servlet-name>
+        <url-pattern>/api/users/paymentDetails/add</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UsersPaymentDetailsRemoveServlet</servlet-name>
+        <url-pattern>/api/users/paymentDetails/remove</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UsersPaymentDetailsServlet</servlet-name>
+        <url-pattern>/api/users/paymentDetails</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UsersShippingAddressesAddServlet</servlet-name>
+        <url-pattern>/api/users/shippingAddresses/add</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UsersShippingAddressesRemoveServlet</servlet-name>
+        <url-pattern>/api/users/shippingAddresses/remove</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UsersShippingAddressesServlet</servlet-name>
+        <url-pattern>/api/users/shippingAddresses</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UsersShippingAddressesUpdateServlet</servlet-name>
+        <url-pattern>/api/users/shippingAddresses/update</url-pattern>
+    </servlet-mapping>
 </web-app>

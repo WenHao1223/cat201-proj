@@ -18,7 +18,7 @@ import com.chefsAura.models.UserCollection;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-@WebServlet("/api/users/editProfile")
+// @WebServlet("/api/users/editProfile")
 public class UsersEditProfileServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {

@@ -13,7 +13,7 @@ import com.chefsAura.models.UserCollection;
 import com.chefsAura.models.User;
 import com.google.gson.Gson;
 
-@WebServlet("/api/users/generalDetails")
+// @WebServlet("/api/users/generalDetails")
 public class UsersGeneralDetails extends HttpServlet {
     @Override
     public void init() throws ServletException {

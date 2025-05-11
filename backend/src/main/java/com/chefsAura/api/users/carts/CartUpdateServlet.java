@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-@WebServlet("/api/users/cart/update")
+// @WebServlet("/api/users/cart/update")
 public class CartUpdateServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {

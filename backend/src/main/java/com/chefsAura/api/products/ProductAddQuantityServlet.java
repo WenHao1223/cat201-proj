@@ -14,7 +14,7 @@ import com.chefsAura.models.Inventory;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-@WebServlet("/api/products/addQuantity")
+// @WebServlet("/api/products/addQuantity")
 public class ProductAddQuantityServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {

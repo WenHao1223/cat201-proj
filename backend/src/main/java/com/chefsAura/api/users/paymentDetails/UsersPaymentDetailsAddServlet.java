@@ -19,7 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-@WebServlet("/api/users/paymentDetails/add")
+// @WebServlet("/api/users/paymentDetails/add")
 public class UsersPaymentDetailsAddServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {

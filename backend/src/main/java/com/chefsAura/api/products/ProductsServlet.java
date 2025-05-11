@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.chefsAura.models.Inventory;
 import com.google.gson.Gson;
 
-@WebServlet("/api/products")
+// @WebServlet("/api/products")
 public class ProductsServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {

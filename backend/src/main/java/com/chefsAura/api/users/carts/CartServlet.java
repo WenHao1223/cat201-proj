@@ -18,7 +18,7 @@ import com.chefsAura.models.UserCollection;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-@WebServlet("/api/users/cart")
+// @WebServlet("/api/users/cart")
 public class CartServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {

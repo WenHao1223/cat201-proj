@@ -15,7 +15,7 @@ import com.chefsAura.models.UserCollection;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-@WebServlet("/api/users/changePassword")
+// @WebServlet("/api/users/changePassword")
 public class UsersChangePassword extends HttpServlet {
     @Override
     public void init() throws ServletException {

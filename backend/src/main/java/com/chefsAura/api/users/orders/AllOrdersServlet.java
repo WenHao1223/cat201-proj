@@ -20,7 +20,7 @@ import com.chefsAura.models.UserCollection;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-@WebServlet("/api/users/allOrders")
+// @WebServlet("/api/users/allOrders")
 public class AllOrdersServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {

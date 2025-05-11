@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.chefsAura.models.UserCollection;
 import com.google.gson.Gson;
 
-@WebServlet("/api/users")
+// @WebServlet("/api/users")
 public class UsersServlet extends HttpServlet {
 
     @Override
