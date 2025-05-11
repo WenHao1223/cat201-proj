@@ -1,0 +1,7 @@
+services:
+  - name: cat201-tomcat
+    type: web
+    runtime: docker
+    dockerfilePath: backend/Dockerfile
+    plan: free
+    autoDeploy: true
